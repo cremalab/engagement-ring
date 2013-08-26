@@ -7,3 +7,4 @@ module.exports = (match) ->
   match 'profiles/:id/', 'profiles#show'
 
   match 'register', 'users#new'
+  match 'login', 'session#new'
