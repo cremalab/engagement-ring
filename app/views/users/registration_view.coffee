@@ -12,4 +12,5 @@ module.exports = class RegistrationView extends View
 
   save: (e) ->
     e.preventDefault()
-    @model.save()
+    if @model.isValid()
+      @publishEvent 'save_user', @model

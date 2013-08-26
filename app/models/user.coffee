@@ -7,5 +7,5 @@ module.exports = class User extends Model
 
   urlRoot: '/users'
 
-  validate: ->
-    return 'no way'
+  # validate: ->
+  #   return 'no way'
