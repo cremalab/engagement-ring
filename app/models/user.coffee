@@ -6,3 +6,6 @@ module.exports = class User extends Model
     password: null
 
   urlRoot: '/users'
+
+  validate: ->
+    return 'no way'
