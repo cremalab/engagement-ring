@@ -1,6 +1,6 @@
-View = require 'views/base/view'
+View = require './view'
 
-module.exports = class BaseFormElementView extends View
+module.exports = class FormView extends View
   autoRender: true
   states:
     invalid:
@@ -16,3 +16,7 @@ module.exports = class BaseFormElementView extends View
     @state = name
   state: ->
     return @state
+  render: ->
+    super
+    @modelBinder = new Backbone.ModelBinder()
+    @modelBinder.bind @model, @$el

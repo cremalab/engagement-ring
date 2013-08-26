@@ -19,6 +19,12 @@
         "jquery": "*"
       },
       "main": "backbone.js"
+    },
+    "Backbone.ModelBinder": {
+      "dependencies": {
+        "backbone": "*"
+      },
+      "main": "Backbone.ModelBinder.js"
     }
   }
 }
