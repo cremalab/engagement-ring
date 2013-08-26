@@ -25,6 +25,9 @@
         "backbone": "*"
       },
       "main": "Backbone.ModelBinder.js"
+    },
+    "sherlock": {
+      "main": "lib/sherlock.js"
     }
   }
 }
