@@ -16,6 +16,8 @@ module.exports = class IdeaEditView extends View
       @model.set 'when', date.startDate
       title = date.concordance.replace(date.text, '').replace('  ', ' ')
       @model.set('title', title)
+      @$el.find('.when').text moment(date.startDate).format("dddd MMM D, ha")
     else
       @model.set('title', input_val)
-    # console.log parsed
+      if @model.get 'when'
+        @model.set 'when', null
