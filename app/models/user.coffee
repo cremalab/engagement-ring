@@ -5,7 +5,7 @@ module.exports = class User extends Model
     email: null
     password: null
 
-  urlRoot: '/users'
+  urlRoot: 'http://localhost:3000/users'
 
   # validate: ->
   #   return 'no way'

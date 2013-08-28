@@ -13,7 +13,6 @@ module.exports = class IdeaEditView extends View
 
   render: ->
     super
-
     @natural_input = @$el.find('.natural-language')
 
     unless @model.isNew()

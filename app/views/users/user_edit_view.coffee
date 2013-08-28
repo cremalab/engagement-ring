@@ -11,4 +11,8 @@ module.exports = class RegistrationView extends View
 
   save: (e) ->
     e.preventDefault()
-    @model.save()
+    # @model.save, @model.attributes
+    #   success: (response) ->
+    #     console.log response
+    #   error: (response) ->
+    #     console.log 'err'
