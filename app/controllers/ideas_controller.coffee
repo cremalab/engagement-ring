@@ -22,4 +22,4 @@ module.exports = class IdeasController extends Controller
   index: ->
     @collection = new Ideas
     @collection.fetch()
-    @view = new IdeasCollectionView collection: @collection
+    @view = new IdeasCollectionView collection: @collection, region: 'main'

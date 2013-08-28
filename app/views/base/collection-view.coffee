@@ -26,9 +26,21 @@ module.exports = class CollectionView extends Chaplin.CollectionView
   render: ->
     super
     @setState 'ready'
+    @setupKeyBindings()
+
+  viewForModel: (model) ->
+    return @subview("itemView:" + model.cid)
 
   startSync: ->
     @setState 'syncing'
 
   clearState: ->
     @setState 'ready'
+
+  setupKeyBindings: ->
+    keys = _.keys @key_bindings
+    collection_view = @
+    _.each keys, (key) =>
+      method = @key_bindings[key]
+      Mousetrap.bind key, (e) ->
+        collection_view[method]()

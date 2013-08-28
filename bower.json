@@ -11,7 +11,8 @@
     "h5bp-helpers": "~0.1.0",
     "Backbone.localStorage": "1.1.6",
     "Backbone.ModelBinder": "*",
-    "momentjs": "~2.1.0"
+    "momentjs": "~2.1.0",
+    "mousetrap": "~1.4.0"
   },
   "overrides": {
     "backbone": {

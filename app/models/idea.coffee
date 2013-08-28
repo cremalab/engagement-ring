@@ -6,6 +6,7 @@ module.exports = class Idea extends Model
   defaults:
     created_by: null      # fk: user_id, validates_presence_of
     title: null           # string, validates_presence_of
+    description: null
     when: null            # datetime, allow nil
     idea_votes: []        # collection of IdeaVotes
     created_at: null      # datetime
