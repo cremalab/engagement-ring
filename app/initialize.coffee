@@ -5,6 +5,6 @@ routes = require 'routes'
 $ ->
   new Application {
     title: 'Brunch example application',
-    controllerSuffix: '-controller',
+    controllerSuffix: '_controller',
     routes
   }

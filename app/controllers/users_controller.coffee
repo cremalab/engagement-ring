@@ -5,6 +5,9 @@ UserEditView = require 'views/users/user_edit_view'
 RegistrationView = require 'views/users/registration_view'
 
 module.exports = class ProfilesController extends Controller
+  initialize: ->
+    @subscribeEvent 'save_user', @update
+
   index: ->
 
   edit: (params) ->
@@ -27,3 +30,10 @@ module.exports = class ProfilesController extends Controller
     @model = new Profile
       id: params.id
     @model.fetch()
+
+  update: (user) ->
+    @model.save
+      success: ->
+        @redirectTo '/'
+      error: (model, response) ->
+        @publishEvent 'renderError', response

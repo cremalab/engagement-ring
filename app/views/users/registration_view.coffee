@@ -4,7 +4,7 @@ DateInputView = require 'views/form_elements/date_input_view'
 
 module.exports = class RegistrationView extends View
   autoRender: true
-  className: 'registreationNew'
+  className: 'registrationNew'
   tagName: 'form'
   template: template
   events:
@@ -12,4 +12,5 @@ module.exports = class RegistrationView extends View
 
   save: (e) ->
     e.preventDefault()
-    @model.save()
+    if @model.isValid()
+      @publishEvent 'save_user', @model

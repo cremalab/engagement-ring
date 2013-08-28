@@ -8,3 +8,4 @@ module.exports = class SiteView extends View
     header: '#header-container'
     main: '#page-container'
   template: require './templates/site'
+

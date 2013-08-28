@@ -1,5 +1,5 @@
 {
-  "name": "example-app",
+  "name": "Engagement Ring",
   "version": "0.1.0",
   "main": "public/javascripts/app.js",
   "dependencies": {
@@ -8,7 +8,9 @@
     "lodash": "~1.3.1",
     "jquery": "~2.0.2",
     "Backbone.localStorage": "1.1.6",
-    "Backbone.ModelBinder": "*"
+    "Backbone.ModelBinder": "*",
+    "momentjs": "~2.1.0",
+    "mousetrap": "~1.4.0"
   },
   "overrides": {
     "backbone": {
@@ -23,6 +25,9 @@
         "backbone": "*"
       },
       "main": "Backbone.ModelBinder.js"
+    },
+    "sherlock": {
+      "main": "lib/sherlock.js"
     }
   }
 }
