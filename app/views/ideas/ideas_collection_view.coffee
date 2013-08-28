@@ -1,5 +1,11 @@
 CollectionView = require 'views/base/collection-view'
-Idea = require 'views/ideas/idea_view'
+IdeaView = require 'views/ideas/idea_view'
+IdeaEditView = require 'views/ideas/idea_edit_view'
 
 module.exports = class IdeasCollectionView extends CollectionView
-  itemView: Idea
+
+  initItemView: (model) ->
+    if model.isNew()
+      new IdeaEditView model: model
+    else
+      new IdeaView model: model

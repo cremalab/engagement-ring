@@ -22,15 +22,6 @@ module.exports = class FormView extends View
     super
     @errors = new ErrorsCollection()
     @subscribeEvent 'renderError', @renderError
-  setState: (state) ->
-    console.log 'setting state to ' + state
-    _.each _.keys @states, (state) ->
-      @$el.removeClass(state)
-    name = @states[state]['name']
-    @$el.addClass name
-    @state = name
-  state: ->
-    return @state
   render: ->
     super
     if @model

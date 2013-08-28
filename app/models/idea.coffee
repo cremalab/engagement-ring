@@ -12,7 +12,6 @@ module.exports = class Idea extends Model
     updated_at: null      # datetime
 
   initialize: ->
-    console.log @
     @set 'idea_votes', new IdeaVotesCollection(@idea_votes)
 
   parse: (idea) ->
