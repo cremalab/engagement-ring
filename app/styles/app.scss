@@ -1,5 +1,17 @@
-.test {
-	color: red;
-}
+// Remote Imports
+@import "compass/css3";
 
-@import "test/_base"
+// Local Imports (Order Dependant)
+@import "settings/variables/base";
+@import "settings/base/base";
+@import "settings/includes/base";
+@import "settings/classes/effects/base";
+@import "settings/classes/layouts/base";
+@import "settings/classes/skins/base";
+
+@import "typography/base";
+@import "forms/base";
+@import "embedded/base";
+@import "tables/base";
+@import "layouts/base";
+@import "modules/base";

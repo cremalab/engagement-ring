@@ -15,3 +15,6 @@ exports.config =
   plugins:
     sass:
       debug: 'comments'
+    cleancss:
+      keepSpecialComments: 0
+      removeEmpty: true
