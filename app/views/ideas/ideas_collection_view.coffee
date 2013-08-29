@@ -7,7 +7,7 @@ template = require './templates/collection'
 module.exports = class IdeasCollectionView extends CollectionView
 
   template: template
-  listSelector: '.collection-items'
+  listSelector: '.collectionItems'
   animationDuration: 0
   events:
     'click .add': 'newIdea'

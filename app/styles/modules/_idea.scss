@@ -1,0 +1,14 @@
+.idea {
+  @extend %box;
+  @extend %verticalSpacing;
+  @extend %gradient.light;
+  @extend %border;
+}
+
+.ideaTitle {
+  line-height: 1.2;
+}
+
+.ideaDescription {
+	@extend %verticalSpacing.half;
+}

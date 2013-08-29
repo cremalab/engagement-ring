@@ -1,0 +1,12 @@
+%grid {
+  display: table;
+  width: 100%;
+  &.fixed {
+    @extend %grid;
+    table-layout: fixed;
+  }
+}
+
+%column {
+  display: table-cell;
+}

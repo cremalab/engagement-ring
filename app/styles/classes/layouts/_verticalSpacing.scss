@@ -1,0 +1,9 @@
+%verticalSpacing {
+  margin-top: unit();
+  &.half {
+    margin-top: unit(0.5);
+  }
+  &.double {
+    margin-top: unit(2);
+  }
+}
