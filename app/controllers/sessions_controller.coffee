@@ -66,6 +66,7 @@ module.exports = class SessionsController extends Controller
   setupTokenAccess: ->
     if Chaplin.mediator.user.get('auth')
       auth = Chaplin.mediator.user.get('auth')
+
       $.ajaxSetup
         data:
           auth:
