@@ -8,7 +8,10 @@ module.exports = class IdeasCollectionView extends CollectionView
 
   template: template
   listSelector: '.collection-items'
-  animationDuration: 0
+  animationDuration: 200
+  useCssAnimation: true
+  animationStartClass: 'collection-animation'
+  animationEndClass: 'collection-animation-end'
   events:
     'click .add': 'newIdea'
   key_bindings:
@@ -18,6 +21,7 @@ module.exports = class IdeasCollectionView extends CollectionView
   initialize: ->
     super
     @subscribeEvent 'saved_idea', @updateModel
+    @subscribeEvent 'edit_idea', @editIdea
 
   newIdea: (e) ->
     if @new_idea
@@ -27,10 +31,20 @@ module.exports = class IdeasCollectionView extends CollectionView
       @new_idea = new Idea()
       @collection.add @new_idea
 
+  editIdea: (model) ->
+    console.log model
+    @removeViewForItem(model)
+    view = new IdeaEditView model: model, collection_view: @
+    @insertView(model, view)
+    @new_idea = model
+
   escapeForm: (idea) ->
-    if idea and idea.isNew()
-      @collection.remove(idea)
-      @new_idea = null
+    if idea
+      if idea.isNew()
+        @collection.remove(idea)
+        @new_idea = null
+      else
+        @updateModel(idea)
 
   initItemView: (model) ->
     if model.isNew()
