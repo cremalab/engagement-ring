@@ -15,8 +15,9 @@ module.exports = class IdeasCollectionView extends CollectionView
     'n': 'newIdea'
     'esc': 'escapeForm'
 
-  render: ->
+  initialize: ->
     super
+    @subscribeEvent 'saved_idea', @updateModel
 
   newIdea: (e) ->
     if @new_idea
@@ -33,6 +34,14 @@ module.exports = class IdeasCollectionView extends CollectionView
 
   initItemView: (model) ->
     if model.isNew()
-      new IdeaEditView model: model, collection_view: @
+      view = new IdeaEditView model: model, collection_view: @
     else
-      new IdeaView model: model, collection_view: @
+      view = new IdeaView model: model, collection_view: @, autoRender: true
+    view
+
+  updateModel: (model) ->
+    model_in_collection = @collection.find(model)
+    @removeViewForItem(model_in_collection)
+    view = @insertView(model, @initItemView(model))
+    @new_idea = null
+    @setupKeyBindings()

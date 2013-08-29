@@ -10,6 +10,8 @@ module.exports = class IdeaDetailsEditView extends View
   render: ->
     super
     Mousetrap.unbind('n')
+    @$el.find("[name='description']").on 'keyup', (e) =>
+      @model.set 'description', $(e.target).val()
 
   save: ->
-    console.log 'save'
+    @publishEvent 'save_idea', @model

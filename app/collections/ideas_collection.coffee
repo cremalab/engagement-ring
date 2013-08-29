@@ -3,4 +3,4 @@ Idea = require 'models/idea'
 
 module.exports = class Ideas extends Collection
   model: Idea
-  url: '/collections'
+  url: 'http://localhost:3000/ideas'

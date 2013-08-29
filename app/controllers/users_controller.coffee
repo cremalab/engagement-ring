@@ -32,8 +32,12 @@ module.exports = class ProfilesController extends Controller
     @model.fetch()
 
   update: (user) ->
-    @model.save
-      success: ->
+    console.log user
+    console.log 'users#update'
+    user.save user.attributes,
+      success: =>
         @redirectTo '/'
-      error: (model, response) ->
+        console.log 'no'
+      error: (model, response) =>
+        console.log $.parseJSON(response.responseText)
         @publishEvent 'renderError', response

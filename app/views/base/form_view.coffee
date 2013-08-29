@@ -24,6 +24,7 @@ module.exports = class FormView extends View
     @subscribeEvent 'renderError', @renderError
   render: ->
     super
+    @errors_view = new ErrorsView collection: @errors, container: @$el.find('.errors'), autoRender: false
     if @model
       @modelBinder = new Backbone.ModelBinder()
       @modelBinder.bind @model, @$el
@@ -39,14 +40,14 @@ module.exports = class FormView extends View
 
   renderError: (error, model) ->
     @errors.reset()
-    @errors_view = new ErrorsView collection: @errors, el: @$el.find('.errors'), autoRender: true
+    @errors_view.render()
     @$el.find('button').removeAttr('disabled', true)
     if typeof error is 'object'
       errorJSON = $.parseJSON(error.responseText)
       for error in errorJSON
         errorObj =
           text: error
-        @errros.add(errorObj)
+        @errors.add(errorObj)
     else
       errorObj =
         text: error

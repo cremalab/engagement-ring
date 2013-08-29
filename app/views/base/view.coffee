@@ -22,8 +22,8 @@ module.exports = class View extends Chaplin.View
   initialize: ->
     @hot_keys = _.keys @key_bindings
   render: ->
-    super
     @setState 'ready'
+    super
     @setupKeyBindings()
 
   setupKeyBindings: ->
