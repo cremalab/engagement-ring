@@ -34,6 +34,7 @@ module.exports = class ProfilesController extends Controller
     @model.fetch()
 
   update: (user) ->
+    console.log user
     user.save user.attributes,
       success: (user, response) =>
         @publishEvent 'set_current_user', response

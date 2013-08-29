@@ -5,11 +5,8 @@ User = require 'models/user'
 module.exports = class Application extends Chaplin.Application
   initialize: ->
     super
-    @initControllers()
   initMediator: ->
     # Create a user property
     Chaplin.mediator.user = new User()
+    Chaplin.mediator.sessions_controller = new SessionsController()
     super
-  initControllers: ->
-    new SessionsController()
-    @publishEvent 'controller_init'
