@@ -18,11 +18,6 @@ module.exports = class VotesView extends View
     user_vote = @collection.findWhere
       user_id: Chaplin.mediator.user.get('id')
     if user_vote
-      @disableVoting()
+      @idea_view.toggleUserVote(true, user_vote)
     else
-      @enableVoting()
-
-  disableVoting: ->
-    @idea_view.disableVoting()
-  enableVoting: ->
-    @idea_view.enableVoting()
+      @idea_view.toggleUserVote(false)

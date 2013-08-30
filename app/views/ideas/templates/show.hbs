@@ -1,9 +1,14 @@
-<h2 class="ideaTitle">{{ title }}{{#timely}}{{ when }}{{/timely}}</h2>
-{{#if description}}<p  class="ideaDescription">{{ description }}</p>{{/if}}
-
-<button class='vote'>Vote</button>
-
-<span data-bind='total_votes'>{{ total_votes }}</span>
-<div class='votes'>
+<div class="ideaGrid">
+  <div class="ideaAuthor">
+    <img src="#" alt="">
+  </div>
+  <div class="ideaInfo">
+    <h2 class="ideaTitle">{{ title }}{{#timely}}{{ when }}{{/timely}}</h2>
+    {{#if description}}<p  class="ideaDescription">{{ description }}</p>{{/if}}
+  </div>
+  <div class="ideaAction">
+    <button class='vote' data-bind='total_votes'>{{ total_votes }}</button>
+    <div class="votes"></div>
+  </div>
 </div>
 {{!-- <small><a class='edit' href='#'>edit</a></small> --}}
