@@ -14,9 +14,9 @@ module.exports = class VotesView extends View
     @checkUserVote()
 
   checkUserVote: (model) ->
-    @$el.find("data")
     if model
-
+      if model.get('user_id') is Chaplin.mediator.user.get('id')
+        @disableVoting()
     else
       user_vote = @collection.findWhere
         user_id: Chaplin.mediator.user.get('id')
