@@ -5,10 +5,23 @@ module.exports = class DateInputView extends View
   tagName: 'input'
   attributes:
     type: 'datetime'
+  events:
+    'keyup': 'translateDate'
 
   initialize: (options) ->
     super
     @attribute = options.attr
+    @model = options.model
   render: ->
     super
     @$el.attr('name', @attribute)
+
+  translateDate: ->
+    input_val = @$el.val()
+    parsed = chrono.parse(input_val)
+    if parsed.length > 0
+      date = parsed[0]
+      @model.set @attribute, date.startDate
+    else
+      if @model.get @attribute
+        @model.set @attribute, null

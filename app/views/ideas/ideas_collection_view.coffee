@@ -17,6 +17,8 @@ module.exports = class IdeasCollectionView extends CollectionView
   key_bindings:
     'n': 'newIdea'
     'esc': 'escapeForm'
+  listen:
+    'change collection': 'resort'
 
   initialize: ->
     super
@@ -62,3 +64,6 @@ module.exports = class IdeasCollectionView extends CollectionView
     view = @insertView(model, @initItemView(model))
     @new_idea = null
     @setupKeyBindings()
+
+  resort: ->
+    @collection.sort()

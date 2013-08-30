@@ -24,7 +24,7 @@ module.exports = class FormView extends View
     @subscribeEvent 'renderError', @renderError
   render: ->
     super
-    @errors_view = new ErrorsView collection: @errors, container: @$el.find('.errors'), autoRender: false
+    @errors_view = new ErrorsView collection: @errors, container: @$el.find('.errors'), autoRender: true
     if @model
       @modelBinder = new Backbone.ModelBinder()
       @modelBinder.bind @model, @$el
