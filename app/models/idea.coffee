@@ -11,7 +11,6 @@ module.exports = class Idea extends Model
     votes: new IdeaVotesCollection()             # collection of IdeaVotes
     user_id: null
 
-
   parse: (idea) ->
     votes = idea.votes
     idea.votes = new IdeaVotesCollection(votes)
