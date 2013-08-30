@@ -1,0 +1,20 @@
+button {
+  -webkit-appearance: none;
+  @extend %verticalSpacing.half;
+  @extend %gradient;
+  @extend %border;
+  background: white;
+
+  &.add {
+    @extend %rounded.extreme;
+    background: $green;
+    color: white;
+    width: unit(2);
+    height: unit(2);
+    font-size: 2rem;
+    &:before {
+      content: '+'
+    }
+  }
+
+}

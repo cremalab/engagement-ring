@@ -1,0 +1,22 @@
+.collection {
+  > * {
+    @extend %verticalSpacing;
+  }
+}
+
+.collectionHeader {
+  @extend %grid;
+  > * {
+    @extend %column;
+    vertical-align: middle;
+  }
+}
+
+  .collectionAction {
+    
+  }
+
+  .collectionTitle {
+    width: 100%;
+    padding-left: unit();
+  }
