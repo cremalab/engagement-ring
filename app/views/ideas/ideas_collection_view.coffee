@@ -15,13 +15,13 @@ module.exports = class IdeasCollectionView extends CollectionView
   events:
     'click .add': 'newIdea'
   key_bindings:
-    'n': 'newIdea'
     'esc': 'escapeForm'
   listen:
     'change collection': 'resort'
 
-  initialize: ->
+  initialize: (options) ->
     super
+    @thread_view = options.thread_view
     @subscribeEvent 'saved_idea', @updateModel
     @subscribeEvent 'edit_idea', @editIdea
 
@@ -57,6 +57,12 @@ module.exports = class IdeasCollectionView extends CollectionView
     else
       view = new IdeaView model: model, collection_view: @, autoRender: true
     view
+
+  save: (model) ->
+    if @thread_view.model.isNew()
+      @thread_view.save()
+    else
+      @publishEvent 'save_idea', @model
 
   updateModel: (model) ->
     model_in_collection = @collection.find(model)

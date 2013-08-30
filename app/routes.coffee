@@ -10,6 +10,7 @@ module.exports = (match) ->
   match 'login', 'sessions#new'
   match 'logout', 'sessions#logout'
 
-  match 'ideas', 'ideas#index'
+  # match 'ideas', 'ideas#index'
+  match 'ideas', 'idea_threads#index'
   match 'ideas/new', 'ideas#edit'
   match 'ideas/:id/edit', 'ideas#edit'
