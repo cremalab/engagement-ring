@@ -1,4 +1,7 @@
 <h2 class="ideaTitle">{{ title }}{{#timely}}{{ when }}{{/timely}}</h2>
 {{#if description}}<p  class="ideaDescription">{{ description }}</p>{{/if}}
 
+<span data-bind='total_votes'>{{ total_votes }}</span>
+<div class='votes'>
+</div>
 {{!-- <small><a class='edit' href='#'>edit</a></small> --}}

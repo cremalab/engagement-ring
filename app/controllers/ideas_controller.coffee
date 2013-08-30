@@ -20,7 +20,8 @@ module.exports = class IdeasController extends Controller
       region: 'main'
 
   new: (params) ->
-    @model = new Idea()
+    @model = new Idea
+      user_id: Chaplin.mediator.user.get('id')
     @model.idea_votes
 
   index: ->

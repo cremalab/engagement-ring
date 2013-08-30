@@ -1,24 +1,25 @@
 Model = require '/models/base/model'
-IdeaVotesCollection = require 'collections/idea_votes_collection'
+IdeaVotesCollection = require 'collections/votes_collection'
 
 module.exports = class Idea extends Model
   urlRoot: 'http://localhost:3000/ideas'
   paramRoot: 'idea'
   defaults:
-    created_by: null      # fk: user_id, validates_presence_of
     title: null           # string, validates_presence_of
     description: null
     when: null            # datetime, allow nil
-    idea_votes: []        # collection of IdeaVotes
-    created_at: null      # datetime
-    updated_at: null      # datetime
+    votes: new IdeaVotesCollection()             # collection of IdeaVotes
     user_id: null
 
-  initialize: ->
-    @set 'idea_votes', new IdeaVotesCollection(@idea_votes)
-    @set 'user_id', Chaplin.mediator.user.get('id') if Chaplin.mediator.user
 
   parse: (idea) ->
-    votes = idea.idea_votes
-    idea.idea_votes = new IdeaVotesCollection(votes)
+    votes = idea.votes
+    idea.votes = new IdeaVotesCollection(votes)
     return idea
+
+  toJSON: ->
+    new_attr = _.clone(this.attributes)
+    delete new_attr.votes
+    json = {idea : new_attr}
+    _.extend json.idea, {votes_attributes: this.get("votes").toJSON()}
+    return json

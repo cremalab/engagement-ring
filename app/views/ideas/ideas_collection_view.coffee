@@ -28,7 +28,12 @@ module.exports = class IdeasCollectionView extends CollectionView
       new_idea_view = @viewForModel(@new_idea)
       new_idea_view.$el.find('input:visible:first').focus()
     else
-      @new_idea = new Idea()
+      @new_idea = new Idea
+        user_id: Chaplin.mediator.user.get('id')
+      votes = @new_idea.get('votes')
+      console.log votes
+      votes.add
+        user_id: Chaplin.mediator.user.get('id')
       @collection.add @new_idea
 
   editIdea: (model) ->
