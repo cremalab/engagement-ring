@@ -7,8 +7,8 @@ template = require './templates/collection'
 module.exports = class IdeasCollectionView extends CollectionView
 
   template: template
-  listSelector: '.collection-items'
-  animationDuration: 200
+  listSelector: '.collectionItems'
+  animationDuration: 0
   useCssAnimation: true
   animationStartClass: 'collection-animation'
   animationEndClass: 'collection-animation-end'
