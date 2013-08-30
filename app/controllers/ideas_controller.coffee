@@ -20,7 +20,7 @@ module.exports = class IdeasController extends Controller
       region: 'main'
 
   new: (params) ->
-    @model = new Idea
+    @model = new Idea()
     @model.idea_votes
 
   index: ->
