@@ -1,10 +1,9 @@
 View = require 'views/base/form_view'
-IdeaDetailsEditView = require './idea_details_edit_view'
 
 module.exports = class IdeaEditView extends View
   template: require './templates/edit'
   key_bindings:
-    'enter': 'showDetails'
+    'enter': 'save'
     'esc'  : 'exit'
 
   initialize: (options) ->
@@ -13,10 +12,9 @@ module.exports = class IdeaEditView extends View
 
   render: ->
     super
-    @natural_input = @$el.find('.natural-language')
-
-    unless @model.isNew()
-      @showDetails()
+    Mousetrap.unbind('n')
+    # @$el.find("[name='description']").on 'keyup', (e) =>
+    #   @model.set 'description', $(e.target).val()
 
   exit: ->
     @collection_view.escapeForm @model
@@ -42,3 +40,6 @@ module.exports = class IdeaEditView extends View
     details_view = new IdeaDetailsEditView container: @$el, model: @model
     @subview 'details_view', details_view
     @natural_input.remove()
+
+  save: ->
+    @publishEvent 'save_idea', @model
