@@ -4,6 +4,8 @@ module.exports = class View extends Chaplin.View
   states:
     ready:
       name: 'ready'
+  listen:
+    'change model': 'updateView'
 
   # Precompiled templates function initializer.
   getTemplateFunction: ->
@@ -40,3 +42,15 @@ module.exports = class View extends Chaplin.View
     super
     _.each @hot_keys, (key) ->
       Mousetrap.unbind key
+
+
+  updateView: (model) ->
+    if @textBindings
+      attributes = _.keys model.changed
+      _.each attributes, (attr) =>
+        $el = @$el.find("[data-bind='#{attr}']")
+        if $el.length
+          if @model.get(attr) is undefined
+            $el.text ''
+          else
+            $el.text @model.get(attr)
