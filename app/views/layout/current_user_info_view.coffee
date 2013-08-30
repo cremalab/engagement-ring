@@ -13,5 +13,8 @@ module.exports = class CurrentUserInfoView extends View
     _.each attributes, (attr) =>
       $el = @$el.find("[data-bind='#{attr}']")
       if $el.length
-        $el.text @model.get(attr)
+        if @model.get(attr) is undefined
+          $el.text ''
+        else
+          $el.text @model.get(attr)
 

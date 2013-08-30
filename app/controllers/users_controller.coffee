@@ -21,8 +21,6 @@ module.exports = class ProfilesController extends Controller
       region: 'main'
 
   new: (params) ->
-    console.log 'mediator'
-    console.log Chaplin.mediator.user
     @model = new User()
     @view = new RegistrationView
       model: @model

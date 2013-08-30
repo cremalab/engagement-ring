@@ -11,5 +11,4 @@ module.exports = class Controller extends Chaplin.Controller
     @compose 'user-info', CurrentUserInfoView, region: 'header', model: Chaplin.mediator.user
     exceptions = ['sessions', 'users']
     unless exceptions.indexOf(route.controller) > -1
-      console.log 'whitelisted'
       Chaplin.mediator.sessions_controller.getCurrentUser()

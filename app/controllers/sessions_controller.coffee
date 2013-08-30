@@ -34,6 +34,8 @@ module.exports = class SessionsController extends Controller
   setCurrentUser: (user) ->
     if user is 'clear'
       Chaplin.mediator.user.clear()
+      Chaplin.mediator.user.set('logged_in', false)
+      console.log Chaplin.mediator.user
     else
       Chaplin.mediator.user.set(user)
 
@@ -66,11 +68,11 @@ module.exports = class SessionsController extends Controller
   setupTokenAccess: ->
     if Chaplin.mediator.user.get('auth')
       auth = Chaplin.mediator.user.get('auth')
+      auth = Chaplin.mediator.user.get('auth')
 
       $.ajaxSetup
-        data:
-          auth:
-            access_token: auth.access_token
-            user_id: auth.user_id
+        beforeSend: (xhr) ->
+          xhr.setRequestHeader('X-User-ID', auth.user_id)
+          xhr.setRequestHeader('X-Access-Token', auth.access_token)
     else
       @handleUnauthorized()

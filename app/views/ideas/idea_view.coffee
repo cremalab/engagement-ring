@@ -6,10 +6,6 @@ module.exports = class IdeaView extends View
   events:
     'click .edit': 'edit'
 
-  render: ->
-    super
-    console.log @model
-
   edit: (e) ->
     # e.preventDefaut()
     # console.log @model

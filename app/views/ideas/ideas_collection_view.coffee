@@ -32,7 +32,6 @@ module.exports = class IdeasCollectionView extends CollectionView
       @collection.add @new_idea
 
   editIdea: (model) ->
-    console.log model
     @removeViewForItem(model)
     view = new IdeaEditView model: model, collection_view: @
     @insertView(model, view)
