@@ -23,3 +23,7 @@ module.exports = class Idea extends Model
     json = {idea : new_attr}
     _.extend json.idea, {votes_attributes: this.get("votes").toJSON()}
     return json
+
+  validate: ->
+    if @get('title') is '' or @get('title') is null
+      return "Title can't be blank"

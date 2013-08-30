@@ -1,10 +1,13 @@
 View = require 'views/base/form_view'
+DateInputView = require 'views/form_elements/date_input_view'
 
 module.exports = class IdeaEditView extends View
   template: require './templates/edit'
   key_bindings:
     'enter': 'save'
     'esc'  : 'exit'
+  listen:
+    'change model': 'displayWhen'
 
   initialize: (options) ->
     super
@@ -13,27 +16,15 @@ module.exports = class IdeaEditView extends View
   render: ->
     super
     Mousetrap.unbind('n')
-    # @$el.find("[name='description']").on 'keyup', (e) =>
-    #   @model.set 'description', $(e.target).val()
+    # @natural_input = @$el.find('.natural-language')
+    @natural_input = new DateInputView
+      model: @model
+      attr: 'when'
+      el: @$el.find('.natural-language')
 
   exit: ->
     @collection_view.escapeForm @model
     @collection_view.setupKeyBindings()
-
-
-  translateDate: ->
-    input_val = @natural_input.val()
-    parsed = chrono.parse(input_val)
-    if parsed.length > 0
-      date = parsed[0]
-      @model.set 'when', date.startDate
-      title = date.concordance.replace(date.text, '').replace('  ', ' ')
-      @model.set('title', title)
-      @$el.find('.when').text moment(date.startDate).format("dddd MMM D, ha")
-    else
-      @model.set('title', input_val)
-      if @model.get 'when'
-        @model.set 'when', null
 
   showDetails: ->
     @translateDate()
@@ -43,3 +34,12 @@ module.exports = class IdeaEditView extends View
 
   save: ->
     @publishEvent 'save_idea', @model
+
+  displayWhen: (model) ->
+    changed = _.keys model.changed
+    if changed.indexOf('when') > -1
+      console.log model.changed.when
+      if model.changed.when is undefined or model.changed.when is null
+        @$el.find('.when').text('')
+      else
+        @$el.find('.when').text moment(@model.get('when')).format("dddd MMM D, ha")
