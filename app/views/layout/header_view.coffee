@@ -5,3 +5,5 @@ module.exports = class HeaderView extends View
   className: 'header'
   tagName: 'header'
   template: require './templates/header'
+  listen:
+    'change model': 'render'

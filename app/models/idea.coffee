@@ -12,10 +12,11 @@ module.exports = class Idea extends Model
     idea_votes: []        # collection of IdeaVotes
     created_at: null      # datetime
     updated_at: null      # datetime
-    user_id: 1
+    user_id: null
 
   initialize: ->
     @set 'idea_votes', new IdeaVotesCollection(@idea_votes)
+    @set 'user_id', Chaplin.mediator.user.get('id') if Chaplin.mediator.user
 
   parse: (idea) ->
     votes = idea.idea_votes

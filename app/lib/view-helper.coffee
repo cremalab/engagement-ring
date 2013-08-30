@@ -34,6 +34,13 @@ moment.lang 'en',
 
 Handlebars.registerHelper 'timely', (options) ->
   string = options.fn this
-  timely = moment(string).calendar()
-  safe = new Handlebars.SafeString timely
-  safe.string
+  unless string is ''
+    timely = moment(string).calendar()
+    safe = new Handlebars.SafeString timely
+    safe.string
+
+Handlebars.registerHelper "if", (conditional, options) ->
+  if conditional
+    options.fn this
+  else
+    options.inverse this
