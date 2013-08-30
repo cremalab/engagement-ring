@@ -31,10 +31,9 @@ module.exports = class IdeasCollectionView extends CollectionView
       @new_idea = new Idea
         user_id: Chaplin.mediator.user.get('id')
       votes = @new_idea.get('votes')
-      console.log votes
       votes.add
         user_id: Chaplin.mediator.user.get('id')
-      @collection.add @new_idea
+      @collection.add @new_idea, at: 0
 
   editIdea: (model) ->
     @removeViewForItem(model)
