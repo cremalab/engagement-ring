@@ -7,6 +7,7 @@ module.exports = class VotesView extends View
   animationDuration: 0
   listen:
     'add collection': 'checkUserVote'
+    'remove collection': 'checkUserVote'
 
   initialize: (options) ->
     super
@@ -14,14 +15,14 @@ module.exports = class VotesView extends View
     @checkUserVote()
 
   checkUserVote: (model) ->
-    if model
-      if model.get('user_id') is Chaplin.mediator.user.get('id')
-        @disableVoting()
+    user_vote = @collection.findWhere
+      user_id: Chaplin.mediator.user.get('id')
+    if user_vote
+      @disableVoting()
     else
-      user_vote = @collection.findWhere
-        user_id: Chaplin.mediator.user.get('id')
-      if user_vote
-        @disableVoting()
+      @enableVoting()
 
   disableVoting: ->
     @idea_view.disableVoting()
+  enableVoting: ->
+    @idea_view.enableVoting()

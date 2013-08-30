@@ -1,3 +1,6 @@
 {{ user.email }}
 {{#timely }}{{ created_at }}{{/timely}}
-Vote
+
+{{#if user_vote}}
+  <button class='revoke'>Revoke vote</button>
+{{/if}}

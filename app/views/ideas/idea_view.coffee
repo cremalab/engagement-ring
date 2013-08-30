@@ -14,7 +14,6 @@ module.exports = class IdeaView extends View
 
   render: ->
     super
-    # console.log @model
     @votes = @model.get('votes')
     votes_view = new VotesView
       collection: @votes
@@ -24,6 +23,7 @@ module.exports = class IdeaView extends View
     @subview 'votes', votes_view
 
     @listenTo @votes, 'add', @updateVotesCount
+    @listenTo @votes, 'remove', @updateVotesCount
 
   edit: (e) ->
     @publishEvent 'edit_idea', @model
@@ -35,7 +35,9 @@ module.exports = class IdeaView extends View
     , wait: true
 
   disableVoting: ->
-    @$el.find('.vote').remove()
+    @$el.find('.vote').hide()
+  enableVoting: ->
+    @$el.find('.vote').show()
 
   updateVotesCount: ->
     @model.set('total_votes', @votes.size())
