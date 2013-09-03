@@ -14,14 +14,26 @@ module.exports = class IdeasCollectionView extends CollectionView
   animationEndClass: 'collection-animation-end'
   key_bindings:
     'esc': 'escapeForm'
+  events:
+    'click .ideate': 'addIdea'
   listen:
     'change collection': 'resort'
 
   initialize: (options) ->
     super
     @thread_view = options.thread_view
+    @thread_id   = @thread_view.model.get('id')
     @subscribeEvent 'saved_idea', @updateModel
     @subscribeEvent 'edit_idea', @editIdea
+
+  addIdea: (e) ->
+    e.preventDefault()
+    idea_count = @collection.length
+    @collection.add
+      idea_thread_id: @thread_view.model.get('id')
+      user_id: @current_user.get('id')
+    ,
+      at: idea_count + 1
 
   editIdea: (model) ->
     @removeViewForItem(model)
@@ -54,7 +66,7 @@ module.exports = class IdeasCollectionView extends CollectionView
     if @thread_view.model.isNew()
       @thread_view.save()
     else
-      @publishEvent 'save_idea', @model, @collection
+      @publishEvent 'save_idea', model, @collection, @
 
   updateModel: (model, collection) ->
     model_in_collection = @collection.find(model)

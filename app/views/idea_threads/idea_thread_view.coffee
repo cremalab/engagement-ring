@@ -12,7 +12,6 @@ module.exports = class IdeaThreadView extends View
 
   initialize: ->
     super
-    # @subscribeEvent 'saved_idea_thread', @render
     @model_ideas = @model.get('ideas')
 
 
@@ -22,6 +21,7 @@ module.exports = class IdeaThreadView extends View
       collection: @model_ideas
       region: 'ideas'
       thread_view: @
+
 
   save: ->
     @publishEvent 'save_idea_thread', @model, @model_ideas

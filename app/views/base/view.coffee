@@ -22,7 +22,9 @@ module.exports = class View extends Chaplin.View
     return @state
 
   initialize: ->
+    super
     @hot_keys = _.keys @key_bindings
+    @current_user = Chaplin.mediator.user
   render: ->
     @setState 'ready'
     super

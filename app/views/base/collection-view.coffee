@@ -23,6 +23,9 @@ module.exports = class CollectionView extends Chaplin.CollectionView
     @state = name
   state: ->
     return @state
+  initialize: ->
+    super
+    @current_user = Chaplin.mediator.user
   render: ->
     super
     @setState 'ready'
