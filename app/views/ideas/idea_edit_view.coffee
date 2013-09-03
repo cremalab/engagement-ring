@@ -33,7 +33,7 @@ module.exports = class IdeaEditView extends View
     @natural_input.remove()
 
   save: ->
-    @publishEvent 'save_idea', @model
+    @collection_view.save(@model)
 
   displayWhen: (model) ->
     changed = _.keys model.changed

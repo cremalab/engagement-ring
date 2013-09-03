@@ -12,30 +12,16 @@ module.exports = class IdeasCollectionView extends CollectionView
   useCssAnimation: true
   animationStartClass: 'collection-animation'
   animationEndClass: 'collection-animation-end'
-  events:
-    'click .add': 'newIdea'
   key_bindings:
-    'n': 'newIdea'
     'esc': 'escapeForm'
   listen:
     'change collection': 'resort'
 
-  initialize: ->
+  initialize: (options) ->
     super
+    @thread_view = options.thread_view
     @subscribeEvent 'saved_idea', @updateModel
     @subscribeEvent 'edit_idea', @editIdea
-
-  newIdea: (e) ->
-    if @new_idea
-      new_idea_view = @viewForModel(@new_idea)
-      new_idea_view.$el.find('input:visible:first').focus()
-    else
-      @new_idea = new Idea
-        user_id: Chaplin.mediator.user.get('id')
-      votes = @new_idea.get('votes')
-      votes.add
-        user_id: Chaplin.mediator.user.get('id')
-      @collection.add @new_idea, at: 0
 
   editIdea: (model) ->
     @removeViewForItem(model)
@@ -50,20 +36,32 @@ module.exports = class IdeasCollectionView extends CollectionView
         @new_idea = null
       else
         @updateModel(idea)
+    else
+      @collection.remove(@new_idea)
+      @new_idea = null
+      @publishEvent 'escapeForm'
 
   initItemView: (model) ->
     if model.isNew()
       view = new IdeaEditView model: model, collection_view: @
+      @new_idea = model
     else
       view = new IdeaView model: model, collection_view: @, autoRender: true
+      @new_idea = null
     view
 
-  updateModel: (model) ->
+  save: (model) ->
+    if @thread_view.model.isNew()
+      @thread_view.save()
+    else
+      @publishEvent 'save_idea', @model, @collection
+
+  updateModel: (model, collection) ->
     model_in_collection = @collection.find(model)
-    @removeViewForItem(model_in_collection)
-    view = @insertView(model, @initItemView(model))
-    @new_idea = null
-    @setupKeyBindings()
+    if model_in_collection
+      @removeViewForItem(model_in_collection)
+      view = @insertView(model, @initItemView(model))
+      @new_idea = null
 
   resort: ->
     @collection.sort()
