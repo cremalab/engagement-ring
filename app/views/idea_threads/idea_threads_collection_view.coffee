@@ -19,5 +19,6 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
       new_idea_thread_view = @viewForModel(@new_idea_thread)
       new_idea_thread_view.$el.find('input:visible:first').focus()
     else
-      @collection.add
+      @new_idea_thread = new IdeaThread
         user_id: Chaplin.mediator.user.get('id')
+      @collection.add(@new_idea_thread)

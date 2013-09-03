@@ -12,8 +12,8 @@ module.exports = class IdeasCollectionView extends CollectionView
   useCssAnimation: true
   animationStartClass: 'collection-animation'
   animationEndClass: 'collection-animation-end'
-  events:
-    'click .add': 'newIdea'
+  # events:
+  #   'click .add': 'newIdea'
   key_bindings:
     'esc': 'escapeForm'
   listen:
@@ -25,17 +25,17 @@ module.exports = class IdeasCollectionView extends CollectionView
     @subscribeEvent 'saved_idea', @updateModel
     @subscribeEvent 'edit_idea', @editIdea
 
-  newIdea: (e) ->
-    if @new_idea
-      new_idea_view = @viewForModel(@new_idea)
-      new_idea_view.$el.find('input:visible:first').focus()
-    else
-      @new_idea = new Idea
-        user_id: Chaplin.mediator.user.get('id')
-      votes = @new_idea.get('votes')
-      votes.add
-        user_id: Chaplin.mediator.user.get('id')
-      @collection.add @new_idea, at: 0
+  # newIdea: (e) ->
+  #   if @new_idea
+  #     new_idea_view = @viewForModel(@new_idea)
+  #     new_idea_view.$el.find('input:visible:first').focus()
+  #   else
+  #     @new_idea = new Idea
+  #       user_id: Chaplin.mediator.user.get('id')
+  #     votes = @new_idea.get('votes')
+  #     votes.add
+  #       user_id: Chaplin.mediator.user.get('id')
+  #     @collection.add @new_idea, at: 0
 
   editIdea: (model) ->
     @removeViewForItem(model)
