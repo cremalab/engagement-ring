@@ -1,7 +1,5 @@
 .collection {
-  > * {
-    @extend %verticalSpacing;
-  }
+  @extend %verticalSpacing;
 }
 
 .collectionHeader {

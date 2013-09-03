@@ -30,15 +30,21 @@ module.exports = class IdeaView extends View
     @publishEvent 'edit_idea', @model
 
   vote: (e, b) ->
-    @votes.create
-      user_id: Chaplin.mediator.user.get('id')
-      idea_id: @model.get('id')
-    , wait: true
+    if @user_vote
+      @user_vote.destroy()
+    else
+      @votes.create
+        user_id: Chaplin.mediator.user.get('id')
+        idea_id: @model.get('id')
+      , wait: true
 
-  disableVoting: ->
-    @$el.find('.vote').hide()
-  enableVoting: ->
-    @$el.find('.vote').show()
+  toggleUserVote: (voted, user_vote) ->
+    if voted
+      @$el.find(".vote").addClass('voted')
+      @user_vote = user_vote
+    else
+      @$el.find(".vote").removeClass('voted')
+      @user_vote = null
 
   updateVotesCount: ->
     @model.set('total_votes', @votes.size())

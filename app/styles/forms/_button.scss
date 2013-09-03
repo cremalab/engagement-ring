@@ -1,20 +1,36 @@
 button {
   -webkit-appearance: none;
   @extend %verticalSpacing.half;
-  @extend %gradient;
   @extend %border;
   background: white;
+}
 
-  &.add {
-    @extend %rounded.extreme;
-    background: $green;
-    color: white;
-    width: unit(2);
-    height: unit(2);
-    font-size: 2rem;
-    &:before {
-      content: '+'
-    }
+button.add {
+  @extend %rounded.extreme;
+  background: $green;
+  color: white;
+  width: unit(2);
+  height: unit(2);
+  font-size: 2rem;
+  &:before {
+    content: '+'
   }
+}
 
+button.vote {
+  @extend %transition;
+  @extend %rounded.extreme;
+  @extend h4;
+  padding: unit(0.25) unit(0.5);
+  color: $gray-dark;
+  &:before { 
+    content: '✓';
+    margin-right: unit(0.25);
+  }
+  &:active { background: $gray }
+  &.voted {
+    background: $green;
+    color: $green-dark;
+    &:active { background: $green-medium }
+  }
 }

@@ -19,12 +19,8 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
 
   initialize: ->
     super
-    @subscribeEvent 'save_idea_thread', ->
-      @new_idea_thread = null
-      @setupKeyBindings()
-    @subscribeEvent 'escapeForm', ->
-      @new_idea_thread = null
-      @setupKeyBindings()
+    @subscribeEvent 'save_idea_thread', @cleanup
+    @subscribeEvent 'escapeForm', @cleanup
 
   newIdeaThread: (e) ->
     if @new_idea_thread
@@ -34,3 +30,11 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
       @new_idea_thread = new IdeaThread
         user_id: Chaplin.mediator.user.get('id')
       @collection.add(@new_idea_thread, {at: 0})
+
+  cleanup: ->
+    empty_thread = @collection.find (thread) ->
+      thread.get('ideas').models.length is 0
+    empty_thread.dispose()
+
+    @new_idea_thread = null
+    @setupKeyBindings()

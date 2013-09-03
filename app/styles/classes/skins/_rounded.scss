@@ -1,6 +1,6 @@
 %rounded {
-  @include border-radius(unit(0.15));
+  border-radius: unit(0.15);
   &.extreme {
-    @include border-radius(50%);
+    border-radius: 500px;
   }
 }

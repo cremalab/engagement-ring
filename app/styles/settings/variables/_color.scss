@@ -1,1 +1,12 @@
-$green: rgb(96, 255, 147);
+$color-contrast: 10;
+
+$gray: #DDD;
+  $gray-light: lighten($gray, $color-contrast);
+  $gray-dark: darken($gray, $color-contrast);
+
+$color-contrast: 50;
+
+$green: #B6E685;
+  $green-light: lighten($green, $color-contrast);
+  $green-medium: darken($green, $color-contrast/3);
+  $green-dark: darken($green, $color-contrast);

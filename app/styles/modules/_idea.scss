@@ -1,14 +1,32 @@
 .idea {
-  @extend %box;
-  @extend %verticalSpacing;
-  @extend %gradient.light;
-  @extend %border;
+  position: relative;
+  &:first-child {
+    @extend %boxPrimary;
+    z-index: 1;
+  }
+  & + .idea {
+    border-top: 0;
+    margin: 0 unit(0.5);
+    @extend %boxSecondary;
+  }
 }
 
-.ideaTitle {
-  line-height: 1.2;
+.ideaGrid {
+  @extend %grid;
+  > * {
+    @extend %box;
+    @extend %column;
+  }
 }
 
-.ideaDescription {
-	@extend %verticalSpacing.half;
+.ideaInfo {
+  width: 100%;
 }
+
+  .ideaTitle {
+    line-height: 1.2;
+  }
+
+  .ideaDescription {
+    @extend %verticalSpacing.half;
+  }
