@@ -1,11 +1,25 @@
 Model = require '/models/base/model'
 IdeasCollection = require 'collections/ideas_collection'
+VotesCollection = require 'collections/votes_collection'
 
 module.exports = class IdeaThread extends Model
   urlRoot: 'http://localhost:3000/idea_threads'
   defaults:
-    ideas: new IdeasCollection()             # collection of IdeaVotes
+    # ideas: new IdeasCollection()             # collection of IdeaVotes
     user_id: null
+
+  initialize: ->
+    super
+    if @isNew()
+      ideas = new IdeasCollection()
+      current_user_id = Chaplin.mediator.user.get('id')
+      votes = new VotesCollection()
+      votes.add
+        user_id: current_user_id
+      ideas.add
+        user_id: current_user_id
+        votes: votes
+      @set 'ideas', ideas
 
   parse: (idea_thread) ->
     ideas = idea_thread.ideas

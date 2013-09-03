@@ -29,10 +29,10 @@ module.exports = class IdeasController extends Controller
     @collection.fetch()
     @view = new IdeasCollectionView collection: @collection, region: 'main'
 
-  update: (model) ->
+  update: (model, collection) ->
     model.save model.attributes,
       success: (model) =>
-        @publishEvent 'saved_idea', model
+        @publishEvent 'saved_idea', model, collection
       error: (model, response) =>
         console.log $.parseJSON(response.responseText)
         @publishEvent 'renderError', response

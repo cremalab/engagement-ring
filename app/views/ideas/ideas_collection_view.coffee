@@ -50,14 +50,15 @@ module.exports = class IdeasCollectionView extends CollectionView
     if @thread_view.model.isNew()
       @thread_view.save()
     else
-      @publishEvent 'save_idea', @model
+      @publishEvent 'save_idea', @model, @collection
 
-  updateModel: (model) ->
+  updateModel: (model, collection) ->
     model_in_collection = @collection.find(model)
-    @removeViewForItem(model_in_collection)
-    view = @insertView(model, @initItemView(model))
-    @new_idea = null
-    @setupKeyBindings()
+    if model_in_collection
+      @removeViewForItem(model_in_collection)
+      view = @insertView(model, @initItemView(model))
+      @new_idea = null
+      @ideas_collection.setupKeyBindings()
 
   resort: ->
     @collection.sort()

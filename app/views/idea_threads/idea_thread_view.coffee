@@ -12,28 +12,16 @@ module.exports = class IdeaThreadView extends View
 
   initialize: ->
     super
-    # @ideas = new IdeasCollection @model.get('ideas')
-    @ideas = @model.get('ideas')
-    if @model.isNew()
-      current_user_id = Chaplin.mediator.user.get('id')
-      console.log @ideas
-      votes = new VotesCollection()
-      votes.add
-        user_id: current_user_id
-      @ideas.add
-        user_id: current_user_id
-        votes: votes
+    # @subscribeEvent 'saved_idea_thread', @render
+    @model_ideas = @model.get('ideas')
 
 
   render: ->
     super
     @ideas_view = new IdeasCollectionView
-      collection: @ideas
+      collection: @model_ideas
       region: 'ideas'
       thread_view: @
 
   save: ->
-    console.log @model
-    @model.save @model.attributes,
-      success: (res) =>
-        console.log res
+    @publishEvent 'save_idea_thread', @model, @model_ideas
