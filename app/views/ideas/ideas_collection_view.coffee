@@ -12,8 +12,6 @@ module.exports = class IdeasCollectionView extends CollectionView
   useCssAnimation: true
   animationStartClass: 'collection-animation'
   animationEndClass: 'collection-animation-end'
-  # events:
-  #   'click .add': 'newIdea'
   key_bindings:
     'esc': 'escapeForm'
   listen:
@@ -38,12 +36,18 @@ module.exports = class IdeasCollectionView extends CollectionView
         @new_idea = null
       else
         @updateModel(idea)
+    else
+      @collection.remove(@new_idea)
+      @new_idea = null
+      @publishEvent 'escapeForm'
 
   initItemView: (model) ->
     if model.isNew()
       view = new IdeaEditView model: model, collection_view: @
+      @new_idea = model
     else
       view = new IdeaView model: model, collection_view: @, autoRender: true
+      @new_idea = null
     view
 
   save: (model) ->
@@ -58,7 +62,6 @@ module.exports = class IdeasCollectionView extends CollectionView
       @removeViewForItem(model_in_collection)
       view = @insertView(model, @initItemView(model))
       @new_idea = null
-      @ideas_collection.setupKeyBindings()
 
   resort: ->
     @collection.sort()

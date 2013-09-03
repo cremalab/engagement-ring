@@ -10,23 +10,27 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
   animationStartClass: 'collection-animation'
   animationEndClass: 'collection-animation-end'
   template: template
+  listSelector: '.collectionItems'
   events:
     'click .add': 'newIdeaThread'
+  key_bindings:
+    'n': 'newIdeaThread'
   itemView: IdeaThreadView
 
   initialize: ->
     super
-    console.log @collection
     @subscribeEvent 'save_idea_thread', ->
       @new_idea_thread = null
+      @setupKeyBindings()
+    @subscribeEvent 'escapeForm', ->
+      @new_idea_thread = null
+      @setupKeyBindings()
 
   newIdeaThread: (e) ->
-    # console.log 'collection from new action'
-    # console.log @collection
     if @new_idea_thread
       new_idea_thread_view = @viewForModel(@new_idea_thread)
       new_idea_thread_view.$el.find('input:visible:first').focus()
     else
       @new_idea_thread = new IdeaThread
         user_id: Chaplin.mediator.user.get('id')
-        @collection.add(@new_idea_thread)
+      @collection.add(@new_idea_thread, {at: 0})
