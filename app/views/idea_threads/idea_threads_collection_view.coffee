@@ -21,4 +21,4 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
     else
       @new_idea_thread = new IdeaThread
         user_id: Chaplin.mediator.user.get('id')
-      @collection.add(@new_idea_thread)
+      @collection.push(@new_idea_thread)

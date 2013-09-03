@@ -1,4 +1,5 @@
 View = require 'views/base/view'
+Votes = require 'collections/votes_collection'
 VotesView = require 'views/votes/votes_collection_view'
 
 module.exports = class IdeaView extends View
@@ -14,7 +15,7 @@ module.exports = class IdeaView extends View
 
   render: ->
     super
-    @votes = @model.get('votes')
+    @votes = new Votes @model.get('votes')
     votes_view = new VotesView
       collection: @votes
       region: 'votes'

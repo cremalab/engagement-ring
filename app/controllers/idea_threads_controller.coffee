@@ -21,7 +21,7 @@ module.exports = class IdeaThreadsController extends Controller
 
   index: ->
     @collection = new IdeaThreads()
-    # @collection.fetch()
+    @collection.fetch()
     @view = new IdeaThreadsCollectionView collection: @collection, region: 'main'
 
   update: (model) ->

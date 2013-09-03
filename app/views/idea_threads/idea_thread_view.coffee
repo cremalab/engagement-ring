@@ -1,5 +1,6 @@
 View = require 'views/base/view'
 VotesCollection = require 'collections/votes_collection'
+IdeasCollection = require 'collections/ideas_collection'
 IdeasCollectionView = require 'views/ideas/ideas_collection_view'
 
 module.exports = class IdeaThreadView extends View
@@ -10,9 +11,12 @@ module.exports = class IdeaThreadView extends View
   textBindings: true
 
   initialize: ->
+    super
+    # @ideas = new IdeasCollection @model.get('ideas')
+    @ideas = @model.get('ideas')
     if @model.isNew()
       current_user_id = Chaplin.mediator.user.get('id')
-      @ideas = @model.get('ideas')
+      console.log @ideas
       votes = new VotesCollection()
       votes.add
         user_id: current_user_id
@@ -30,6 +34,6 @@ module.exports = class IdeaThreadView extends View
 
   save: ->
     console.log @model
-    # @model.save, @model.attributes
-    #   success: (res) =>
-    #     console.log res
+    @model.save @model.attributes,
+      success: (res) =>
+        console.log res

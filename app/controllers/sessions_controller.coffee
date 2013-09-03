@@ -72,6 +72,8 @@ module.exports = class SessionsController extends Controller
 
       $.ajaxSetup
         beforeSend: (xhr) ->
+          dataType: 'json'
+          xhr.setRequestHeader('X-Requested-With', xhr)
           xhr.setRequestHeader('X-User-ID', auth.user_id)
           xhr.setRequestHeader('X-Access-Token', auth.access_token)
     else
