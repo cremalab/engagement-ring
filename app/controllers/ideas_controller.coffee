@@ -29,7 +29,7 @@ module.exports = class IdeasController extends Controller
     @collection.fetch()
     @view = new IdeasCollectionView collection: @collection, region: 'main'
 
-  update: (model, collection) ->
+  update: (model, collection, collection_view) ->
     model.save model.attributes,
       success: (model) =>
         @publishEvent 'saved_idea', model, collection

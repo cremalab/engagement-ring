@@ -1,4 +1,5 @@
 View = require 'views/base/view'
+Vote = require 'models/vote'
 Votes = require 'collections/votes_collection'
 VotesView = require 'views/votes/votes_collection_view'
 
@@ -15,7 +16,7 @@ module.exports = class IdeaView extends View
 
   render: ->
     super
-    @votes = new Votes @model.get('votes')
+    @votes = @model.get('votes')
     votes_view = new VotesView
       collection: @votes
       region: 'votes'
@@ -29,14 +30,14 @@ module.exports = class IdeaView extends View
   edit: (e) ->
     @publishEvent 'edit_idea', @model
 
-  vote: (e, b) ->
+  vote: (e) ->
     if @user_vote
       @user_vote.destroy()
     else
-      @votes.create
+      vote = new Vote
         user_id: Chaplin.mediator.user.get('id')
         idea_id: @model.get('id')
-      , wait: true
+      @publishEvent 'vote', vote, @model, @votes
 
   toggleUserVote: (voted, user_vote) ->
     if voted
@@ -46,5 +47,5 @@ module.exports = class IdeaView extends View
       @$el.find(".vote").removeClass('voted')
       @user_vote = null
 
-  updateVotesCount: ->
-    @model.set('total_votes', @votes.size())
+  updateVotesCount: (a,b) ->
+    @model.set('total_votes', @votes.length)

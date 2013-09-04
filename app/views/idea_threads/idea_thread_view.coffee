@@ -12,7 +12,6 @@ module.exports = class IdeaThreadView extends View
 
   initialize: ->
     super
-    # @subscribeEvent 'saved_idea_thread', @render
     @model_ideas = @model.get('ideas')
 
 
