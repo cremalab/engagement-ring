@@ -1,4 +1,6 @@
 Model = require '/models/base/model'
+Idea  = require '/models/idea'
+Vote = require '/models/vote'
 IdeasCollection = require 'collections/ideas_collection'
 VotesCollection = require 'collections/votes_collection'
 
@@ -11,14 +13,14 @@ module.exports = class IdeaThread extends Model
   initialize: ->
     super
     if @isNew()
-      ideas = new IdeasCollection()
       current_user_id = Chaplin.mediator.user.get('id')
-      votes = new VotesCollection()
-      votes.add
+      ideas = new IdeasCollection()
+      vote = new Vote
+      idea = new Idea
         user_id: current_user_id
-      ideas.add
+      idea.get('votes').add
         user_id: current_user_id
-        votes: votes
+      ideas.add(idea)
       @set 'ideas', ideas
 
   parse: (idea_thread) ->

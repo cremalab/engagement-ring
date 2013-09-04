@@ -21,11 +21,11 @@ module.exports = class Idea extends Model
     return idea
 
   toJSON: ->
-    console.log this.get('votes').toJSON()
+    votes = this.get('votes').toJSON()
     new_attr = _.clone(this.attributes)
     delete new_attr.votes
     json = {idea : new_attr}
-    _.extend json.idea, {votes_attributes: this.get("votes").toJSON()}
+    _.extend json.idea, {votes_attributes: votes}
     return json
 
   validate: ->
