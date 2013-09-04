@@ -2,6 +2,7 @@ CollectionView = require 'views/base/collection-view'
 Idea = require 'models/idea'
 IdeaView = require 'views/ideas/idea_view'
 IdeaEditView = require 'views/ideas/idea_edit_view'
+VotesCollection = require 'collections/votes_collection'
 template = require './templates/collection'
 
 module.exports = class IdeasCollectionView extends CollectionView
@@ -18,6 +19,7 @@ module.exports = class IdeasCollectionView extends CollectionView
     'click .ideate': 'addIdea'
   listen:
     'change collection': 'resort'
+    'add collection': 'checkVote'
 
   initialize: (options) ->
     super
@@ -25,6 +27,7 @@ module.exports = class IdeasCollectionView extends CollectionView
     @thread_id   = @thread_view.model.get('id')
     @subscribeEvent 'saved_idea', @updateModel
     @subscribeEvent 'edit_idea', @editIdea
+    @subscribeEvent 'vote', @checkVote
 
   addIdea: (e) ->
     e.preventDefault()
@@ -77,3 +80,31 @@ module.exports = class IdeasCollectionView extends CollectionView
 
   resort: ->
     @collection.sort()
+
+  checkVote: (vote, idea, votes) ->
+    idea_in_collection = @collection.get(idea)
+    if idea_in_collection
+      console.log 'current_user_vote'
+      console.log @currentUserVote()
+      old_vote = @currentUserVote()
+      if old_vote
+        @currentUserVotedIdea().get('votes').remove(old_vote)
+      votes.create vote.attributes, {wait: true}
+
+  currentUserVote: (idea) ->
+    votes = @currentUserVotedIdea().get('votes')
+    vote = votes.findWhere
+      user_id: @current_user.get('id')
+    return vote
+
+  currentUserVotedIdea: ->
+    current_voted_idea = @collection.find (idea) =>
+      idea.get('votes').findWhere
+        user_id: @current_user.get('id')
+      return true if idea
+    return current_voted_idea
+
+  removeCurrentUserVote: ->
+    vote = @currentUserVote()
+    vote.destroy() if vote
+

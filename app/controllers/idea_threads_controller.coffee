@@ -34,6 +34,7 @@ module.exports = class IdeaThreadsController extends Controller
           idea = model.get('ideas').models[0]
         else
           ideas_collection_view.updateModel(model)
+
       error: (model, response) =>
         console.log $.parseJSON(response.responseText)
         @publishEvent 'renderError', response

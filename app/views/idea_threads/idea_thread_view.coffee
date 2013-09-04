@@ -22,6 +22,5 @@ module.exports = class IdeaThreadView extends View
       region: 'ideas'
       thread_view: @
 
-
   save: ->
     @publishEvent 'save_idea_thread', @model, @model_ideas

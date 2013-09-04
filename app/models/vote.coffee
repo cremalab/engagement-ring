@@ -4,3 +4,7 @@ module.exports = class Vote extends Model
   defaults:
     idea_id: null       # fk
     user_id: null       # fk
+  initialize: ->
+    super
+    @bind 'remove', =>
+      @destroy()

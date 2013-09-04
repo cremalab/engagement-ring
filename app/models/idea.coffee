@@ -1,5 +1,5 @@
 Model = require '/models/base/model'
-IdeaVotesCollection = require 'collections/votes_collection'
+VotesCollection = require 'collections/votes_collection'
 
 module.exports = class Idea extends Model
   urlRoot: 'http://localhost:3000/ideas'
@@ -8,15 +8,20 @@ module.exports = class Idea extends Model
     title: null           # string, validates_presence_of
     description: null
     when: null            # datetime, allow nil
-    votes: new IdeaVotesCollection()             # collection of IdeaVotes
+    # votes: new IdeaVotesCollection()             # collection of IdeaVotes
     user_id: null
+
+  initialize: ->
+    super
+    @set 'votes', new VotesCollection(@get 'votes')
 
   parse: (idea) ->
     votes = idea.votes
-    idea.votes = new IdeaVotesCollection(votes)
+    idea.votes = new VotesCollection(votes)
     return idea
 
   toJSON: ->
+    console.log this.get('votes').toJSON()
     new_attr = _.clone(this.attributes)
     delete new_attr.votes
     json = {idea : new_attr}
