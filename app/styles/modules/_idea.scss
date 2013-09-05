@@ -5,6 +5,7 @@
     z-index: 1;
   }
   & + .idea {
+    font-size: 0.875em;
     border-top: 0;
     margin: 0 unit(0.5);
     @extend %boxSecondary;
@@ -13,14 +14,21 @@
 
 .ideaGrid {
   @extend %grid;
+  border-spacing: unit(0.5);
   > * {
-    @extend %box;
     @extend %column;
   }
 }
 
+.ideaAuthor {
+  white-space: nowrap;
+  letter-spacing: 20em; // Some rediculous large amount to allow the image to expand the box.
+  line-height: 0;
+}
+
 .ideaInfo {
   width: 100%;
+  vertical-align: middle;
 }
 
   .ideaTitle {
@@ -28,5 +36,14 @@
   }
 
   .ideaDescription {
-    @extend %verticalSpacing.half;
+    margin-top: 0;
+    &:before {
+      content: "“"
+    }
+    &:after {
+      content: "”"
+    }
   }
+
+.ideaAction {
+}

@@ -18,3 +18,7 @@
     width: 100%;
     padding-left: unit();
   }
+
+.collectionItems {
+  @extend %verticalSpacing;  
+}
