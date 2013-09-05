@@ -1,4 +1,7 @@
 <div class='errors'></div>
+{{#if edited}}
+  <p><strong>Warning:</strong> if you edit this idea, all votes on it will be lost.</p>
+{{/if}}
 <input name='title' class='mousetrap' placeholder='Idea' type='text' autofocus />
 <input class='mousetrap natural-language' placeholder='When' type='datetime' />
 <small class='when'></small>

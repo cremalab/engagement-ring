@@ -10,7 +10,10 @@ module.exports = class IdeaView extends View
     votes: '.votes'
   events:
     'click .vote': 'vote'
+    'click .edit': 'edit'
     'click .destroy': 'destroy'
+  # listen:
+  #   'model change': 'renderViewInCollection'
   textBindings: true
 
   initialize: (options) ->
@@ -31,6 +34,7 @@ module.exports = class IdeaView extends View
     @listenTo @votes, 'remove', @updateVotesCount
 
   edit: (e) ->
+    e.preventDefault()
     @publishEvent 'edit_idea', @model
 
   vote: (e) ->
@@ -58,3 +62,6 @@ module.exports = class IdeaView extends View
     @model.destroy
       success: =>
         @collection_view.checkEmpty()
+
+  renderViewInCollection: ->
+    @collection_view.renderItem(@model) if @collection_view
