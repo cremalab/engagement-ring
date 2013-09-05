@@ -34,7 +34,7 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
   cleanup: ->
     empty_thread = @collection.find (thread) ->
       thread.get('ideas').models.length is 0
-    empty_thread.dispose()
+    empty_thread.dispose() if empty_thread
 
     @new_idea_thread = null
     @setupKeyBindings()

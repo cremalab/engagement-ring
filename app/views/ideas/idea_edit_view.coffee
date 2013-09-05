@@ -33,13 +33,20 @@ module.exports = class IdeaEditView extends View
     @natural_input.remove()
 
   save: ->
-    @collection_view.save(@model)
+    @updateModelFromFields =>
+      @collection_view.save(@model)
 
   displayWhen: (model) ->
     changed = _.keys model.changed
     if changed.indexOf('when') > -1
-      console.log model.changed.when
       if model.changed.when is undefined or model.changed.when is null
         @$el.find('.when').text('')
       else
         @$el.find('.when').text moment(@model.get('when')).format("dddd MMM D, ha")
+
+  updateModelFromFields: (callback) ->
+    description = @$el.find("[name='description']").val()
+    description = $.trim(description)
+    @model.set 'description', description
+    callback ->
+      return
