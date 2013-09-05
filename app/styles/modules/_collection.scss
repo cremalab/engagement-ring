@@ -3,9 +3,9 @@
 }
 
 .collectionHeader {
-  @extend %grid;
+  @extend .grid;
   > * {
-    @extend %column;
+    @extend .column;
     vertical-align: middle;
   }
 }

@@ -1,3 +1,9 @@
 %box {
 	padding: unit(0.5);
+  &.thick {
+    padding: unit()
+  }
+  &.thin {
+    padding: unit(0.25)
+  }
 }

@@ -1,22 +1,35 @@
+// Idea Module
 .idea {
   position: relative;
+
+  // First Idea in List
   &:first-child {
     @extend %boxPrimary;
     z-index: 1;
   }
+  
+  // Any Idea following another
   & + .idea {
     font-size: 0.875em;
     border-top: 0;
     margin: 0 unit(0.5);
     @extend %boxSecondary;
   }
+
+  // A new Idea
+  &.edit {
+    @extend %box.thick;
+    @extend %shadow.inset.light;
+    background: white;
+  }
+
 }
 
 .ideaGrid {
-  @extend %grid;
+  @extend .grid;
   border-spacing: unit(0.5);
   > * {
-    @extend %column;
+    @extend .column;
   }
 }
 
