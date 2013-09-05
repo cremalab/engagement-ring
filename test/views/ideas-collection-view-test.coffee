@@ -3,6 +3,7 @@ Ideas = require 'collections/ideas_collection'
 IdeasCollectionView = require 'views/ideas/ideas_collection_view'
 IdeaThread = require 'models/idea_thread'
 IdeaThreadView = require 'views/idea_threads/idea_thread_view'
+Vote = require 'models/vote'
 User = require 'models/user'
 
 describe 'IdeasCollectionView', ->
@@ -26,6 +27,19 @@ describe 'IdeasCollectionView', ->
       region: 'ideas'
       thread_view: @thread_view
 
+    @first_idea = new Idea
+      title: 'Newest Idea'
+      description: 'fresh'
+      user_id: @user_id
+      id: 1
+
+    @second_idea = new Idea
+      title: 'Pancakes for lunch'
+      description: 'with blueberries on top'
+      user_id: @user_id
+      id: 2
+      votes: []
+
   afterEach ->
     @view.dispose()
     @thread_view.dispose()
@@ -38,34 +52,38 @@ describe 'IdeasCollectionView', ->
     expect(@view.$el.find("[name='description']").length).to.equal 1
     expect(@view.$el.find("[name='when']").length).to.equal 1
 
+  it 'should vote for new alternate ideas a user creates', ->
+
+    @collection.add @first_idea
+
+    @first_idea.get('votes').add
+      user_id: @user_id
+      idea_id: 1
+
+    @collection.add @second_idea
+
+    @second_idea.get('votes').add
+      user_id: @user_id
+      idea_id: 2
+
+    Chaplin.mediator.publish('saved_idea', @first_idea, @collection)
+    expect(@first_idea.get('votes').length).to.equal 0
+    expect(@first_idea.get('votes').length).to.equal > 0
+
   it 'should only allow one vote per collection', ->
-    idea = new Idea
-      title: 'Newest Idea'
-      description: 'fresh'
-      user_id: @user_id
-      id: 1
-    idea.get('votes').add
+    @collection.add @first_idea
+    @first_idea.get('votes').add
       user_id: @user_id
       idea_id: 1
-    @collection.add idea
+    expect(@first_idea.get('votes').length).to.equal 1
 
-    expect(@view.currentUserVote()).to.be.a('object')
-    expect(@view.currentUserVote().get('user_id')).to.equal @user_id
-    expect(@view.currentUserVote().get('idea_id')).to.equal 1
-
-    new_idea = new Idea
-      title: 'Pancakes for lunch'
-      description: 'with blueberries on top'
+    @collection.add @second_idea
+    new_vote = new Vote
       user_id: @user_id
-      id: 2
-      votes: []
-    new_idea.get('votes').add
-      user_id: @user_id
-      idea_id: 1
+      idea_id: 2
+    @second_idea.get('votes').add(new_vote)
 
-    @collection.add new_idea
-
-    @view.save(new_idea)
-    Chaplin.mediator.publish('saved_idea', new_idea, @collection)
-    expect(idea.get('votes').length).to.equal 0
-    expect(new_idea.get('votes').length).to.equal > 0
+    Chaplin.mediator.publish 'vote', new_vote, @second_idea
+    expect(@first_idea.get('votes').length).to.equal 0
+    expect(@view.currentUserVote().get('idea_id')).to.equal(2)
+    expect(@view.currentUserVotedIdea()).to.equal @second_idea
