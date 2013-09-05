@@ -20,6 +20,7 @@ module.exports = class IdeasCollectionView extends CollectionView
   listen:
     'change collection': 'resort'
     'add collection': 'checkVote'
+    # 'remove collection': 'checkEmpty'
 
   initialize: (options) ->
     super
@@ -118,3 +119,7 @@ module.exports = class IdeasCollectionView extends CollectionView
     vote = @currentUserVote()
     vote.destroy() if vote
 
+
+  checkEmpty: ->
+    if @collection.size() == 0
+      @thread_view.model.destroy()

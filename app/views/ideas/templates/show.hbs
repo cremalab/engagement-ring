@@ -9,6 +9,9 @@
   <div class="ideaAction">
     <button class='vote' data-bind='total_votes'>{{ total_votes }}</button>
     <div class="votes"></div>
+    {{#hasPermission user.id}}
+      <a href='#' class='destroy'>delete</a>
+    {{/hasPermission}}
   </div>
 </div>
 {{!-- <small><a class='edit' href='#'>edit</a></small> --}}
