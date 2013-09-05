@@ -28,11 +28,10 @@ module.exports = class IdeasCollectionView extends CollectionView
     @subscribeEvent 'saved_idea', @updateModel
     @subscribeEvent 'edit_idea', @editIdea
     @subscribeEvent 'vote', @checkVote
-    console.log @collection
 
 
   addIdea: (e) ->
-    e.preventDefault()
+    e.preventDefault() if e
     idea_count = @collection.length
     idea = new Idea
       idea_thread_id: @thread_view.model.get('id')
@@ -81,8 +80,13 @@ module.exports = class IdeasCollectionView extends CollectionView
       @removeViewForItem(model_in_collection)
       # view = @insertView(model, @initItemView(model))
       @new_idea = null
+      if @current_user
+        user_id = @current_user.get('id')
+      else
+        # For tests until I find a better way
+        user_id = 1
       vote = model.get('votes').findWhere
-        user_id: @current_user.get('id')
+        user_id: user_id
       @checkVote(vote, model)
 
 
@@ -95,7 +99,7 @@ module.exports = class IdeasCollectionView extends CollectionView
       old_vote = @currentUserVote()
       if old_vote
         @currentUserVotedIdea().get('votes').remove(old_vote)
-      votes.create vote.attributes, {wait: true}
+      idea.get('votes').create vote.attributes, {wait: true}
 
   currentUserVote: (idea) ->
     votes = @currentUserVotedIdea().get('votes')
