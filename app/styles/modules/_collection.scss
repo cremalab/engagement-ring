@@ -10,9 +10,6 @@
   }
 }
 
-  .collectionAction {
-    
-  }
 
   .collectionTitle {
     width: 100%;
@@ -20,5 +17,8 @@
   }
 
 .collectionItems {
-  @extend %verticalSpacing;  
+  @extend %verticalSpacing.double;  
+}
+
+.collectionAction {
 }

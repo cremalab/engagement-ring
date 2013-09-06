@@ -15,3 +15,9 @@ $green: #B6E685;
   $green-light: lighten($green, $color-contrast);
   $green-medium: darken($green, $color-contrast/3);
   $green-dark: darken($green, $color-contrast);
+
+$blue: #039AE6;
+  $color-contrast: 50;
+  $blue-light: lighten($blue, $color-contrast);
+  $blue-medium: darken($blue, $color-contrast/3);
+  $blue-dark: darken($blue, $color-contrast);

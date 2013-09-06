@@ -3,7 +3,6 @@ img {
 }
 
 img.avatar {
-  @extend %border;
+  // @extend %border;
   @extend %rounded.extreme;
-  width: unit(2);
 }
