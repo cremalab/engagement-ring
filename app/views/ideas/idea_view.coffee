@@ -5,7 +5,11 @@ VotesView = require 'views/votes/votes_collection_view'
 
 module.exports = class IdeaView extends View
   template: require './templates/show'
-  className: 'idea'
+  className: (options) ->
+    if @model.get "original"
+      "idea original"
+    else
+      "idea"
   regions:
     votes: '.votes'
   events:
