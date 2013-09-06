@@ -9,10 +9,15 @@ module.exports = class IdeaThreadView extends View
   regions:
     ideas: '.ideas'
   textBindings: true
+  listen:
+    "change collection": "setOriginal"
 
   initialize: ->
     super
     @ideas = @model.get('ideas')
+    @setOriginal()
+
+  setOriginal: ->
     @original_idea = @ideas.findWhere
       id: @model.get('original_idea_id')
     @original_idea.set 'original', true
