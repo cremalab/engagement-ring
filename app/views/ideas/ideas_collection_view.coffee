@@ -97,8 +97,6 @@ module.exports = class IdeasCollectionView extends CollectionView
     idea_in_collection = @collection.get(idea)
     if idea_in_collection
       old_vote = @currentUserVote()
-      console.log 'old_vote'
-      console.log old_vote
       if old_vote
         @currentUserVotedIdea().get('votes').remove(old_vote)
       if vote
