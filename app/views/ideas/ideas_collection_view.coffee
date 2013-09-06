@@ -17,9 +17,6 @@ module.exports = class IdeasCollectionView extends CollectionView
     'esc': 'escapeForm'
   events:
     'click .ideate': 'addIdea'
-  # listen:
-  #   # 'change collection': 'resort'
-  #   # 'add collection': 'checkVote'
 
   initialize: (options) ->
     super
@@ -102,9 +99,9 @@ module.exports = class IdeasCollectionView extends CollectionView
     idea_in_collection = @collection.get(idea)
     if idea_in_collection
       old_vote = @currentUserVote()
+      if old_vote
+        @currentUserVotedIdea().get('votes').remove(old_vote)
       if vote
-        if old_vote
-          @currentUserVotedIdea().get('votes').remove(old_vote)
         idea.get('votes').create vote.attributes,
           wait: true
           success: =>
@@ -113,16 +110,18 @@ module.exports = class IdeasCollectionView extends CollectionView
         @resort()
 
   currentUserVote: (idea) ->
-    votes = @currentUserVotedIdea().get('votes')
-    vote = votes.findWhere
-      user_id: @current_user.get('id')
-    return vote
+    current_idea = @currentUserVotedIdea()
+    if current_idea
+      votes = current_idea.get('votes')
+      vote = votes.findWhere
+        user_id: @current_user.get('id')
+      return vote
 
   currentUserVotedIdea: ->
     current_voted_idea = @collection.find (idea) =>
-      idea.get('votes').findWhere
+      vote = idea.get('votes').findWhere
         user_id: @current_user.get('id')
-      return true if idea
+      return true if vote
     return current_voted_idea
 
   removeCurrentUserVote: ->
