@@ -28,6 +28,10 @@ module.exports = class Idea extends Model
     _.extend json.idea, {votes_attributes: votes}
     return json
 
+  save: ->
+    @unset 'original'
+    super
+
   validate: ->
     if @get('title') is '' or @get('title') is null
       return "Title can't be blank"

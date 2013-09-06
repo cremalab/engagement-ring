@@ -9,18 +9,26 @@ module.exports = class IdeaThreadView extends View
   regions:
     ideas: '.ideas'
   textBindings: true
+  listen:
+    "change collection": "setOriginal"
 
   initialize: ->
     super
-    @model_ideas = @model.get('ideas')
+    @ideas = @model.get('ideas')
+    @setOriginal()
 
+  setOriginal: ->
+    @original_idea = @ideas.findWhere
+      id: @model.get('original_idea_id')
+    @original_idea.set 'original', true
 
   render: ->
     super
     @ideas_view = new IdeasCollectionView
-      collection: @model_ideas
+      collection: @ideas
       region: 'ideas'
       thread_view: @
+      original_idea: @original_idea
 
   save: ->
-    @publishEvent 'save_idea_thread', @model, @model_ideas
+    @publishEvent 'save_idea_thread', @model, @ideas
