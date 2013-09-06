@@ -7,3 +7,6 @@ module.exports = class HeaderView extends View
   template: require './templates/header'
   listen:
     'change model': 'render'
+  initialize: ->
+    super
+    @subscribeEvent 'auth_complete', @render

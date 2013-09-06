@@ -8,10 +8,14 @@ module.exports = class Controller extends Chaplin.Controller
   initialize: ->
     super
     @current_user = Chaplin.mediator.user
+    @subscribeEvent 'auth_complete', @composers
   beforeAction: (params,route) ->
     @compose 'site', SiteView
-    @compose 'header', HeaderView, region: 'header', model: Chaplin.mediator.user
-    @compose 'user-info', CurrentUserInfoView, region: 'header', model: Chaplin.mediator.user
     exceptions = ['logins', 'users']
-    unless exceptions.indexOf(route.controller) > -1
+    if exceptions.indexOf(route.controller) > -1
+      @composers()
+    else
       Chaplin.mediator.sessions_controller.getCurrentUser()
+  composers: ->
+    @compose 'header', HeaderView, region: 'header', model: Chaplin.mediator.user
+    @compose 'user-info', CurrentUserInfoView, region: 'user_info', model: Chaplin.mediator.user

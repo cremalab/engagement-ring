@@ -1,5 +1,6 @@
 Controller = require 'controllers/base/controller'
 UserSession = require 'models/user_session'
+User = require 'models/user'
 
 module.exports = class SessionsController extends Controller
 
@@ -29,9 +30,10 @@ module.exports = class SessionsController extends Controller
   setCurrentUser: (user) ->
     if user is 'clear'
       Chaplin.mediator.user.clear()
-      Chaplin.mediator.user.set('logged_in', false)
+      store.clear('current_user')
     else
-      Chaplin.mediator.user.set(user)
+      Chaplin.mediator.user = new User(user)
+      store.set('current_user', user)
 
     # Send auth credentials with all subsequent requests
     @setupTokenAccess()
@@ -71,3 +73,4 @@ module.exports = class SessionsController extends Controller
           xhr.setRequestHeader('X-Access-Token', auth.access_token)
     else
       @handleUnauthorized()
+    @publishEvent 'auth_complete'

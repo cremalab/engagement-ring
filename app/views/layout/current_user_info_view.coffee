@@ -12,5 +12,3 @@ module.exports = class CurrentUserInfoView extends View
 
   storeUser: ->
     store.set('current_user', @model.attributes)
-    console.log store.get('current_user')
-    @$el.find('.edit-user').attr('href', "/users/#{@model.get('id')}/edit")
