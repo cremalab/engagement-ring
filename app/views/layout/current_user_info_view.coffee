@@ -7,3 +7,8 @@ module.exports = class CurrentUserInfoView extends View
   template: require './templates/current_user_info'
   textBindings: true
 
+  listen:
+    'change model': 'storeUser'
+
+  storeUser: ->
+    store.set('current_user', @model.attributes)

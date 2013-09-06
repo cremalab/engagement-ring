@@ -1,5 +1,4 @@
 Controller = require 'controllers/base/controller'
-LoginView = require 'views/sessions/session_edit_view'
 UserSession = require 'models/user_session'
 
 module.exports = class SessionsController extends Controller
@@ -9,10 +8,6 @@ module.exports = class SessionsController extends Controller
     @subscribeEvent 'login', @login
     @subscribeEvent 'set_current_user', @setCurrentUser
     @subscribeEvent 'controller_init', @getCurrentUser
-
-  new: ->
-    @model = new UserSession()
-    @view = new LoginView model: @model, region: 'main'
 
   login: (session_creds) ->
     session_creds.save session_creds.attributes,
@@ -35,11 +30,9 @@ module.exports = class SessionsController extends Controller
     if user is 'clear'
       Chaplin.mediator.user.clear()
       Chaplin.mediator.user.set('logged_in', false)
-      console.log Chaplin.mediator.user
     else
       Chaplin.mediator.user.set(user)
 
-    store.set('current_user', Chaplin.mediator.user)
     # Send auth credentials with all subsequent requests
     @setupTokenAccess()
 
