@@ -3,6 +3,7 @@ DateInputView = require 'views/form_elements/date_input_view'
 
 module.exports = class IdeaEditView extends View
   template: require './templates/edit'
+  className: 'idea edit'
   key_bindings:
     'enter': 'save'
     'esc'  : 'exit'
