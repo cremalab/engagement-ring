@@ -35,7 +35,7 @@ module.exports = class IdeaView extends View
 
   edit: (e) ->
     e.preventDefault()
-    @publishEvent 'edit_idea', @model
+    @collection_view.editIdea @model
 
   vote: (e) ->
     if @user_vote
