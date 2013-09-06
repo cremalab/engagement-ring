@@ -20,6 +20,9 @@
     @extend %box.thick;
     @extend %shadow.inset.light;
     background: white;
+    &:first-child {
+      @extend %shadow.light;
+    }
   }
 
 }
@@ -47,6 +50,11 @@
     line-height: 1.2;
   }
 
+    .ideaTitleWhen {
+      font-weight: 300;
+      font-size: 0.875em;
+    }
+
   .ideaDescription {
     @extend %verticalSpacing.quarter;
     &:before {
@@ -57,5 +65,10 @@
     }
   }
 
-.ideaAction {
+.ideaControl {
+  @extend %transition;
+  position: absolute;
+  top: unit(0.5);
+  right: -#{unit(0.5)};
+  width: 0;
 }
