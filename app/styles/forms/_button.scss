@@ -1,36 +1,56 @@
 button {
-  -webkit-appearance: none;
-  @extend %verticalSpacing.half;
+  -webkit-appearance: none !important;
+  @extend %transition;
+  @extend %rounded.extreme;
+  @extend %verticalSpacing.double;
   @extend %border;
-  background: white;
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: 200;
+  width: 100%;
+  padding: unit(0.35) unit(0.65);
+  white-space: nowrap;
+  background: $gray-light;
+  &:before {
+    font-family: 'icomoon';
+    font-size: 0.7em;
+    margin-right: unit(0.5);
+  }
 }
 
 button.add {
-  @extend %rounded.extreme;
-  background: $green;
   color: white;
-  width: unit(2);
-  height: unit(2);
-  font-size: 2rem;
-  &:before {
-    content: '+'
-  }
+  background: $blue;
+  &:before { content: "+" }
+  &:active { background: $blue-medium; }
 }
 
 button.vote {
-  @extend %transition;
-  @extend %rounded.extreme;
-  @extend h4;
-  padding: unit(0.25) unit(0.5);
-  color: $gray-dark;
+  background: white;
   &:before { 
     content: '✓';
-    margin-right: unit(0.25);
   }
   &:active { background: $gray }
   &.voted {
-    background: $green;
     color: $green-dark;
-    &:active { background: $green-medium }
+    background: $green;
+    &:active { background: $green-light }
   }
+}
+
+button.ideate {
+  color: $blue;
+  background: none;
+  border: none;
+  padding: 0;
+  width: auto;
+  border-radius: 0;
+  &:before { content: "⟳" }
+  &:active { color: $blue-medium }
+}
+
+button.submit {
+  color: white;
+  background: $blue;
+  &:active { background: $blue-medium; }
 }

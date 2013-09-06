@@ -1,6 +1,6 @@
 // Heading Scale
 @include header-scale (
-  $ratio:                 1.3,
+  $ratio:                 1.2,
   $top-offset:            1,
   $bottom-offset-ratio:   0,
   $header-rank-shift:     -2,
@@ -9,7 +9,9 @@
 );
 
 // Heading Weight
-h1, h2, h3, h4, h5, h6 { font-weight: normal }
+h1, h2, h3, h4, h5, h6 { 
+  font-weight: 400;
+}
 
 // Headings for nested sections
 section > h1 { @extend h2 }
