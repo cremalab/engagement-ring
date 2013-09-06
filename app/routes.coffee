@@ -6,6 +6,8 @@ module.exports = (match) ->
   match 'profiles/:id/edit', 'profiles#edit'
   match 'profiles/:id/', 'profiles#show'
 
+  match 'users/:id/edit', 'users#edit'
+
   match 'register', 'users#new'
   match 'login', 'logins#new'
   match 'logout', 'sessions#logout'

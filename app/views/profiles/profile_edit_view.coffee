@@ -7,13 +7,3 @@ module.exports = class ProfileEditView extends View
   className: 'profileEdit'
   tagName: 'form'
   template: template
-  events:
-    "click button": 'save'
-
-  render: ->
-    super
-
-  save: (e) ->
-    e.preventDefault()
-    console.log @model.attributes
-    # @model.save()
