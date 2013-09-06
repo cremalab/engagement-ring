@@ -1,0 +1,8 @@
+.ideaThread {
+  @extend %verticalSpacing.double;
+}
+
+.ideaThreadAction {
+  @extend %box;
+  text-align: center;
+}

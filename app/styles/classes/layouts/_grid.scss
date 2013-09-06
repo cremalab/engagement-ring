@@ -1,12 +1,25 @@
-%grid {
+.grid {
   display: table;
   width: 100%;
   &.fixed {
-    @extend %grid;
+    @extend .grid;
     table-layout: fixed;
   }
 }
 
-%column {
+.row {
+  display: table-row;
+  &.v-spaced {
+    @extend .row;
+    border-spacing: 0 unit();
+  }
+}
+
+.column {
   display: table-cell;
+  vertical-align: top;
+  &.h-spaced {
+    @extend .row;
+    border-spacing: unit() 0;
+  }
 }

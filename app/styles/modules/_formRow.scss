@@ -1,0 +1,11 @@
+.formRow {
+  @extend .grid;
+  @extend %verticalSpacing;
+}
+
+.formColumn {
+  @extend .column;
+  + .formColumn {
+    padding-left: unit();
+  }
+}

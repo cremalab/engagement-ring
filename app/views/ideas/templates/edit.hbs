@@ -1,5 +1,40 @@
-<div class='errors'></div>
-<input name='title' class='mousetrap' placeholder='Idea' type='text' autofocus />
-<input class='mousetrap natural-language' placeholder='When' type='datetime' />
-<small class='when'></small>
-<textarea name='description' class='mousetrap' placeholder='description' />
+<h3>New Idea</h3>
+
+<div class="errors"></div>
+<div class="formRow">
+  <div class="formColumn">
+    <div class="labelField">
+      <div class="labelFieldLabel">
+        <label>Idea:</label>
+      </div>
+      <div class="labelFieldInput">
+        <input name="title" class="mousetrap" type="text" autofocus />
+      </div>
+    </div>
+  </div>
+  <div class="formColumn">
+    <div class="labelField">
+      <div class="labelFieldLabel">
+        <label>When:</label>
+      </div>
+      <div class="labelFieldInput">
+        <input class="mousetrap natural-language" type="datetime" />
+        <small class="when"></small>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="formRow">
+  <div class="formColumn">
+    <div class="labelField">
+      <div class="labelFieldLabel">
+        <label>Describe:</label>
+      </div>
+      <div class="labelFieldInput">
+        <input type="text" name="description" class="mousetrap" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="submit">Submit</button>

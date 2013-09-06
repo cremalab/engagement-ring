@@ -3,18 +3,22 @@
 }
 
 .collectionHeader {
-  @extend %grid;
+  @extend .grid;
   > * {
-    @extend %column;
+    @extend .column;
     vertical-align: middle;
   }
 }
 
-  .collectionAction {
-    
-  }
 
   .collectionTitle {
     width: 100%;
     padding-left: unit();
   }
+
+.collectionItems {
+  @extend %verticalSpacing.double;  
+}
+
+.collectionAction {
+}
