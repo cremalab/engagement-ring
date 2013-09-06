@@ -7,9 +7,9 @@ module.exports = class User extends Model
     profile: new Profile()
 
   urlRoot: 'http://localhost:3000/users/'
-  validate: ->
-    if !@email or !@password
-      return 'Please complete required fields'
+  # validate: ->
+  #   if !@email or !@password
+  #     return 'Please complete required fields'
 
   toJSON: ->
     profile = this.get('profile').toJSON()
