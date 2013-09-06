@@ -1,6 +1,7 @@
 <div class="ideaGrid">
   <div class="ideaAuthor">
     <img class="avatar" src="images/headshot.jpg" alt="">
+    {{ displayName user }}
   </div>
   <div class="ideaInfo">
     <h2 class="ideaTitle">{{ title }} {{#if when}}<span class="ideaTitleWhen">— {{#timely}}{{ when }}{{/timely}}</span>{{/if}}</h2>
@@ -8,7 +9,7 @@
   </div>
   <div class="ideaAction">
     <button class='vote' data-bind='total_votes'>{{ total_votes }}</button>
-    <div class="votes"></div>
+    {{!-- <div class="votes"></div> --}}
   </div>
 </div>
 {{#hasPermission user.id}}
