@@ -2,23 +2,6 @@
   @extend %verticalSpacing;
 }
 
-.collectionHeader {
-  @extend .grid;
-  > * {
-    @extend .column;
-    vertical-align: middle;
-  }
-}
-
-
-  .collectionTitle {
-    width: 100%;
-    padding-left: unit();
-  }
-
 .collectionItems {
   @extend %verticalSpacing.double;  
-}
-
-.collectionAction {
 }

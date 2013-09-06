@@ -39,6 +39,13 @@ Handlebars.registerHelper 'timely', (options) ->
     safe = new Handlebars.SafeString timely
     safe.string
 
+Handlebars.registerHelper 'hasPermission', (user_id) ->
+  user_id == Chaplin.mediator.user.get('id')
+
+Handlebars.registerHelper 'hasPermission', (user_id, options) ->
+  if user_id == Chaplin.mediator.user.get('id')
+    options.fn(this)
+
 Handlebars.registerHelper "if", (conditional, options) ->
   if conditional
     options.fn this
