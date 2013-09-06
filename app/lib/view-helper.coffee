@@ -39,6 +39,12 @@ Handlebars.registerHelper 'timely', (options) ->
     safe = new Handlebars.SafeString timely
     safe.string
 
+Handlebars.registerHelper 'gravatar', (email) ->
+  email = $.trim(email).toLowerCase()
+  hash = md5(email)
+  url = "http://www.gravatar.com/avatar/#{hash}"
+  return url
+
 Handlebars.registerHelper 'displayName', (user) ->
   if user.profile.first_name
     name = user.profile.first_name
