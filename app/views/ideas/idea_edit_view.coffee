@@ -7,6 +7,9 @@ module.exports = class IdeaEditView extends View
   key_bindings:
     'enter': 'save'
     'esc'  : 'exit'
+  events:
+    'click .submit': 'save'
+    'click .cancel': 'exit'
   listen:
     'change model': 'displayWhen'
 

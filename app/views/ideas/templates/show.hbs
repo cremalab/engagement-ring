@@ -3,15 +3,17 @@
     <img class="avatar" src="images/headshot.jpg" alt="">
   </div>
   <div class="ideaInfo">
-    <h2 class="ideaTitle">{{ title }} {{#timely}}{{ when }}{{/timely}}</h2>
+    <h2 class="ideaTitle">{{ title }} {{#if when}}<span class="ideaTitleWhen">— {{#timely}}{{ when }}{{/timely}}</span>{{/if}}</h2>
     {{#if description}}<p  class="ideaDescription">{{ description }}</p>{{/if}}
   </div>
   <div class="ideaAction">
     <button class='vote' data-bind='total_votes'>{{ total_votes }}</button>
     <div class="votes"></div>
-    {{#hasPermission user.id}}
-      <a href='#' class='destroy'>delete</a>
-      <a class='edit' href='#'>edit</a>
-    {{/hasPermission}}
   </div>
 </div>
+{{#hasPermission user.id}}
+<div class="ideaControl">
+  <button class='plain edit'   ></button>
+  <button class='plain destroy'></button>
+</div>
+{{/hasPermission}}

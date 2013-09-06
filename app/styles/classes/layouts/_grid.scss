@@ -19,7 +19,19 @@
   display: table-cell;
   vertical-align: top;
   &.h-spaced {
-    @extend .row;
+    @extend .column;
     border-spacing: unit() 0;
+  }
+  &.top {
+    @extend .column;
+    vertical-align: top;
+  }
+  &.middle {
+    @extend .column;
+    vertical-align: middle;
+  }
+  &.bottom {
+    @extend .column;
+    vertical-align: bottom;
   }
 }

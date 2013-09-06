@@ -1,8 +1,19 @@
-<h3>New Idea</h3>
+<div class="header">
+  <div class="headerTitle"><h3>New Idea</h3></div>
+  <div class="headerAction">
+    <button class="flyout cancel">
+      <div class="flyoutIcon"></div>
+      <div class="flyoutTray">
+        <div class="flyoutText"></div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="errors"></div>
 {{#if edited}}
   <p><strong>Warning:</strong> if you edit this idea, all votes on it will be lost.</p>
 {{/if}}
-<div class="errors"></div>
 <div class="formRow">
   <div class="formColumn">
     <div class="labelField">
