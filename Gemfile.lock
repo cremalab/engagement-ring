@@ -6,7 +6,10 @@ GEM
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
+    eventmachine (1.0.3)
     fssm (0.2.10)
+    node (0.0.2)
+      eventmachine
     sass (3.2.10)
 
 PLATFORMS
@@ -14,4 +17,5 @@ PLATFORMS
 
 DEPENDENCIES
   compass (~> 0.12.2)
+  node (~> 0.0.2)
   sass (~> 3.2.10)
