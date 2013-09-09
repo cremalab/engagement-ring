@@ -11,6 +11,9 @@ module.exports = class IdeaThreadView extends View
   textBindings: true
   listen:
     "change collection": "setOriginal"
+    'change': 'learn'
+  learn: ->
+    console.log @
 
   initialize: ->
     super
