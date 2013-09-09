@@ -5,4 +5,5 @@ module.exports = class Profile extends Model
     first_name: null
     last_name:  null
 
-  api_url: '/profiles'
+  urlRoot: ->
+    return Chaplin.mediator.apiURL('/profiles')

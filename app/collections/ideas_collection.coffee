@@ -3,7 +3,8 @@ Idea = require 'models/idea'
 
 module.exports = class Ideas extends Collection
   model: Idea
-  url: '/ideas'
+  urlRoot: ->
+    Chaplin.mediator.apiURL('/ideas')
   comparator: (idea) ->
     return idea.get('total_votes') * -1
 

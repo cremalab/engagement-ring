@@ -22,7 +22,8 @@ module.exports = class SessionsController extends Controller
     @setCurrentUser('clear')
     $.ajax
       type: 'GET'
-      url: '/logout'
+      urlRoot: ->
+        Chaplin.mediator.apiURL('/logout')
       success: =>
         @redirectTo "/"
 

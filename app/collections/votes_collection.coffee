@@ -3,4 +3,5 @@ Vote = require 'models/vote'
 
 module.exports = class Votes extends Collection
   model: Vote
-  url: '/votes'
+  urlRoot: ->
+    Chaplin.mediator.apiURL('/votes')

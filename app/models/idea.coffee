@@ -2,7 +2,8 @@ Model = require '/models/base/model'
 VotesCollection = require 'collections/votes_collection'
 
 module.exports = class Idea extends Model
-  api_url: '/ideas'
+  urlRoot: ->
+    Chaplin.mediator.apiURL('/ideas')
   paramRoot: 'idea'
   defaults:
     title: null           # string, validates_presence_of

@@ -5,7 +5,8 @@ IdeasCollection = require 'collections/ideas_collection'
 VotesCollection = require 'collections/votes_collection'
 
 module.exports = class IdeaThread extends Model
-  api_url: '/idea_threads'
+  urlRoot: ->
+    Chaplin.mediator.apiURL('/idea_threads')
   defaults:
     # ideas: new IdeasCollection()             # collection of IdeaVotes
     user_id: null
