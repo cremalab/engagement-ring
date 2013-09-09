@@ -39,8 +39,19 @@ Handlebars.registerHelper 'timely', (options) ->
     safe = new Handlebars.SafeString timely
     safe.string
 
-Handlebars.registerHelper 'hasPermission', (user_id) ->
-  user_id == Chaplin.mediator.user.get('id')
+Handlebars.registerHelper 'gravatar', (email) ->
+  email = $.trim(email).toLowerCase()
+  hash = md5(email)
+  url = "http://www.gravatar.com/avatar/#{hash}"
+  return url
+
+Handlebars.registerHelper 'displayName', (user) ->
+  if user.profile.first_name
+    name = user.profile.first_name
+  else
+    name = user.email
+  safe = new Handlebars.SafeString name
+  safe.string
 
 Handlebars.registerHelper 'hasPermission', (user_id, options) ->
   if user_id == Chaplin.mediator.user.get('id')
