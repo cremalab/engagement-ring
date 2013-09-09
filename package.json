@@ -10,7 +10,8 @@
   },
   "scripts": {
     "start": "brunch watch --server",
-    "test": "brunch test"
+    "test": "brunch test",
+    "postinstall": "brunch build --optimize"
   },
   "dependencies": {
     "javascript-brunch": ">= 1.0 < 1.8",
@@ -22,7 +23,9 @@
     "handlebars-brunch": ">= 1.0 < 1.8",
 
     "uglify-js-brunch": ">= 1.0 < 1.8",
-    "clean-css-brunch": ">= 1.0 < 1.8"
+    "clean-css-brunch": ">= 1.0 < 1.8",
+    "statik": ">= 1.1.0",
+    "brunch": "1.x"
   },
   "devDependencies": {}
 }
