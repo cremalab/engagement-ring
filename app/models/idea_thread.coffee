@@ -5,7 +5,7 @@ IdeasCollection = require 'collections/ideas_collection'
 VotesCollection = require 'collections/votes_collection'
 
 module.exports = class IdeaThread extends Model
-  urlRoot: 'http://localhost:3000/idea_threads'
+  api_url: '/idea_threads'
   defaults:
     # ideas: new IdeasCollection()             # collection of IdeaVotes
     user_id: null

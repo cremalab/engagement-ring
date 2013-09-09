@@ -22,7 +22,7 @@ module.exports = class SessionsController extends Controller
     @setCurrentUser('clear')
     $.ajax
       type: 'GET'
-      url: 'http://localhost:3000/logout'
+      url: '/logout'
       success: =>
         @redirectTo "/"
 

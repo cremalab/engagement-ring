@@ -5,4 +5,4 @@ module.exports = class Profile extends Model
     first_name: null
     last_name:  null
 
-  urlRoot: '/profiles'
+  api_url: '/profiles'

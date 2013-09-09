@@ -2,7 +2,7 @@ Model = require '/models/base/model'
 VotesCollection = require 'collections/votes_collection'
 
 module.exports = class Idea extends Model
-  urlRoot: 'http://localhost:3000/ideas'
+  api_url: '/ideas'
   paramRoot: 'idea'
   defaults:
     title: null           # string, validates_presence_of
