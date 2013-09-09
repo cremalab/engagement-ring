@@ -1,5 +1,7 @@
 exports.config =
   # See http://brunch.io/#documentation for docs.
+  server:
+    path: 'server.js', port: 3333, base: '/', run: yes
   files:
     javascripts:
       joinTo:

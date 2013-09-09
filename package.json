@@ -27,7 +27,7 @@
 
     "uglify-js-brunch": ">= 1.0 < 1.8",
     "clean-css-brunch": ">= 1.0 < 1.8",
-    "statik": ">= 1.4.2",
+    "express": ">=  3.4.0",
     "brunch": ">= 1.7.4"
   },
   "devDependencies": {}
