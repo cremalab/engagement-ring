@@ -23,6 +23,12 @@ module.exports = class IdeaThread extends Model
       ideas.add(idea)
       @set 'ideas', ideas
 
+  total_votes: ->
+    ideas = @get('ideas')
+    totals = ideas.pluck('total_votes')
+    totals.reduce (memo, num) ->
+      memo + num
+
   parse: (idea_thread) ->
     ideas = idea_thread.ideas
     idea_thread.ideas = new IdeasCollection(ideas)

@@ -1,21 +1,20 @@
 template = require './templates/form'
 View = require 'views/base/form_view'
 
-module.exports = class SessionEditView extends View
+module.exports = class LoginView extends View
   autoRender: true
   tagName: 'form'
   template: template
   events:
-    "submit": 'save'
+    "submit": 'save_session'
 
-  save: (e) ->
+  save_session: (e) ->
     e.preventDefault()
     e.stopPropagation()
     @setCreds()
-    e.preventDefault()
-    console.log @model
     if @model.isValid()
       @publishEvent 'login', @model
+      return false
   setCreds: ->
     email = @$el.find("[name='email']").val()
     password = @$el.find("[name='password']").val()

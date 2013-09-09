@@ -23,7 +23,6 @@ module.exports = class IdeasCollectionView extends CollectionView
     @thread_view = options.thread_view
     @thread_id   = @thread_view.model.get('id')
     @subscribeEvent 'saved_idea', @updateModel
-    @subscribeEvent 'vote', @checkVote
 
 
   addIdea: (e) ->

@@ -11,14 +11,13 @@ module.exports = class ProfilesController extends Controller
   index: ->
 
   edit: (params) ->
-    if params.id
-      @model = new User
-        id: params.id
-      @model.fetch()
-
-    @view = new UserEditView
-      model: @model
-      region: 'main'
+    @model = new User
+      id: Chaplin.mediator.user.get('id')
+    @model.fetch
+      success: =>
+        @view = new UserEditView
+          model: @model
+          region: 'main'
 
   new: (params) ->
     @model = new User()
@@ -32,7 +31,6 @@ module.exports = class ProfilesController extends Controller
     @model.fetch()
 
   update: (user) ->
-    console.log user
     user.save user.attributes,
       success: (user, response) =>
         @publishEvent 'set_current_user', response
