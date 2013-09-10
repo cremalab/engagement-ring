@@ -1,6 +1,0 @@
-%transition {
-  @include transition(all 0.15s ease-in-out);
-  &.slow {
-    @include transition(all 0.25s ease-in-out);
-  }
-}

@@ -1,0 +1,14 @@
+{
+  "name": "Backbone.ModelBinder",
+  "homepage": "https://github.com/theironcook/Backbone.ModelBinder",
+  "version": "1.0.4",
+  "_release": "1.0.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.4",
+    "commit": "7837d84f98b29d8a0314e45d176aa3a7fc42a55f"
+  },
+  "_source": "git://github.com/theironcook/Backbone.ModelBinder.git",
+  "_target": "*",
+  "_originalSource": "Backbone.ModelBinder"
+}
