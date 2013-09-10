@@ -1,0 +1,28 @@
+.grid
+  display: table
+  width: 100%
+  &.fixed
+    @extend .grid
+    table-layout: fixed
+
+.row
+  display: table-row
+  &.v-spaced
+    @extend .row
+    border-spacing: 0 unit()
+
+.column
+  display: table-cell
+  vertical-align: top
+  &.h-spaced
+    @extend .column
+    border-spacing: unit() 0
+  &.top
+    @extend .column
+    vertical-align: top
+  &.middle
+    @extend .column
+    vertical-align: middle
+  &.bottom
+    @extend .column
+    vertical-align: bottom
