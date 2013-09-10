@@ -3,6 +3,7 @@ Idea  = require '/models/idea'
 Vote = require '/models/vote'
 IdeasCollection = require 'collections/ideas_collection'
 VotesCollection = require 'collections/votes_collection'
+VotingRightsCollection = require 'collections/voting_rights_collection'
 
 module.exports = class IdeaThread extends Model
   urlRoot: ->
@@ -13,13 +14,16 @@ module.exports = class IdeaThread extends Model
 
   initialize: ->
     super
-
-    # else if @get('ideas').models is undefined
-    #   console.log 'test'
-    #   console.log @attributes
-    #   alert 'ick'
-    #   ideas = new IdeasCollection(@get('ideas'))
-    #   @set 'ideas', ideas
+    if @isNew()
+      current_user_id = Chaplin.mediator.user.get('id')
+      ideas = new IdeasCollection()
+      voting_rights = new VotingRightsCollection()
+      voting_rights.add
+        user_id: current_user_id
+      vote = new Vote
+      idea = new Idea
+      @set 'ideas', ideas
+      @set 'voting_rights', voting_rights
 
   total_votes: ->
     ideas = @get('ideas')
@@ -35,8 +39,10 @@ module.exports = class IdeaThread extends Model
   toJSON: ->
     ideas = this.get('ideas').toJSON()
     ideas = _.pluck(ideas, 'idea')
+    voting_rights = this.get('voting_rights').toJSON()
     new_attr = _.clone(this.attributes)
     delete new_attr.ideas
+    delete new_attr.voting_rights
     json = {idea_thread : new_attr}
-    _.extend json.idea_thread, {ideas_attributes: ideas}
+    _.extend json.idea_thread, {ideas_attributes: ideas, voting_rights_attributes: voting_rights}
     return json
