@@ -2,8 +2,8 @@ Model = require '/models/base/model'
 
 module.exports = class VotingRight extends Model
   defaults:
-    idea_thread_id: null       # fk
-    user_id: null       # fk
+    idea_thread_id: null
+    user_id: null
   urlRoot: ->
     Chaplin.mediator.apiURL('/voting_rights')
   initialize: ->
