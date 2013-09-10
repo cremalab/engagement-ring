@@ -20,6 +20,7 @@ module.exports = class IdeaThread extends Model
       voting_rights = new VotingRightsCollection()
       voting_rights.add
         user_id: current_user_id
+        autocomplete_value: current_user_id
       vote = new Vote
       idea = new Idea
       @set 'ideas', ideas
@@ -34,6 +35,8 @@ module.exports = class IdeaThread extends Model
   parse: (idea_thread) ->
     ideas = idea_thread.ideas
     idea_thread.ideas = new IdeasCollection(ideas)
+    voting_rights = idea_thread.voting_rights
+    idea_thread.voting_rights = new VotingRightsCollection(voting_rights)
     return idea_thread
 
   toJSON: ->

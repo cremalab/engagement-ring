@@ -24,10 +24,10 @@ module.exports = class IdeaThreadsController extends Controller
   index: ->
     @collection = new IdeaThreads()
     @collection.fetch()
+    console.log @collection
     @view = new IdeaThreadsCollectionView collection: @collection, region: 'main'
 
   update: (model, ideas_collection, ideas_collection_view, attrs) ->
-    console.log 'save'
     model.save attrs,
       success: (model) =>
         # console.log "SAVED"
@@ -37,7 +37,7 @@ module.exports = class IdeaThreadsController extends Controller
         # else
         #   ideas_collection_view.updateModel(model)
 
-    #   error: (model, response) =>
+      error: (model, response) =>
         console.log 'NNNNNOOOOO'
-    #     console.log $.parseJSON(response.responseText)
-    #     @publishEvent 'renderError', response
+        console.log $.parseJSON(response.responseText)
+        @publishEvent 'renderError', response

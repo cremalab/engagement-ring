@@ -6,6 +6,7 @@ VotingRight = require 'models/voting_right'
 VotingRights = require 'collections/voting_rights_collection'
 VotingRightsView = require 'views/voting_rights/voting_rights_collection_view'
 TagListInput = require 'views/form_elements/tag_list_input'
+UserSearchCollection = require 'collections/user_search_collection'
 IdeaThread = require 'models/idea_thread'
 
 module.exports = class IdeaThreadView extends View
@@ -40,16 +41,8 @@ module.exports = class IdeaThreadView extends View
 
   setupVotingRights: ->
     @voting_rights = @model.get('voting_rights')
-    console.log @voting_rights
-    @all_users = new Chaplin.Collection([
-      {name: 'Ross', autocomplete_search: 'Ross Brown', user_id: 1, autocomplete_value: 1},
-      {name: 'Rob', autocomplete_search: 'Rob LaFeve', user_id:2, autocomplete_value: 2},
-      {name: 'Bill', autocomplete_search: 'Bill Cool', user_id: 3, autocomplete_value: 3}
-    ])
-
-    @listenTo @voting_rights, 'add', =>
-      console.log @voting_rights
-      console.log 'added to profiles'
+    @all_users = new UserSearchCollection()
+    @all_users.fetch()
 
     @model.set 'voting_rights', @voting_rights
 
