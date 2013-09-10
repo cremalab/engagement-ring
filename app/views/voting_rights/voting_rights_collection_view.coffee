@@ -7,9 +7,4 @@ module.exports = class VotingRightsCollectionView extends CollectionView
   useCssAnimation: true
   animationStartClass: 'collection-animation'
   animationEndClass: 'collection-animation-end'
-  listSelector: '.collectionItems'
   itemView: VotingRightView
-
-  initialize: ->
-    super
-    console.log @

@@ -4,6 +4,7 @@ AutocompleteItem = require 'views/form_elements/autocomplete_item'
 
 module.exports = class AutocompleteList extends CollectionView
   itemView: AutocompleteItem
+  animationDuration: 0
   autoRender: true
   listen:
     'visibilityChange': 'resetIndex'
