@@ -27,14 +27,15 @@ module.exports = class IdeaThreadsController extends Controller
     @view = new IdeaThreadsCollectionView collection: @collection, region: 'main'
 
   update: (model, ideas_collection, ideas_collection_view) ->
-    model.save model.attributes,
-      success: (model) =>
-        if model.get('ideas')
-          ideas_collection.set(model.get('ideas').models)
-          idea = model.get('ideas').models[0]
-        else
-          ideas_collection_view.updateModel(model)
+    console.log model.toJSON()
+    # model.save model.attributes,
+    #   success: (model) =>
+    #     if model.get('ideas')
+    #       ideas_collection.set(model.get('ideas').models)
+    #       idea = model.get('ideas').models[0]
+    #     else
+    #       ideas_collection_view.updateModel(model)
 
-      error: (model, response) =>
-        console.log $.parseJSON(response.responseText)
-        @publishEvent 'renderError', response
+    #   error: (model, response) =>
+    #     console.log $.parseJSON(response.responseText)
+    #     @publishEvent 'renderError', response

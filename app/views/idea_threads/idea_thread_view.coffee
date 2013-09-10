@@ -2,6 +2,7 @@ View = require 'views/base/view'
 VotesCollection = require 'collections/votes_collection'
 IdeasCollection = require 'collections/ideas_collection'
 IdeasCollectionView = require 'views/ideas/ideas_collection_view'
+VotingRight = require 'models/voting_right'
 VotingRights = require 'collections/voting_rights_collection'
 VotingRightsView = require 'views/voting_rights/voting_rights_collection_view'
 TagListInput = require 'views/form_elements/tag_list_input'
@@ -39,26 +40,33 @@ module.exports = class IdeaThreadView extends View
     @setupVotingRights()
 
   setupVotingRights: ->
-    @profiles = new Chaplin.Collection()
-    @all_users = new Chaplin.Collection([{name: 'Ross', autocomplete_search: 'Ross'}, {name: 'Rob', autocomplete_search: 'Rob'}, {name: 'Bill', autocomplete_search: 'Bill'}])
+    @voting_rights = @model.get('voting_rights')
+    console.log @voting_rights
+    @all_users = new Chaplin.Collection([
+      {name: 'Ross', autocomplete_search: 'Ross Brown', user_id: 1, autocomplete_value: 1},
+      {name: 'Rob', autocomplete_search: 'Rob LaFeve', user_id:2, autocomplete_value: 2},
+      {name: 'Bill', autocomplete_search: 'Bill Cool', user_id: 3, autocomplete_value: 3}
+    ])
 
-    @listenTo @profiles, 'add', =>
-      console.log @profiles
+    @listenTo @voting_rights, 'add', =>
+      console.log @voting_rights
       console.log 'added to profiles'
 
+    @model.set 'voting_rights', @voting_rights
+
+    @voters_view = new VotingRightsView collection: @voting_rights, region: 'voters'
+
     profile_input = new TagListInput
-      model: @model
       source_collection: @all_users
-      collection: @profiles
+      collection: @voting_rights
       label: "Voters"
-      attr: "name"
-      full_name: true
+      attr: "id"
+      tag_model: VotingRight
       tag_template: require('./templates/voter')
       existing_only: true
       container: @$el
       containerMethod: 'prepend'
     @subview('profile_input', profile_input)
-
 
 
   save: ->

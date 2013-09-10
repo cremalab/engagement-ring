@@ -10,3 +10,11 @@ module.exports = class VotingRight extends Model
     super
     @bind 'remove', =>
       @destroy()
+
+  toJSON: ->
+    new_attr = _.clone(this.attributes)
+    new_attr = _.pick new_attr, [
+      'idea_thread_id',
+      'user_id'
+    ]
+    return new_attr

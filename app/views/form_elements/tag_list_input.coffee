@@ -18,6 +18,7 @@ module.exports = class TagListInput extends AutocompleteInput
 
   initialize: (options) ->
     super
+    @TagModel = options.tag_model
     @model = options.model
     @attr = options.attr
     @saveable = options.saveable
@@ -50,16 +51,16 @@ module.exports = class TagListInput extends AutocompleteInput
       e.stopPropagation()
       val = $(e.target).val()
       unless val is '' or @existing_only is true
-        tag = new Tag()
+        tag = new @TagModel()
         tag.set('autocomplete_value', val).set('autocomplete_search', val)
         @addTag tag
   addTag: (match) ->
-    tag = new Tag()
-    tag.set('autocomplete_search', match.get('autocomplete_search'))
-      .set('autocomplete_value', match.get('autocomplete_value'))
-      .set('name', match.get('autocomplete_search'))
+    tag = new @TagModel()
+    tag.set match.attributes
     normalized_name = tag.get('autocomplete_value')
     existing = @collection.findWhere({autocomplete_value: normalized_name})
+    console.log 'existing:'
+    console.log existing
     if existing
       existing_view = _.find @getItemViews(), (view) ->
         view.model.cid == existing.cid
