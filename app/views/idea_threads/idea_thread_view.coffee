@@ -46,9 +46,13 @@ module.exports = class IdeaThreadView extends View
 
     @model.set 'voting_rights', @voting_rights
 
-    @voters_view = new VotingRightsView collection: @voting_rights, region: 'voters'
+    @voters_view = new VotingRightsView
+      collection: @voting_rights
+      region: 'voters'
+      idea_thread: @model
 
     profile_input = new TagListInput
+      destination_model: @model
       source_collection: @all_users
       collection: @voting_rights
       label: "Voters"

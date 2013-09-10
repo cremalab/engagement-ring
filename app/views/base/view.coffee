@@ -21,10 +21,11 @@ module.exports = class View extends Chaplin.View
   state: ->
     return @state
 
-  initialize: ->
+  initialize: (options) ->
     super
     @hot_keys = _.keys @key_bindings
     @current_user = Chaplin.mediator.user
+    @collection_view = options.collection_view if options and options.collection_view
   render: ->
     @setState 'ready'
     super
