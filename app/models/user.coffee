@@ -6,7 +6,8 @@ module.exports = class User extends Model
     email: null
     profile: new Profile()
 
-  api_url: '/users/'
+  urlRoot: ->
+    Chaplin.mediator.apiURL('/users')
   # validate: ->
   #   if !@email or !@password
   #     return 'Please complete required fields'

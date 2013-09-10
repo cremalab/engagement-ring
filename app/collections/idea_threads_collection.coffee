@@ -3,7 +3,9 @@ IdeaThread = require 'models/idea_thread'
 
 module.exports = class IdeaThreads extends Collection
   model: IdeaThread
-  url: '/idea_threads'
+  urlRoot: ->
+    return Chaplin.mediator.apiURL('/idea_threads')
+  url: Chaplin.mediator.apiURL('/idea_threads')
   comparator: (a,b) ->
     a_time = a.get('updated_at')
     b_time = b.get('updated_at')
