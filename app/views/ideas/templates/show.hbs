@@ -11,20 +11,7 @@
     {{!-- <div class="votes"></div> --}}
   </div>
 </div>
-<div class="ideaVoters">
-  <span class="tooltip avatar" data-tooltip="{{ displayName user }}">
-    <img class="avatar small" src="{{ gravatar user.email }}" alt="{{ displayName user }}">
-  </span>
-  <span class="tooltip avatar" data-tooltip="{{ displayName user }}">
-    <img class="avatar small" src="{{ gravatar user.email }}" alt="{{ displayName user }}">
-  </span>
-  <span class="tooltip avatar" data-tooltip="{{ displayName user }}">
-    <img class="avatar small" src="{{ gravatar user.email }}" alt="{{ displayName user }}">
-  </span>
-  <span class="tooltip avatar" data-tooltip="{{ displayName user }}">
-    <img class="avatar small" src="{{ gravatar user.email }}" alt="{{ displayName user }}">
-  </span>
-</div>
+<div class="ideaVoters"></div>
 {{#hasPermission user.id}}
 <div class="ideaControl">
   <button class='plain edit'   ></button>

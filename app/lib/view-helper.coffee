@@ -47,7 +47,7 @@ Handlebars.registerHelper 'gravatar', (email) ->
 
 Handlebars.registerHelper 'displayName', (user) ->
   if user.profile.first_name
-    name = user.profile.first_name
+    name = "#{user.profile.first_name}#{if user.profile.last_name then ' ' + user.profile.last_name else ''}"
   else
     name = user.email
   safe = new Handlebars.SafeString name
