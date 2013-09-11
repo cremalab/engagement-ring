@@ -1,2 +1,3 @@
-{{ user.email }}
-{{#timely }}{{ created_at }}{{/timely}}
+<span class="tooltip avatar" data-tooltip="{{ displayName user }}">
+  <img class="avatar small" src="{{ gravatar user.email }}" alt="{{ displayName user }}">
+</span>
