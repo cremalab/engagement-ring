@@ -1,8 +1,7 @@
 <div class="ideaGrid {{#if original}}original{{/if}}">
   <div class="ideaAuthor">
-    <img class="avatar" src="{{ gravatar user.email }}" alt="">
+    <img class="avatar" src="{{ gravatar user.email }}" alt="{{ displayName user }}" title="{{ displayName user }}">
   </div>
-  {{ displayName user }}
   <div class="ideaInfo">
     <h2 class="ideaTitle">{{ title }} {{#if when}}<span class="ideaTitleWhen">— {{#timely}}{{ when }}{{/timely}}</span>{{/if}}</h2>
     {{#if description}}<p  class="ideaDescription">{{ description }}</p>{{/if}}
@@ -11,6 +10,20 @@
     <button class='vote' data-bind='total_votes'>{{ total_votes }}</button>
     {{!-- <div class="votes"></div> --}}
   </div>
+</div>
+<div class="ideaVoters">
+  <span class="tooltip avatar" data-tooltip="{{ displayName user }}">
+    <img class="avatar small" src="{{ gravatar user.email }}" alt="{{ displayName user }}">
+  </span>
+  <span class="tooltip avatar" data-tooltip="{{ displayName user }}">
+    <img class="avatar small" src="{{ gravatar user.email }}" alt="{{ displayName user }}">
+  </span>
+  <span class="tooltip avatar" data-tooltip="{{ displayName user }}">
+    <img class="avatar small" src="{{ gravatar user.email }}" alt="{{ displayName user }}">
+  </span>
+  <span class="tooltip avatar" data-tooltip="{{ displayName user }}">
+    <img class="avatar small" src="{{ gravatar user.email }}" alt="{{ displayName user }}">
+  </span>
 </div>
 {{#hasPermission user.id}}
 <div class="ideaControl">
