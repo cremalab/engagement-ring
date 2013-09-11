@@ -11,14 +11,12 @@ module.exports = class IdeaThreadView extends View
   textBindings: true
   listen:
     "change collection": "setOriginal"
-    'change': 'learn'
-  learn: ->
-    console.log @
 
   initialize: ->
     super
     @ideas = @model.get('ideas')
     @setOriginal()
+    @subscribeEvent "notifier", @notify
 
   setOriginal: ->
     @original_idea = @ideas.findWhere
@@ -35,3 +33,6 @@ module.exports = class IdeaThreadView extends View
 
   save: ->
     @publishEvent 'save_idea_thread', @model, @ideas
+
+  notify: (whatever) ->
+    alert whatever
