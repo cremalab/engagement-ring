@@ -153,5 +153,6 @@ module.exports = class IdeasCollectionView extends CollectionView
 
 
   checkEmpty: ->
+    console.log @collection
     if @collection.size() == 0
       @thread_view.model.destroy()
