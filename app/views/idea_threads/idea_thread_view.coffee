@@ -33,7 +33,7 @@ module.exports = class IdeaThreadView extends View
       original_idea: @original_idea
 
   save: ->
-    @publishEvent 'save_idea_thread', @model, @ideas
+    @publishEvent 'save_idea_thread', @model, @ideas, @collection_view
 
   notify: (whatever) ->
     alert whatever

@@ -2,6 +2,7 @@ CollectionView = require 'views/base/collection-view'
 Idea = require 'models/idea'
 IdeaView = require 'views/ideas/idea_view'
 IdeaEditView = require 'views/ideas/idea_edit_view'
+Vote = require 'models/vote'
 VotesCollection = require 'collections/votes_collection'
 template = require './templates/collection'
 
@@ -40,7 +41,10 @@ module.exports = class IdeasCollectionView extends CollectionView
 
   addIdea: (data) ->
     if @thread_id is data.idea_thread_id
-      @collection.add data
+      existing = @collection.findWhere
+        id: data.id
+      unless existing
+        @collection.add data
 
   editIdea: (model) ->
     @removeViewForItem(model)
@@ -93,7 +97,7 @@ module.exports = class IdeasCollectionView extends CollectionView
       user_id = 1
     vote = model.get('votes').findWhere
       user_id: user_id
-      @checkVote(vote, model)
+    @checkVote(vote, model, false)
 
 
   updateVote: (data) ->
@@ -101,38 +105,46 @@ module.exports = class IdeasCollectionView extends CollectionView
       id: data.idea_id
     if idea
       votes = idea.get('votes')
-      votes.add(data)
-      @checkVote()
+      vote = new Vote(data)
+      @checkVote(vote, idea, true)
 
   resort: ->
     @collection.sort()
 
-  checkVote: (vote, idea, votes) ->
+  checkVote: (vote, idea, remote) ->
     idea_in_collection = @collection.get(idea)
+    user_id = vote.get('user_id')
     if idea_in_collection
-      old_vote = @currentUserVote()
+      old_vote = @currentUserVote(user_id)
       if old_vote
-        @currentUserVotedIdea().get('votes').remove(old_vote)
+        if remote
+          @currentUserVotedIdea(user_id).get('votes').remove(old_vote)
+        else
+          old_vote.destroy()
       if vote
-        idea.get('votes').create vote.attributes,
-          wait: true
-          success: =>
-            @resort()
+        if remote
+          idea.get('votes').add vote
+          @resort()
+        else
+          idea.get('votes').create vote.attributes,
+            wait: true
+            success: =>
+              @resort()
       else
         @resort()
 
-  currentUserVote: (idea) ->
-    current_idea = @currentUserVotedIdea()
+  currentUserVote: (user_id) ->
+    current_idea = @currentUserVotedIdea(user_id)
     if current_idea
       votes = current_idea.get('votes')
       vote = votes.findWhere
-        user_id: @current_user.get('id')
+        user_id: user_id
       return vote
 
-  currentUserVotedIdea: ->
+  currentUserVotedIdea: (user_id) ->
     current_voted_idea = @collection.find (idea) =>
       vote = idea.get('votes').findWhere
-        user_id: @current_user.get('id')
+        user_id: user_id
       return true if vote
     return current_voted_idea
 

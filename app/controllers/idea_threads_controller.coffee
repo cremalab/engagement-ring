@@ -31,7 +31,7 @@ module.exports = class IdeaThreadsController extends Controller
       success: (model) =>
         if model.get('ideas')
           ideas_collection.set(model.get('ideas').models)
-          idea = model.get('ideas').models[0]
+          ideas_collection_view.updateModel(model)
         else
           ideas_collection_view.updateModel(model)
 

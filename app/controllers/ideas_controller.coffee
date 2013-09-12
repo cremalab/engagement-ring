@@ -36,3 +36,4 @@ module.exports = class IdeasController extends Controller
       error: (model, response) =>
         console.log $.parseJSON(response.responseText)
         @publishEvent 'renderError', response
+      silent: true

@@ -48,7 +48,7 @@ module.exports = class IdeaView extends View
       vote = new Vote
         user_id: Chaplin.mediator.user.get('id')
         idea_id: @model.get('id')
-      @collection_view.checkVote vote, @model, @votes
+      @collection_view.checkVote vote, @model
 
   toggleUserVote: (voted, user_vote) ->
     if voted

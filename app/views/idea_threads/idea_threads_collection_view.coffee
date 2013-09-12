@@ -38,3 +38,6 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
 
     @new_idea_thread = null
     @setupKeyBindings()
+
+  initItemView: (model) ->
+    new IdeaThreadView model: model, collection_view: @

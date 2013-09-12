@@ -8,5 +8,5 @@ module.exports = class Vote extends Model
     Chaplin.mediator.apiURL('/votes')
   initialize: ->
     super
-    @bind 'remove', =>
-      @destroy()
+    # @bind 'remove', =>
+    #   @destroy()

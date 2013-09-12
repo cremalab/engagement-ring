@@ -19,5 +19,7 @@ module.exports = class IdeaThreads extends Collection
 
 
   addIdeaThread: (attributes) ->
-    thing = new IdeaThread attributes
-    @add thing
+    existing = @findWhere
+      id: attributes.id
+    unless existing
+      @add attributes
