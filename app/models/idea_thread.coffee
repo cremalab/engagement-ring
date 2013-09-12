@@ -23,6 +23,9 @@ module.exports = class IdeaThread extends Model
         user_id: current_user_id
       ideas.add(idea)
       @set 'ideas', ideas
+    else if !@get('ideas').models
+      ideas = new IdeasCollection(@get('ideas'))
+      @set 'ideas', ideas
 
   total_votes: ->
     ideas = @get('ideas')

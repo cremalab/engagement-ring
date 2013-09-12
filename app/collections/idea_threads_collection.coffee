@@ -6,6 +6,9 @@ module.exports = class IdeaThreads extends Collection
   urlRoot: ->
     return Chaplin.mediator.apiURL('/idea_threads')
   url: Chaplin.mediator.apiURL('/idea_threads')
+  initialize: ->
+    super
+    @subscribeEvent 'notifier:update_idea_thread', @addIdeaThread
   comparator: (a,b) ->
     a_time = a.get('updated_at')
     b_time = b.get('updated_at')
@@ -13,3 +16,8 @@ module.exports = class IdeaThreads extends Collection
       return 1
     else
       return -1
+
+
+  addIdeaThread: (attributes) ->
+    thing = new IdeaThread attributes
+    @add thing

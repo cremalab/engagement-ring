@@ -16,16 +16,18 @@ module.exports = class IdeasCollectionView extends CollectionView
   key_bindings:
     'esc': 'escapeForm'
   events:
-    'click .ideate': 'addIdea'
+    'click .ideate': 'newIdea'
 
   initialize: (options) ->
     super
     @thread_view = options.thread_view
     @thread_id   = @thread_view.model.get('id')
     @subscribeEvent 'saved_idea', @updateModel
+    @subscribeEvent 'notifier:update_idea', @addIdea
+    @subscribeEvent 'notifier:update_vote', @updateVote
 
 
-  addIdea: (e) ->
+  newIdea: (e) ->
     e.preventDefault() if e
     idea_count = @collection.length
     idea = new Idea
@@ -35,6 +37,10 @@ module.exports = class IdeasCollectionView extends CollectionView
       user_id: @current_user.get('id')
 
     @collection.add idea, {at: idea_count + 1}
+
+  addIdea: (data) ->
+    if @thread_id is data.idea_thread_id
+      @collection.add data
 
   editIdea: (model) ->
     @removeViewForItem(model)
@@ -89,6 +95,14 @@ module.exports = class IdeasCollectionView extends CollectionView
       user_id: user_id
       @checkVote(vote, model)
 
+
+  updateVote: (data) ->
+    idea = @collection.findWhere
+      id: data.idea_id
+    if idea
+      votes = idea.get('votes')
+      votes.add(data)
+      @checkVote()
 
   resort: ->
     @collection.sort()
