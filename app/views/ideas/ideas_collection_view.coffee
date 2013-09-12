@@ -41,11 +41,14 @@ module.exports = class IdeasCollectionView extends CollectionView
 
   addIdea: (data) ->
     if @thread_id is data.idea_thread_id
-      existing = @collection.findWhere
-        id: data.id
-      console.log existing
-      unless existing
-        @collection.add data
+      console.log @collection
+      # existing = @collection.findWhere
+      #   id: data.id
+      # console.log 'THIS IDEA EXISTS?:'
+      # console.log existing
+      idea = new Idea(data)
+      console.log idea
+      @collection.add idea
 
   editIdea: (model) ->
     @removeViewForItem(model)
@@ -85,6 +88,7 @@ module.exports = class IdeasCollectionView extends CollectionView
       @thread_view.save()
     else
       @publishEvent 'save_idea', model, @collection, @
+      @collection.remove(model)
 
   updateModel: (model, collection) ->
     @editing_view.dispose() if @editing_view
@@ -124,6 +128,7 @@ module.exports = class IdeasCollectionView extends CollectionView
           idea.get('votes').add vote
           @resort()
         else
+          console.log 'd'
           idea.get('votes').create vote.attributes,
             wait: true
             success: =>

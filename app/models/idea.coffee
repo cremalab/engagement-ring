@@ -23,6 +23,8 @@ module.exports = class Idea extends Model
 
   toJSON: ->
     votes = this.get('votes').toJSON()
+    console.log "TO JSON VOTES"
+    console.log votes
     new_attr = _.clone(this.attributes)
     delete new_attr.votes
     json = {idea : new_attr}

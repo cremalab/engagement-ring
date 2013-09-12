@@ -2,6 +2,7 @@ View = require 'views/base/view'
 VotesCollection = require 'collections/votes_collection'
 IdeasCollection = require 'collections/ideas_collection'
 IdeasCollectionView = require 'views/ideas/ideas_collection_view'
+IdeaThread = require 'models/idea_thread'
 
 module.exports = class IdeaThreadView extends View
   template: require './templates/show'
@@ -12,11 +13,11 @@ module.exports = class IdeaThreadView extends View
   listen:
     "change collection": "setOriginal"
 
-  initialize: ->
+  initialize: (options) ->
     super
+    @collection_view = options.collection_view
     @ideas = @model.get('ideas')
     @setOriginal()
-    @subscribeEvent "notifier", @notify
 
   setOriginal: ->
     @original_idea = @model.get('ideas').findWhere
@@ -33,7 +34,6 @@ module.exports = class IdeaThreadView extends View
       original_idea: @original_idea
 
   save: ->
-    @publishEvent 'save_idea_thread', @model, @ideas, @collection_view
-
-  notify: (whatever) ->
-    alert whatever
+    attrs = _.clone @model.attributes
+    @publishEvent 'save_idea_thread', @model, @ideas, @collection_view, attrs
+    @dispose()
