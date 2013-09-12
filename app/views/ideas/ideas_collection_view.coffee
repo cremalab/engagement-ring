@@ -43,6 +43,7 @@ module.exports = class IdeasCollectionView extends CollectionView
     if @thread_id is data.idea_thread_id
       existing = @collection.findWhere
         id: data.id
+      console.log existing
       unless existing
         @collection.add data
 
@@ -90,13 +91,10 @@ module.exports = class IdeasCollectionView extends CollectionView
     @editing_view = null
     @new_idea = null
     @removeViewForItem model
-    if @current_user
-      user_id = @current_user.get('id')
-    else
-      # For tests until I find a better way
-      user_id = 1
+    user_id = model.get 'user_id'
     vote = model.get('votes').findWhere
       user_id: user_id
+
     @checkVote(vote, model, false)
 
 
