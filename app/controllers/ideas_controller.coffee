@@ -31,8 +31,6 @@ module.exports = class IdeasController extends Controller
 
   update: (model, collection, collection_view) ->
     model.save model.attributes,
-      success: (model) =>
-        @publishEvent 'saved_idea', model, collection
       error: (model, response) =>
         console.log $.parseJSON(response.responseText)
         @publishEvent 'renderError', response

@@ -13,16 +13,13 @@ module.exports = class IdeaThread extends Model
 
   initialize: ->
     super
-    if @isNew()
-      current_user_id = Chaplin.mediator.user.get('id')
-      ideas = new IdeasCollection()
-      vote = new Vote
-      idea = new Idea
-        user_id: current_user_id
-      idea.get('votes').add
-        user_id: current_user_id
-      ideas.add(idea)
-      @set 'ideas', ideas
+
+    # else if @get('ideas').models is undefined
+    #   console.log 'test'
+    #   console.log @attributes
+    #   alert 'ick'
+    #   ideas = new IdeasCollection(@get('ideas'))
+    #   @set 'ideas', ideas
 
   total_votes: ->
     ideas = @get('ideas')

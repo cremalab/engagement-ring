@@ -9,7 +9,6 @@ module.exports = class Idea extends Model
     title: null           # string, validates_presence_of
     description: null
     when: null            # datetime, allow nil
-    # votes: new IdeaVotesCollection()             # collection of IdeaVotes
     user_id: null
 
   initialize: ->

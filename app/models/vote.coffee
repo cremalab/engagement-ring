@@ -6,7 +6,3 @@ module.exports = class Vote extends Model
     user_id: null       # fk
   urlRoot: ->
     Chaplin.mediator.apiURL('/votes')
-  initialize: ->
-    super
-    @bind 'remove', =>
-      @destroy()

@@ -20,7 +20,6 @@ module.exports = class IdeaEditView extends View
   render: ->
     super
     Mousetrap.unbind('n')
-    # @natural_input = @$el.find('.natural-language')
     @natural_input = new DateInputView
       model: @model
       attr: 'when'
