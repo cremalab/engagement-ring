@@ -2,6 +2,7 @@ CollectionView = require 'views/base/collection-view'
 Idea = require 'models/idea'
 IdeaView = require 'views/ideas/idea_view'
 IdeaEditView = require 'views/ideas/idea_edit_view'
+Vote = require 'models/vote'
 VotesCollection = require 'collections/votes_collection'
 template = require './templates/collection'
 
@@ -16,16 +17,18 @@ module.exports = class IdeasCollectionView extends CollectionView
   key_bindings:
     'esc': 'escapeForm'
   events:
-    'click .ideate': 'addIdea'
+    'click .ideate': 'newIdea'
 
   initialize: (options) ->
     super
     @thread_view = options.thread_view
     @thread_id   = @thread_view.model.get('id')
     @subscribeEvent 'saved_idea', @updateModel
+    @subscribeEvent 'notifier:update_idea', @addIdea
+    @subscribeEvent 'notifier:update_vote', @updateVote
 
 
-  addIdea: (e) ->
+  newIdea: (e) ->
     e.preventDefault() if e
     idea_count = @collection.length
     idea = new Idea
@@ -35,6 +38,16 @@ module.exports = class IdeasCollectionView extends CollectionView
       user_id: @current_user.get('id')
 
     @collection.add idea, {at: idea_count + 1}
+
+  addIdea: (data) ->
+    if data.deleted
+      idea = @collection.findWhere
+        id: data.id
+      @collection.remove(idea) if idea
+    else
+      if @thread_id is data.idea_thread_id
+        idea = new Idea(data)
+        @collection.add idea
 
   editIdea: (model) ->
     @removeViewForItem(model)
@@ -74,51 +87,63 @@ module.exports = class IdeasCollectionView extends CollectionView
       @thread_view.save()
     else
       @publishEvent 'save_idea', model, @collection, @
+      @collection.remove(model)
 
   updateModel: (model, collection) ->
     @editing_view.dispose() if @editing_view
     @editing_view = null
     @new_idea = null
     @removeViewForItem model
-    if @current_user
-      user_id = @current_user.get('id')
-    else
-      # For tests until I find a better way
-      user_id = 1
+    user_id = model.get 'user_id'
     vote = model.get('votes').findWhere
       user_id: user_id
-      @checkVote(vote, model)
 
+    @checkVote(vote, model, false)
+
+
+  updateVote: (data) ->
+    unless data.deleted
+      idea = @collection.findWhere
+        id: data.idea_id
+      if idea
+        votes = idea.get('votes')
+        vote = new Vote(data)
+        @checkVote(vote, idea, true)
 
   resort: ->
     @collection.sort()
 
-  checkVote: (vote, idea, votes) ->
+  checkVote: (vote, idea, remote) ->
     idea_in_collection = @collection.get(idea)
+    user_id = vote.get('user_id')
     if idea_in_collection
-      old_vote = @currentUserVote()
+      old_vote = @currentUserVote(user_id)
       if old_vote
-        @currentUserVotedIdea().get('votes').remove(old_vote)
+        if remote
+          @currentUserVotedIdea(user_id).get('votes').remove(old_vote)
+        else
+          old_vote.destroy()
       if vote
-        idea.get('votes').create vote.attributes,
-          wait: true
-          success: =>
-            @resort()
+        if remote
+          idea.get('votes').add vote
+          @resort()
+        else
+          idea.get('votes').create vote.attributes
       else
         @resort()
 
-  currentUserVote: (idea) ->
-    current_idea = @currentUserVotedIdea()
+  currentUserVote: (user_id) ->
+    current_idea = @currentUserVotedIdea(user_id)
     if current_idea
       votes = current_idea.get('votes')
       vote = votes.findWhere
-        user_id: @current_user.get('id')
+        user_id: user_id
       return vote
 
-  currentUserVotedIdea: ->
+  currentUserVotedIdea: (user_id) ->
     current_voted_idea = @collection.find (idea) =>
       vote = idea.get('votes').findWhere
-        user_id: @current_user.get('id')
+        user_id: user_id
       return true if vote
     return current_voted_idea
 

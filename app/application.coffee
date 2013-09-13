@@ -1,10 +1,9 @@
 SessionsController = require 'controllers/sessions_controller'
 User = require 'models/user'
+Notifier = require 'models/notifier'
 
 # The application object.
 module.exports = class Application extends Chaplin.Application
-  initialize: ->
-    super
   initMediator: ->
     # Create a user property
     Chaplin.mediator.user = new User()
@@ -14,4 +13,5 @@ module.exports = class Application extends Chaplin.Application
       else
         "http://localhost:3000#{path}"
     Chaplin.mediator.sessions_controller = new SessionsController()
+    Chaplin.mediator.notifier = new Notifier()
     super
