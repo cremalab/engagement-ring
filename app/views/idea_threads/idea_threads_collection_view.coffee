@@ -24,7 +24,7 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
     super
     @subscribeEvent 'save_idea_thread', @cleanup
     @subscribeEvent 'escapeForm', @cleanup
-    @subscribeEvent 'notifier:update_idea_thread', @addIdeaThread
+    @subscribeEvent 'notifier:update_idea_thread', @updateIdeaThread
 
   newIdeaThread: (e) ->
     if @new_idea_thread
@@ -57,17 +57,22 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
   initItemView: (model) ->
     new IdeaThreadView model: model, collection_view: @
 
-  addIdeaThread: (attributes) ->
+  updateIdeaThread: (attributes) ->
     # existing = @findWhere
     #   id: attributes.id
     # unless existing
-    new_attr = _.clone attributes
-    delete new_attr.ideas
-    ideas = new IdeasCollection(attributes.ideas)
-    thread = new IdeaThread(attributes)
-    thread.set 'ideas', ideas
-    console.log 'thread that will be added'
-    console.log thread
-    @collection.add thread
-    # console.log 'collection'
-    # console.log @collection
+    if attributes.deleted
+      thread = @collection.findWhere
+        id: attributes.id
+      @collection.remove(thread) if thread
+    else
+      new_attr = _.clone attributes
+      delete new_attr.ideas
+      ideas = new IdeasCollection(attributes.ideas)
+      thread = new IdeaThread(attributes)
+      thread.set 'ideas', ideas
+      console.log 'thread that will be added'
+      console.log thread
+      @collection.add thread
+      # console.log 'collection'
+      # console.log @collection
