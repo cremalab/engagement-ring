@@ -128,11 +128,10 @@ module.exports = class IdeasCollectionView extends CollectionView
           idea.get('votes').add vote
           @resort()
         else
-          console.log 'd'
-          idea.get('votes').create vote.attributes,
-            wait: true
-            success: =>
-              @resort()
+          idea.get('votes').create vote.attributes
+            # wait: true
+            # # success: =>
+            # #   @resort()
       else
         @resort()
 
