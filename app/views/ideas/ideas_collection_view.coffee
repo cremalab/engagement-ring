@@ -40,9 +40,14 @@ module.exports = class IdeasCollectionView extends CollectionView
     @collection.add idea, {at: idea_count + 1}
 
   addIdea: (data) ->
-    if @thread_id is data.idea_thread_id
-      idea = new Idea(data)
-      @collection.add idea
+    if data.deleted
+      idea = @collection.findWhere
+        id: data.id
+      @collection.remove(idea) if idea
+    else
+      if @thread_id is data.idea_thread_id
+        idea = new Idea(data)
+        @collection.add idea
 
   editIdea: (model) ->
     @removeViewForItem(model)
@@ -97,12 +102,13 @@ module.exports = class IdeasCollectionView extends CollectionView
 
 
   updateVote: (data) ->
-    idea = @collection.findWhere
-      id: data.idea_id
-    if idea
-      votes = idea.get('votes')
-      vote = new Vote(data)
-      @checkVote(vote, idea, true)
+    unless data.deleted
+      idea = @collection.findWhere
+        id: data.idea_id
+      if idea
+        votes = idea.get('votes')
+        vote = new Vote(data)
+        @checkVote(vote, idea, true)
 
   resort: ->
     @collection.sort()
