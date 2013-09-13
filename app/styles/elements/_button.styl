@@ -1,120 +1,120 @@
 button
-  -webkit-appearance: none !important
-  -webkit-font-smoothing: antialiased
+  -webkit-appearance none !important
+  -webkit-font-smoothing antialiased
   @extend $transition
   @extend $rounded.extreme
   @extend $verticalSpacing
   @extend $border
-  font-family: inherit
-  font-size: 1em
-  font-weight: 200
-  width: 100%
-  padding: unit(0.35) unit(0.65)
-  white-space: nowrap
-  background: gray-light
-  color: black-light
+  font-family inherit
+  font-size 1em
+  font-weight 200
+  width 100%
+  padding unit(0.35) unit(0.65)
+  white-space nowrap
+  background gray-light
+  color black-light
   &:before
-    font-family: 'icomoon'
-    font-size: 0.7em
-    margin-right: unit(0.5)
+    font-family 'icomoon'
+    font-size 0.7em
+    margin-right unit(0.5)
 
 button.add
-  color: white
-  background: blue
+  color white
+  background blue
   &:before
-    content: "✚"
+    content "✚"
   &:active
-    background: blue-medium
+    background blue-medium
 
 // Flyout Button
 button.flyout
   @extend $transition.slow
   @extend .grid.fixed
-  padding: 0
+  padding 0
   > *
     @extend .column.middle
-    height: 26px
+    height 26px
 
   &:hover
     .flyoutIcon
       @extend $rotate
-      color: black
+      color black
     .flyoutText
-      position: relative
-      max-width: 50px
-      padding-right: unit(0.5)
-      opacity: 1
-      left: 0
+      position relative
+      max-width 50px
+      padding-right unit(0.5)
+      opacity 1
+      left 0
 
   // Subclasses
   &.cancel .flyoutIcon:before
-    content: "✕"
+    content "✕"
   &.cancel .flyoutText:before
-    content: "Cancel"
+    content "Cancel"
 
   .flyoutIcon
     @extend $transition
-    color: black-light
-    width: 100%
-    padding: 0 unit(0.45) 0 unit(0.5)
+    color black-light
+    width 100%
+    padding 0 unit(0.45) 0 unit(0.5)
 
   .flyoutTray
-    overflow: hidden
-    width: 0
+    overflow hidden
+    width 0
 
   .flyoutText
     @extend $transition.slow
-    max-width: 0px
-    opacity: 0
-    color: black
-    left: 100%
+    max-width 0px
+    opacity 0
+    color black
+    left 100%
 
 button.vote
-  color: black-light
-  background: white
+  color black-light
+  background white
   &:before
-    content: '✓'
+    content '✓'
 
   &:active
-    color: green-dark
-    background: green
+    color green-dark
+    background green
   &.voted
-    color: green-dark
-    background: green
+    color green-dark
+    background green
     &:active
-      background: green-light
+      background green-light
 
 button.plain
-  background: none
-  border: none
-  padding: 0
-  width: auto
-  border-radius: 0
+  background none
+  border none
+  padding 0
+  width auto
+  border-radius 0
   &.ideate
-    color: blue
+    color blue
     &:before
-      content: "⟳"
+      content "⟳"
     &:active
-      color: blue-medium
+      color blue-medium
 
   &.edit
     &:before
-      content: "✎"
-      margin: 0
+      content "✎"
+      margin 0
 
     &:hover
-      color: black 
+      color black 
 
   &.destroy
     &:before
-      content: "―"
-      margin: 0
+      content "―"
+      margin 0
     &:hover
-      color: red
+      color red
 
 button.submit
   @extend $verticalSpacing.double
-  color: white
-  background: blue
+  color white
+  background blue
   &:active
-    background: blue-medium
+    background blue-medium

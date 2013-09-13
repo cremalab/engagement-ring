@@ -10,8 +10,6 @@ module.exports = class IdeaView extends View
       "idea original"
     else
       "idea"
-  regions:
-    votes: '.votes'
   events:
     'click .vote': 'vote'
     'click .edit': 'edit'
@@ -29,8 +27,7 @@ module.exports = class IdeaView extends View
     @votes = @model.get('votes')
     votes_view = new VotesView
       collection: @votes
-      region: 'votes'
-      el: @$el.find('.votes')
+      el: @$el.find('.ideaVoters')
       idea_view: @
     @subview 'votes', votes_view
 

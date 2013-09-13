@@ -1,74 +1,80 @@
 // Idea Module
 .idea
-  position: relative
+  position relative
 
   // First Idea in List
   &:first-child
     @extend $boxPrimary
-    z-index: 1
+    z-index 1
   
   // Any Idea following another
   & + .idea
-    border-top: 0
-    margin: 0 unit(0.5)
+    border-top 0
+    margin 0 unit(0.5)
     @extend $boxSecondary
 
   // A new Idea
   &.edit
     @extend $box.thick
     @extend $shadow.inset.light
-    background: white
-    &:first-child
+    background white
+    &first-child
       @extend $shadow.light
 
   &.original
     &:before
       @extend $rounded.extreme
-      display: block
-      border: 1px solid blue
-      background: white
-      content: ""
-      position: absolute
-      width: unit(0.45)
-      height: unit(0.45)
-      top: unit(0.5)
-      left: unit(0.5)
+      display block
+      border 1px solid blue
+      background white
+      content ""
+      position absolute
+      width unit(0.45)
+      height unit(0.45)
+      top unit(0.5)
+      left unit(0.5)
 
 .ideaGrid
   @extend .grid
-  border-spacing: unit()
+  border-spacing unit()
   > *
     @extend .column
 
 .ideaAuthor
-  white-space: nowrap
-  line-height: 0
-  letter-spacing: 2.5rem
+  white-space nowrap
+  line-height 0
+  letter-spacing 2.5rem
 
-.idea:first-child .ideaAuthor
-  letter-spacing: 3rem
+.ideafirst-child .ideaAuthor
+  letter-spacing 3rem
 
 .ideaInfo
-  width: 100%
-  vertical-align: middle
+  width 100%
+  vertical-align middle
 
   .ideaTitle
-    line-height: 1.2
+    line-height 1.2
 
     .ideaTitleWhen
-      font-weight: 300
-      font-size: 0.875em
+      font-weight 300
+      font-size 0.875em
 
   .ideaDescription
     @extend $verticalSpacing.quarter
     &:before
-      content: "“"
+      content "“"
     &:after
-      content: "”"
+      content "”"
+
+.ideaVoters
+  @extend $box.thin
+  border-top: 1px solid gray-light
+  line-height 0
+  text-align right
 
 .ideaControl
   @extend $transition
-  position: absolute
-  top: unit(0.5)
-  right: - unit(0.5)
-  width: 0
+  position absolute
+  top unit(0.5)
+  right - unit(0.5)
+  width 0
