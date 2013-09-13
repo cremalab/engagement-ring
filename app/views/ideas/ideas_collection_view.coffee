@@ -41,13 +41,7 @@ module.exports = class IdeasCollectionView extends CollectionView
 
   addIdea: (data) ->
     if @thread_id is data.idea_thread_id
-      console.log @collection
-      # existing = @collection.findWhere
-      #   id: data.id
-      # console.log 'THIS IDEA EXISTS?:'
-      # console.log existing
       idea = new Idea(data)
-      console.log idea
       @collection.add idea
 
   editIdea: (model) ->
@@ -129,9 +123,6 @@ module.exports = class IdeasCollectionView extends CollectionView
           @resort()
         else
           idea.get('votes').create vote.attributes
-            # wait: true
-            # # success: =>
-            # #   @resort()
       else
         @resort()
 
