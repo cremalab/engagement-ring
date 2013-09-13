@@ -26,6 +26,11 @@ module.exports = class User extends Model
     user.profile = profile
     user
 
+  initialize: ->
+    super
+    profile = new Profile(@profile)
+    @set('profile', profile)
+
   display_name: ->
     if @get('profile').get('first_name')
       return @get('profile').get('first_name')
