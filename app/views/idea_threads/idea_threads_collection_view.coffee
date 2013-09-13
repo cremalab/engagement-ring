@@ -58,9 +58,6 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
     new IdeaThreadView model: model, collection_view: @
 
   updateIdeaThread: (attributes) ->
-    # existing = @findWhere
-    #   id: attributes.id
-    # unless existing
     if attributes.deleted
       thread = @collection.findWhere
         id: attributes.id
@@ -71,8 +68,4 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
       ideas = new IdeasCollection(attributes.ideas)
       thread = new IdeaThread(attributes)
       thread.set 'ideas', ideas
-      console.log 'thread that will be added'
-      console.log thread
       @collection.add thread
-      # console.log 'collection'
-      # console.log @collection

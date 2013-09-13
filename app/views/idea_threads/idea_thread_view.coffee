@@ -22,7 +22,6 @@ module.exports = class IdeaThreadView extends View
   setOriginal: ->
     @original_idea = @model.get('ideas').findWhere
       id: @model.get('original_idea_id')
-    console.log @original_idea
     @original_idea.set 'original', true
 
   render: ->

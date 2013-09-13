@@ -8,9 +8,6 @@ module.exports = class User extends Model
 
   urlRoot: ->
     Chaplin.mediator.apiURL('/users')
-  # validate: ->
-  #   if !@email or !@password
-  #     return 'Please complete required fields'
 
   toJSON: ->
     profile = this.get('profile').toJSON()
