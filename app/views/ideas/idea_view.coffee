@@ -14,8 +14,8 @@ module.exports = class IdeaView extends View
     'click .vote': 'vote'
     'click .edit': 'edit'
     'click .destroy': 'destroy'
-  # listen:
-  #   'model change': 'renderViewInCollection'
+  listen:
+    'model change': 'renderViewInCollection'
   textBindings: true
 
   initialize: (options) ->
