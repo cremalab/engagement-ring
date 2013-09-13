@@ -53,3 +53,9 @@ module.exports = class IdeaThread extends Model
     json = {idea_thread : new_attr}
     _.extend json.idea_thread, {ideas_attributes: ideas, voting_rights_attributes: voting_rights}
     return json
+
+  userCanVote: (user_id) ->
+    rights = @get 'voting_rights'
+    right = rights.findWhere
+      user_id: user_id
+    return right

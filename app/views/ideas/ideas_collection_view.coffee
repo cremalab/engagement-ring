@@ -96,16 +96,17 @@ module.exports = class IdeasCollectionView extends CollectionView
   checkVote: (vote, idea, votes) ->
     idea_in_collection = @collection.get(idea)
     if idea_in_collection
-      old_vote = @currentUserVote()
-      if old_vote
-        @currentUserVotedIdea().get('votes').remove(old_vote)
-      if vote
-        idea.get('votes').create vote.attributes,
-          wait: true
-          success: =>
-            @resort()
-      else
-        @resort()
+      if @thread_view.model.userCanVote(@current_user.id)
+        old_vote = @currentUserVote()
+        if old_vote
+          @currentUserVotedIdea().get('votes').remove(old_vote)
+        if vote
+          idea.get('votes').create vote.attributes,
+            wait: true
+            success: =>
+              @resort()
+        else
+          @resort()
 
   currentUserVote: (idea) ->
     current_idea = @currentUserVotedIdea()
