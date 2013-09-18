@@ -5,13 +5,14 @@ module.exports = class Notifier extends Model
   mediator = Chaplin.mediator
   initialize: ->
     super
-    es = new EventSource Chaplin.mediator.apiURL('/events')
-    listener = (event) =>
-      @notify(event)
+    PrivatePub.sign
+      server: "http://localhost:9292/faye"
+      channel: "message/channel"
 
-    es.addEventListener "open", listener
-    es.addEventListener "message", listener
-    es.addEventListener "error", listener
+    PrivatePub.subscribe "http://localhost:9292/faye", (data, channel) ->
+      console.log "PRIVATE"
+      console.log data
+      console.log channel
 
   notify: (event) ->
     data = jQuery.parseJSON(event.data)
