@@ -5,17 +5,20 @@ module.exports = class Notifier extends Model
   mediator = Chaplin.mediator
   initialize: ->
     super
-    PrivatePub.sign
-      server: "http://localhost:9292/faye"
-      channel: "message/channel"
+    if mediator.user.get('subscription')
+      subscription = mediator.user.get('subscription')
 
-    PrivatePub.subscribe "http://localhost:9292/faye", (data, channel) ->
-      console.log "PRIVATE"
-      console.log data
-      console.log channel
+      PrivatePub.sign
+        server: "http://localhost:9292/faye"
+        channel: subscription.channel
+        signature: subscription.signature
+        timestamp: subscription.timestamp
 
-  notify: (event) ->
-    data = jQuery.parseJSON(event.data)
+      PrivatePub.subscribe "/message/channel", (data, channel) =>
+        @notify(data)
+
+  notify: (data) ->
+    data = jQuery.parseJSON(data.message)
     model_name = data.model_name
     delete data.model_name
     switch model_name
