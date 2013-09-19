@@ -1,6 +1,7 @@
 Controller = require 'controllers/base/controller'
 UserSession = require 'models/user_session'
 User = require 'models/user'
+Notifier = require 'models/notifier'
 
 module.exports = class SessionsController extends Controller
 
@@ -74,4 +75,5 @@ module.exports = class SessionsController extends Controller
           xhr.setRequestHeader('X-Access-Token', auth.access_token)
     else
       @handleUnauthorized()
+    Chaplin.mediator.notifier = new Notifier()
     @publishEvent 'auth_complete'
