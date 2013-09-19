@@ -6,12 +6,15 @@ module.exports = class Notifier extends Model
   initialize: ->
     super
     if mediator.user.get('subscription')
+      secret = 'secret'
       subscription = mediator.user.get('subscription')
+      for_signature = "#{secret}#{subscription.channel}#{subscription.timestamp}"
+      signature = new SHA1(for_signature).hexdigest()
 
       PrivatePub.sign
         server: "http://localhost:9292/faye"
         channel: subscription.channel
-        signature: subscription.signature
+        signature: signature
         timestamp: subscription.timestamp
 
       PrivatePub.subscribe "/message/channel", (data, channel) =>

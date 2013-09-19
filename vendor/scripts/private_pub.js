@@ -36,10 +36,6 @@ function buildPrivatePub(doc) {
         if (message.channel == "/meta/subscribe") {
           // Attach the signature and timestamp to subscription messages
           var subscription = self.subscriptions[message.subscription];
-          console.log('subscript')
-          console.log(subscription)
-          console.log("messages")
-          console.log(message)
           if (!message.ext) message.ext = {};
           message.ext.private_pub_signature = subscription.signature;
           message.ext.private_pub_timestamp = subscription.timestamp;
@@ -55,11 +51,7 @@ function buildPrivatePub(doc) {
       self.subscriptions[options.channel] = options;
       self.faye(function(faye) {
         var sub = faye.subscribe(options.channel, self.handleResponse);
-        console.log('sub')
-        console.log(sub)
         self.subscriptionObjects[options.channel] = sub;
-        console.log('subscriptionObjects')
-        console.log(self.subscriptionObjects)
         if (options.subscription) {
           options.subscription(sub);
         }
@@ -67,8 +59,6 @@ function buildPrivatePub(doc) {
     },
 
     handleResponse: function(message) {
-      console.log("MESSAGE")
-      console.log(message)
       if (message.eval) {
         eval(message.eval);
       }
