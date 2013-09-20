@@ -6,6 +6,7 @@ IdeasCollection = require 'collections/ideas_collection'
 VotesCollection = require 'collections/votes_collection'
 Vote = require 'models/vote'
 Idea = require 'models/idea'
+VotingRights = require 'collections/voting_rights_collection'
 template = require './templates/collection'
 
 module.exports = class IdeaThreadsCollectionView extends CollectionView
@@ -65,7 +66,21 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
     else
       new_attr = _.clone attributes
       delete new_attr.ideas
+      delete new_attr.voting_rights
+      voting_rights = new VotingRights(attributes.voting_rights)
       ideas = new IdeasCollection(attributes.ideas)
-      thread = new IdeaThread(attributes)
-      thread.set 'ideas', ideas
-      @collection.add thread
+
+      existing = @collection.findWhere
+        id: attributes.id
+      if existing
+        console.log 'existing'
+        console.log existing
+        existing.set(new_attr)
+        existing.set 'ideas', ideas
+        existing.set 'voting_rights', voting_rights
+        @renderItem(existing)
+      else
+        thread = new IdeaThread(attributes)
+        thread.set 'ideas', ideas
+        thread.set 'voting_rights', voting_rights
+        @collection.add thread

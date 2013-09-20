@@ -1,6 +1,6 @@
 View = require 'views/base/form_view'
 
-module.exports = class DateInputView extends View
+module.exports = module.exports = class DateInputView extends View
   className: 'profileEdit'
   tagName: 'input'
   attributes:
