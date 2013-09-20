@@ -46,8 +46,16 @@ module.exports = class IdeasCollectionView extends CollectionView
       @collection.remove(idea) if idea
     else
       if @thread_id is data.idea_thread_id
-        idea = new Idea(data)
-        @collection.add idea
+        existing = @collection.findWhere
+          id: data.id
+        if existing
+          data = _.pick(data, ['title', 'description', 'when'])
+          existing.set data
+          @updateModel idea, @collection
+        else
+          idea = new Idea(data)
+          @collection.add idea
+          @updateModel idea, @collection
 
   editIdea: (model) ->
     @removeViewForItem(model)

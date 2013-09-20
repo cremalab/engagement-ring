@@ -14,13 +14,13 @@ module.exports = class IdeaView extends View
     'click .vote': 'vote'
     'click .edit': 'edit'
     'click .destroy': 'destroy'
-  # listen:
-  #   'model change': 'renderViewInCollection'
   textBindings: true
 
   initialize: (options) ->
     super
     @collection_view = options.collection_view
+    @listenTo @model, 'change', @renderViewInCollection
+    @listenTo @model, 'save', @renderViewInCollection
 
   render: ->
     super
@@ -64,5 +64,11 @@ module.exports = class IdeaView extends View
       success: =>
         @collection_view.checkEmpty()
 
-  renderViewInCollection: ->
-    @collection_view.renderItem(@model) if @collection_view
+  renderViewInCollection: (object) ->
+    changed = _.keys(object.changed)
+    console.log changed
+    console.log _.indexOf(changed, 'title') > 0
+    if _.indexOf(changed, 'title') > 0
+      @collection_view.renderItem(@model) if @collection_view
+      console.log 'changed'
+      console.log @model
