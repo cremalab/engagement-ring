@@ -22,7 +22,6 @@ module.exports = class Notifier extends Model
 
   notify: (data) ->
     data = jQuery.parseJSON(data.message)
-    console.log data
     model_name = data.model_name
     delete data.model_name
     switch model_name
