@@ -1,3 +1,9 @@
-<h1><input name='title' placeholder="Topic" /></h1>
+<h1>
+  <input name='title' placeholder="Topic" />
+</h1>
+{{#if id}}
+  <a href="/ideas/{{id}}" class='permalink'>Permalink</a>
+{{/if}}
+<br/><br/>
 <div class='voters'></div>
 <div class='ideas'></div>
