@@ -25,6 +25,7 @@ module.exports = class IdeaThreadsController extends Controller
   index: ->
     @collection = new IdeaThreads()
     @collection.fetch()
+    console.log @collection
     @view = new IdeaThreadsCollectionView collection: @collection, region: 'main'
 
   show: (params) ->
