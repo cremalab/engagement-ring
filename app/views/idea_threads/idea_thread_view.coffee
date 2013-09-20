@@ -7,7 +7,6 @@ VotingRights = require 'collections/voting_rights_collection'
 VotingRightsView = require 'views/voting_rights/voting_rights_collection_view'
 TagListInput = require 'views/form_elements/tag_list_input'
 UserSearchCollection = require 'collections/user_search_collection'
-IdeaThread = require 'models/idea_thread'
 
 module.exports = class IdeaThreadView extends View
   template: require './templates/show'
@@ -26,7 +25,7 @@ module.exports = class IdeaThreadView extends View
     @setOriginal()
 
   setOriginal: ->
-    @original_idea = @model.get('ideas').findWhere
+    @original_idea = @ideas.findWhere
       id: @model.get('original_idea_id')
     @original_idea.set 'original', true
 
@@ -66,6 +65,4 @@ module.exports = class IdeaThreadView extends View
 
 
   save: ->
-    attrs = _.clone @model.attributes
     @publishEvent 'save_idea_thread', @model, @ideas, @collection_view, attrs
-    @dispose()

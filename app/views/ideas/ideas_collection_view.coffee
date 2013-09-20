@@ -121,6 +121,9 @@ module.exports = class IdeasCollectionView extends CollectionView
       if old_vote
         if remote
           @currentUserVotedIdea(user_id).get('votes').remove(old_vote)
+            wait: true
+            success: =>
+              @resort()
         else
           old_vote.destroy()
       if vote
