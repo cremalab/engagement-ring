@@ -64,23 +64,30 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
         id: attributes.id
       @collection.remove(thread) if thread
     else
-      new_attr = _.clone attributes
-      delete new_attr.ideas
-      delete new_attr.voting_rights
-      voting_rights = new VotingRights(attributes.voting_rights)
-      ideas = new IdeasCollection(attributes.ideas)
+      rights = new VotingRights(attributes.voting_rights)
+      right = rights.findWhere
+        user_id: @current_user.get('id')
+      console.log right
+      if right
+        # existing_thread =
+        # if @thread_view.thread.userCanVote @current_user.get('id')
+        new_attr = _.clone attributes
+        delete new_attr.ideas
+        delete new_attr.voting_rights
+        voting_rights = new VotingRights(attributes.voting_rights)
+        ideas = new IdeasCollection(attributes.ideas)
 
-      existing = @collection.findWhere
-        id: attributes.id
-      if existing
-        console.log 'existing'
-        console.log existing
-        existing.set(new_attr)
-        existing.set 'ideas', ideas
-        existing.set 'voting_rights', voting_rights
-        @renderItem(existing)
-      else
-        thread = new IdeaThread(attributes)
-        thread.set 'ideas', ideas
-        thread.set 'voting_rights', voting_rights
-        @collection.add thread
+        existing = @collection.findWhere
+          id: attributes.id
+        if existing
+          console.log 'existing'
+          console.log existing
+          existing.set(new_attr)
+          existing.set 'ideas', ideas
+          existing.set 'voting_rights', voting_rights
+          @renderItem(existing)
+        else
+          thread = new IdeaThread(attributes)
+          thread.set 'ideas', ideas
+          thread.set 'voting_rights', voting_rights
+          @collection.add thread
