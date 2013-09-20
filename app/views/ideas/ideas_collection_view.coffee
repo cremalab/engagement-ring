@@ -124,13 +124,11 @@ module.exports = class IdeasCollectionView extends CollectionView
     idea_in_collection = @collection.get(idea)
     user_id = vote.get('user_id')
     if idea_in_collection and @thread_view.model.userCanVote(@current_user.id)
+      console.log 'can vote'
       old_vote = @currentUserVote(user_id)
       if old_vote
         if remote
           @currentUserVotedIdea(user_id).get('votes').remove(old_vote)
-            wait: true
-            success: =>
-              @resort()
         else
           old_vote.destroy()
       if vote
@@ -164,6 +162,5 @@ module.exports = class IdeasCollectionView extends CollectionView
 
 
   checkEmpty: ->
-    console.log @collection
     if @collection.size() == 0
       @thread_view.model.destroy()

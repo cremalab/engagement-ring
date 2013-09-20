@@ -12,7 +12,7 @@ module.exports = class Notifier extends Model
       signature = new SHA1(for_signature).hexdigest()
 
       PrivatePub.sign
-        server: "http://localhost:9292/faye"
+        server: mediator.streamURL('/faye')
         channel: subscription.channel
         signature: signature
         timestamp: subscription.timestamp

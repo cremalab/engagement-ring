@@ -12,5 +12,10 @@ module.exports = class Application extends Chaplin.Application
         "http://cremalab-ideas-api.herokuapp.com#{path}"
       else
         "http://localhost:3000#{path}"
+    Chaplin.mediator.streamURL = (path) ->
+      if window.location.host.indexOf('localhost') == -1
+        "http://cremalab-ideas-live.herokuapp.com#{path}"
+      else
+        "http://localhost:9292#{path}"
     Chaplin.mediator.sessions_controller = new SessionsController()
     super
