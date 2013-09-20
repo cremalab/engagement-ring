@@ -44,11 +44,6 @@ module.exports = class IdeaThreadView extends View
       original_idea: @original_idea
     @setupVotingRights()
 
-  handleChange: ->
-    changed = _.keys @model.changed
-    if _.indexOf changed, 'title' > 0
-      @save()
-
   setupVotingRights: ->
     @voting_rights = @model.get('voting_rights')
     @all_users = new UserSearchCollection()
