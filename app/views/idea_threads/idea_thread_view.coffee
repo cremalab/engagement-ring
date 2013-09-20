@@ -23,6 +23,7 @@ module.exports = class IdeaThreadView extends View
     @collection_view = options.collection_view
     @ideas = @model.get('ideas')
     @setOriginal()
+    console.log @
 
   setOriginal: ->
     @original_idea = @ideas.findWhere
@@ -65,4 +66,7 @@ module.exports = class IdeaThreadView extends View
 
 
   save: ->
+    attrs = _.clone @model.attributes
     @publishEvent 'save_idea_thread', @model, @ideas, @collection_view, attrs
+    @collection_view.collection.remove @model
+    @dispose()

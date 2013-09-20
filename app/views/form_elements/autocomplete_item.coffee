@@ -5,6 +5,7 @@ template = require './templates/tag'
 module.exports = class AutocompleteItem extends View
   autoRender: true
   template: template
+  className: 'dropdownItem'
   listen:
     'change:active model': 'setActiveClass'
   events:

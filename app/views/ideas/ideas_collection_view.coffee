@@ -46,8 +46,16 @@ module.exports = class IdeasCollectionView extends CollectionView
       @collection.remove(idea) if idea
     else
       if @thread_id is data.idea_thread_id
-        idea = new Idea(data)
-        @collection.add idea
+        existing = @collection.findWhere
+          id: data.id
+        if existing
+          data = _.pick(data, ['title', 'description', 'when'])
+          existing.set data
+          @updateModel existing, @collection
+        else
+          idea = new Idea(data)
+          @collection.add idea
+          @updateModel idea, @collection
 
   editIdea: (model) ->
     @removeViewForItem(model)
@@ -93,12 +101,11 @@ module.exports = class IdeasCollectionView extends CollectionView
     @editing_view.dispose() if @editing_view
     @editing_view = null
     @new_idea = null
-    @removeViewForItem model
     user_id = model.get 'user_id'
     vote = model.get('votes').findWhere
       user_id: user_id
 
-    @checkVote(vote, model, false)
+    @checkVote(vote, model, false) if vote
 
 
   updateVote: (data) ->

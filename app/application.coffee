@@ -13,5 +13,4 @@ module.exports = class Application extends Chaplin.Application
       else
         "http://localhost:3000#{path}"
     Chaplin.mediator.sessions_controller = new SessionsController()
-    Chaplin.mediator.notifier = new Notifier()
     super

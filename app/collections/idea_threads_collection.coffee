@@ -6,8 +6,6 @@ module.exports = class IdeaThreads extends Collection
   urlRoot: ->
     return Chaplin.mediator.apiURL('/idea_threads')
   url: Chaplin.mediator.apiURL('/idea_threads')
-  initialize: ->
-    super
 
   comparator: (a,b) ->
     a_time = a.get('updated_at')

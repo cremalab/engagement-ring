@@ -4,6 +4,7 @@ IdeaThread = require 'models/idea_thread'
 IdeaThreads = require 'collections/idea_threads_collection'
 IdeaThreadsCollectionView = require 'views/idea_threads/idea_threads_collection_view'
 IdeaEditView = require 'views/ideas/idea_edit_view'
+IdeaThreadView = require 'views/idea_threads/idea_thread_view'
 
 module.exports = class IdeaThreadsController extends Controller
 
@@ -27,17 +28,18 @@ module.exports = class IdeaThreadsController extends Controller
     console.log @collection
     @view = new IdeaThreadsCollectionView collection: @collection, region: 'main'
 
+  show: (params) ->
+    @model = new IdeaThread
+      id: params.id
+    @model.fetch
+      success: =>
+        @view = new IdeaThreadView model: @model, region: 'main'
+
   update: (model, ideas_collection, ideas_collection_view, attrs) ->
     model.save attrs,
       success: (model) =>
-        # console.log "SAVED"
-        # if model.get('ideas')
-        #   ideas_collection.set(model.get('ideas').models)
-        #   ideas_collection_view.updateModel(model)
-        # else
-        #   ideas_collection_view.updateModel(model)
+        console.log "SAVED"
 
       error: (model, response) =>
-        console.log 'NNNNNOOOOO'
         console.log $.parseJSON(response.responseText)
         @publishEvent 'renderError', response
