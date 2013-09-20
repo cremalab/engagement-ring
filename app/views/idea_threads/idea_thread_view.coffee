@@ -23,7 +23,6 @@ module.exports = class IdeaThreadView extends View
     @collection_view = options.collection_view
     @ideas = @model.get('ideas')
     @setOriginal()
-    console.log @
 
   setOriginal: ->
     @original_idea = @ideas.findWhere
@@ -60,7 +59,7 @@ module.exports = class IdeaThreadView extends View
       tag_model: VotingRight
       tag_template: require('./templates/voter')
       existing_only: true
-      container: @$el
+      region: 'voters'
       containerMethod: 'prepend'
     @subview('profile_input', profile_input)
 

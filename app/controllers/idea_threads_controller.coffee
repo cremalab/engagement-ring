@@ -33,7 +33,7 @@ module.exports = class IdeaThreadsController extends Controller
       id: params.id
     @model.fetch
       success: =>
-        @view = new IdeaThreadView model: @model, region: 'main'
+        @view = new IdeaThreadView model: @model, region: 'main', autoRender: true
 
   update: (model, ideas_collection, ideas_collection_view, attrs) ->
     model.save attrs,
