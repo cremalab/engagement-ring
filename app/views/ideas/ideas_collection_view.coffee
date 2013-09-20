@@ -51,7 +51,7 @@ module.exports = class IdeasCollectionView extends CollectionView
         if existing
           data = _.pick(data, ['title', 'description', 'when'])
           existing.set data
-          @updateModel idea, @collection
+          @updateModel existing, @collection
         else
           idea = new Idea(data)
           @collection.add idea
@@ -101,12 +101,11 @@ module.exports = class IdeasCollectionView extends CollectionView
     @editing_view.dispose() if @editing_view
     @editing_view = null
     @new_idea = null
-    @removeViewForItem model
     user_id = model.get 'user_id'
     vote = model.get('votes').findWhere
       user_id: user_id
 
-    @checkVote(vote, model, false)
+    @checkVote(vote, model, false) if vote
 
 
   updateVote: (data) ->

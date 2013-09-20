@@ -65,6 +65,7 @@ module.exports = class IdeaView extends View
         @collection_view.checkEmpty()
 
   renderViewInCollection: (object) ->
+    console.log 'CHANGED'
     changed = _.keys(object.changed)
     console.log changed
     console.log _.indexOf(changed, 'title') > 0
