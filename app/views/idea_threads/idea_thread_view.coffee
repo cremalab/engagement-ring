@@ -31,12 +31,23 @@ module.exports = class IdeaThreadView extends View
 
   render: ->
     super
+    @$el.find("input[name='title']").on 'keydown', (e) =>
+      if e.keyCode is 13
+        @model.set('title', $(e.target).val())
+        @save()
+    @modelBinder = new Backbone.ModelBinder()
+    @modelBinder.bind @model, @$el
     @ideas_view = new IdeasCollectionView
       collection: @ideas
       region: 'ideas'
       thread_view: @
       original_idea: @original_idea
     @setupVotingRights()
+
+  handleChange: ->
+    changed = _.keys @model.changed
+    if _.indexOf changed, 'title' > 0
+      @save()
 
   setupVotingRights: ->
     @voting_rights = @model.get('voting_rights')

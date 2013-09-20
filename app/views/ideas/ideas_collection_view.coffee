@@ -124,7 +124,6 @@ module.exports = class IdeasCollectionView extends CollectionView
     idea_in_collection = @collection.get(idea)
     user_id = vote.get('user_id')
     if idea_in_collection and @thread_view.model.userCanVote(@current_user.id)
-      console.log 'can vote'
       old_vote = @currentUserVote(user_id)
       if old_vote
         if remote

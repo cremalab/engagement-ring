@@ -30,7 +30,7 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
   newIdeaThread: (e) ->
     if @new_idea_thread
       new_idea_thread_view = @viewForModel(@new_idea_thread)
-      new_idea_thread_view.$el.find('input:visible:first').focus()
+      @$el.find("input[name='title']").focus()
     else
       current_user_id = @current_user.get('id')
       ideas = new IdeasCollection()
