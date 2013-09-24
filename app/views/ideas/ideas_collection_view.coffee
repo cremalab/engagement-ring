@@ -126,10 +126,7 @@ module.exports = class IdeasCollectionView extends CollectionView
     if idea_in_collection and @thread_view.model.userCanVote(@current_user.id)
       old_vote = @currentUserVote(user_id)
       if old_vote
-        if remote
-          @currentUserVotedIdea(user_id).get('votes').remove(old_vote)
-        else
-          old_vote.destroy()
+        @currentUserVotedIdea(user_id).get('votes').remove(old_vote)
       if vote
         if remote
           idea.get('votes').add vote
