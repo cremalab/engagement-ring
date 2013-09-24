@@ -12,7 +12,7 @@ module.exports = class View extends Chaplin.View
     @template
 
   setState: (state) ->
-    console.log "setting state of #{@constructor.name} #{@cid} to #{state}"
+    # console.log "setting state of #{@constructor.name} #{@cid} to #{state}"
     _.each _.keys @states, (state) ->
       @$el.removeClass(state)
     name = @states[state]['name']

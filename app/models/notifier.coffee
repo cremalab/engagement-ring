@@ -6,6 +6,7 @@ module.exports = class Notifier extends Model
   initialize: ->
     super
     if mediator.user.get('subscription')
+      console.log mediator.user.get('subscription')
       secret = 'ef86e27e03206aae17f800e700fa98ff0e8ac779c1741d1dbf90d3a3d34df2b8'
       subscription = mediator.user.get('subscription')
       for_signature = "#{secret}#{subscription.channel}#{subscription.timestamp}"
