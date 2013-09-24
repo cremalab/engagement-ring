@@ -12,6 +12,8 @@ module.exports = class Notifier extends Model
       for_signature = "#{secret}#{subscription.channel}#{subscription.timestamp}"
       signature = new SHA1(for_signature).hexdigest()
 
+      console.log signature
+
       PrivatePub.sign
         server: mediator.streamURL('/faye')
         channel: subscription.channel
