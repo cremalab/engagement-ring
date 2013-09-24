@@ -15,7 +15,7 @@ module.exports = class CollectionView extends Chaplin.CollectionView
     'sync:end collection': 'clearState'
 
   setState: (state) ->
-    console.log "setting state of #{@constructor.name} #{@cid} to #{state}"
+    # console.log "setting state of #{@constructor.name} #{@cid} to #{state}"
     _.each _.keys @states, (state) ->
       @$el.removeClass(state)
     name = @states[state]['name']

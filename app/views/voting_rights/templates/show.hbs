@@ -1,2 +1,4 @@
 {{ autocomplete_search }}
-<a href='#' class='remove'>remove</a>
+{{#hasPermission thread_user_id }}
+  <a href='#' class='remove'>remove</a>
+{{/hasPermission}}

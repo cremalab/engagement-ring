@@ -16,7 +16,7 @@ module.exports = class VotingRightsCollectionView extends CollectionView
     @idea_thread = options.idea_thread
 
   initItemView: (model) ->
-    new VotingRightView model: model, collection_view: @
+    new VotingRightView model: model, collection_view: @, idea_thread: @idea_thread
 
   setThreadID: (voting_right,b,c) ->
     unless @idea_thread.isNew()

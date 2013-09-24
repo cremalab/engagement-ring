@@ -59,8 +59,6 @@ module.exports = class TagListInput extends AutocompleteInput
     tag.set match.attributes
     normalized_name = tag.get('autocomplete_value')
     existing = @collection.findWhere({autocomplete_value: normalized_name})
-    console.log 'existing:'
-    console.log existing
     if existing
       existing_view = _.find @getItemViews(), (view) ->
         view.model.cid == existing.cid
