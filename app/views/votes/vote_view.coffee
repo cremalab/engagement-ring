@@ -14,5 +14,4 @@ module.exports = class VoteView extends View
   render: ->
     super
     user = new User(@model.get('user'))
-    console.log user
     @$el.attr('data-tooltip', user.display_name())

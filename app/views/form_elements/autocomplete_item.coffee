@@ -11,7 +11,6 @@ module.exports = class AutocompleteItem extends View
   events:
     'click': 'activate'
   initialize: (options) ->
-    console.log options
     # if options.collectionView.options.item_template_base
     #   @templateName = "#{options.collectionView.options.item_template_base}/list_item"
     # else
