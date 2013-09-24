@@ -31,8 +31,6 @@ module.exports = class FormView extends View
       @model.on "invalid", (model, error) =>
         console.log error
         @renderError(error)
-    console.log 'render'
-    console.log @
 
   startSync: ->
     @setState 'syncing'
