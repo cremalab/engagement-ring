@@ -123,7 +123,6 @@ module.exports = class IdeasCollectionView extends CollectionView
   checkVote: (vote, idea, remote) ->
     idea_in_collection = @collection.get(idea)
     user_id = vote.get('user_id')
-    console.log @thread_view.model
     if idea_in_collection and @thread_view.model.userCanVote(@current_user.id)
       old_vote = @currentUserVote(user_id)
       if old_vote
