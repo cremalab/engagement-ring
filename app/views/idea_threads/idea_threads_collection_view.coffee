@@ -20,6 +20,11 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
     'click .add': 'newIdeaThread'
   key_bindings:
     'n': 'newIdeaThread'
+  filterer: (item, index) ->
+    if item.get('status') is 'archived'
+      return false
+    else
+      return true
 
   initialize: ->
     super
