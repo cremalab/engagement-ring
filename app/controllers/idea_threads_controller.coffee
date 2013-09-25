@@ -33,6 +33,7 @@ module.exports = class IdeaThreadsController extends Controller
     @model.fetch
       success: =>
         @view = new IdeaThreadView model: @model, region: 'main', autoRender: true
+        @adjustTitle @model.get('title')
 
   update: (model, ideas_collection, ideas_collection_view, attrs) ->
     model.save attrs,
