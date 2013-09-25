@@ -18,10 +18,11 @@ module.exports = class Notifier extends Model
         timestamp: subscription.timestamp
 
       PrivatePub.subscribe "/message/channel", (data, channel) =>
-        @notify(data)
+        data = jQuery.parseJSON(data.message)
+        @notifyWeb(data)
+        @notifyApp(data)
 
-  notify: (data) ->
-    data = jQuery.parseJSON(data.message)
+  notifyApp: (data) ->
     model_name = data.model_name
     delete data.model_name
     switch model_name
@@ -31,3 +32,23 @@ module.exports = class Notifier extends Model
         mediator.publish 'notifier:update_idea', data
       when 'Vote'
         mediator.publish 'notifier:update_vote', data
+
+  notifyWeb: (data) ->
+    model_name = data.model_name
+    delete data.model_name
+    switch model_name
+      when 'IdeaThread'
+        notification = @createWebNotification("New Idea Thread", data.title)
+        notification.show()
+      # when 'Idea'
+      # when 'Vote'
+
+    notification.show() if notification
+
+  createWebNotification: (title, content) ->
+    if window.webkitNotifications.checkPermission() is 0 # 0 is PERMISSION_ALLOWED
+      # function defined in step 2
+      notification = window.webkitNotifications.createNotification "icon.png", title, content
+      return notification
+    else
+      window.webkitNotifications.requestPermission()
