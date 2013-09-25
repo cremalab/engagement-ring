@@ -18,8 +18,6 @@ module.exports = class Notifier extends Model
         timestamp: subscription.timestamp
 
       PrivatePub.subscribe "/message/channel", (data, channel) =>
-        console.log data
-        console.log channel
         @notify(data)
 
   notify: (data) ->
