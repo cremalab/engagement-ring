@@ -17,6 +17,8 @@ module.exports = class IdeaThreadView extends View
   textBindings: true
   listen:
     "change collection": "setOriginal"
+  events:
+    'click .archive': 'archive'
 
   initialize: (options) ->
     super
@@ -75,3 +77,8 @@ module.exports = class IdeaThreadView extends View
     @publishEvent 'save_idea_thread', @model, @ideas, @collection_view, attrs
     @collection_view.collection.remove @model
     @dispose()
+
+  archive: (e) ->
+    e.preventDefault()
+    @model.set 'status', 'archived'
+    @save()
