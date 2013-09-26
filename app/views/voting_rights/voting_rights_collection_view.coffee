@@ -25,7 +25,7 @@ module.exports = class VotingRightsCollectionView extends CollectionView
   initialize: (options) ->
     super
     @idea_thread = options.idea_thread
-    @subscribeEvent 'saved_group', @handleGroupSave
+    @subscribeEvent 'saved_group', @cleanupGroupForm
     @setupGroups()
 
   render: ->
@@ -55,15 +55,20 @@ module.exports = class VotingRightsCollectionView extends CollectionView
     e.preventDefault()
     @$group_form.show()
 
+    Mousetrap.bind 'esc', (e) =>
+      @cleanupGroupForm()
+
   saveGroup: (e) ->
     e.preventDefault()
     e.stopPropagation()
     name = @$group_form.find('.group-name').val()
     @collection.saveAsGroup(name)
 
-  handleGroupSave: (model) ->
+  cleanupGroupForm: (model) ->
     @$group_form.find('input').val()
     @$group_form.hide()
+    Mousetrap.unbind('esc')
+    @publishEvent 'reset_top_level_keys'
 
   updateGroupUI: ->
     $save_link = @$el.find('.save-group')
