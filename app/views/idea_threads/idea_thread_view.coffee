@@ -20,10 +20,11 @@ module.exports = class IdeaThreadView extends View
   events:
     'click .archive': 'archive'
 
+
   initialize: (options) ->
     super
     @collection_view = options.collection_view
-    @ideas = @model.get('ideas')
+    @ideas  = @model.get('ideas')
     @setOriginal()
 
   setOriginal: ->

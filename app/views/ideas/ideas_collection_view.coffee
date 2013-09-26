@@ -26,6 +26,8 @@ module.exports = class IdeasCollectionView extends CollectionView
     @subscribeEvent 'saved_idea', @updateModel
     @subscribeEvent 'notifier:update_idea', @addIdea
     @subscribeEvent 'notifier:update_vote', @updateVote
+    @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
+    @subscribeEvent 'escapeForm', @checkEmpty
 
 
   newIdea: (e) ->
@@ -160,4 +162,8 @@ module.exports = class IdeasCollectionView extends CollectionView
 
   checkEmpty: ->
     if @collection.size() == 0
-      @thread_view.model.destroy()
+      if @thread_view.model
+        if @thread_view.model.isNew()
+          @thread_view.model.dispose()
+        else
+          @thread_view.model.destroy()
