@@ -8,6 +8,7 @@ module.exports = class GroupsController extends Controller
     @subscribeEvent 'save_group', @update
 
   update: (model) ->
+    console.log model.toJSON()
     model.save model.attributes,
       error: (model, response) =>
         @publishEvent 'renderError', response

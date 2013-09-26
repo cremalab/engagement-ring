@@ -41,6 +41,5 @@ module.exports = class VotingRightsCollectionView extends CollectionView
   saveGroup: (e) ->
     e.preventDefault()
     e.stopPropagation()
-
-    console.log @collection
-    @collection.saveAsGroup()
+    name = @$group_form.find('.group-name').val()
+    @collection.saveAsGroup(name)
