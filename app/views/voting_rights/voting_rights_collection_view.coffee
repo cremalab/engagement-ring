@@ -2,7 +2,7 @@ CollectionView = require 'views/base/collection-view'
 VotingRight = require 'models/voting_right'
 VotingRightView = require 'views/voting_rights/voting_right_view'
 Groups          = require  'collections/groups_collection'
-GroupsCollectionView = require 'views/groups/groups_collection_view'
+GroupsCollectionView = require 'views/groups/idea_groups_collection_view'
 template = require './templates/collection'
 
 module.exports = class VotingRightsCollectionView extends CollectionView

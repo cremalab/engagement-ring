@@ -1,9 +1,9 @@
 CollectionView = require 'views/base/collection-view'
 Group     = require 'models/group'
 GroupView = require 'views/groups/group_view'
-show_template = require './templates/show'
+show_template = require './templates/idea_show'
 
-module.exports = class GroupsCollectionView extends CollectionView
+module.exports = class IdeaGroupsCollectionView extends CollectionView
   animationDuration: 0
   useCssAnimation: true
   animationStartClass: 'collection-animation'

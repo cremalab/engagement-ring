@@ -1,1 +1,6 @@
-<a href='#' class='add-group'>{{ name }}</a>
+<h3>
+  {{ name }}
+  {{#hasPermission owner_id}}
+    <a href='#' class='destroy'>delete</a>
+  {{/hasPermission}}
+</h3>
