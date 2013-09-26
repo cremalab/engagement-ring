@@ -13,6 +13,8 @@ module.exports = class VotingRightsCollectionView extends CollectionView
   listSelector: '.voting-rights'
   listen:
     'add collection': 'setThreadID'
+    'add collection': 'updateGroupUI'
+    'remove collection': 'updateGroupUI'
   events:
     'click .save-group': 'promptForGroupName'
     'submit .group-form': 'saveGroup'
@@ -20,11 +22,13 @@ module.exports = class VotingRightsCollectionView extends CollectionView
   initialize: (options) ->
     super
     @idea_thread = options.idea_thread
+    @subscribeEvent 'saved_group', @handleGroupSave
 
   render: ->
     super
     @$group_form = @$el.find('.group-form')
     @$group_form.hide()
+    @updateGroupUI()
 
   initItemView: (model) ->
     new VotingRightView model: model, collection_view: @, idea_thread: @idea_thread
@@ -43,3 +47,14 @@ module.exports = class VotingRightsCollectionView extends CollectionView
     e.stopPropagation()
     name = @$group_form.find('.group-name').val()
     @collection.saveAsGroup(name)
+
+  handleGroupSave: (model) ->
+    @$group_form.find('input').val()
+    @$group_form.hide()
+
+  updateGroupUI: ->
+    $save_link = @$el.find('.save-group')
+    if @collection.length > 1
+      $save_link.show()
+    else
+      $save_link.hide()
