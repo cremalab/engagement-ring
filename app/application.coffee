@@ -1,4 +1,5 @@
 SessionsController = require 'controllers/sessions_controller'
+GroupsController = require 'controllers/groups_controller'
 User = require 'models/user'
 Notifier = require 'models/notifier'
 
@@ -18,4 +19,5 @@ module.exports = class Application extends Chaplin.Application
       else
         "http://localhost:9292#{path}"
     Chaplin.mediator.sessions_controller = new SessionsController()
+    Chaplin.mediator.groups_controller   = new GroupsController()
     super
