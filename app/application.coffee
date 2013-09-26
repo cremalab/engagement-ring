@@ -1,5 +1,5 @@
 SessionsController = require 'controllers/sessions_controller'
-GroupsController = require 'controllers/groups_controller'
+GroupsController   = require 'controllers/groups_controller'
 User = require 'models/user'
 Notifier = require 'models/notifier'
 

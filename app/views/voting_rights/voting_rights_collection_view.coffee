@@ -1,6 +1,8 @@
 CollectionView = require 'views/base/collection-view'
 VotingRight = require 'models/voting_right'
 VotingRightView = require 'views/voting_rights/voting_right_view'
+Groups          = require  'collections/groups_collection'
+GroupsCollectionView = require 'views/groups/groups_collection_view'
 template = require './templates/collection'
 
 module.exports = class VotingRightsCollectionView extends CollectionView
@@ -18,11 +20,13 @@ module.exports = class VotingRightsCollectionView extends CollectionView
   events:
     'click .save-group': 'promptForGroupName'
     'submit .group-form': 'saveGroup'
+    'click .show-groups': 'toggleGroups'
 
   initialize: (options) ->
     super
     @idea_thread = options.idea_thread
     @subscribeEvent 'saved_group', @handleGroupSave
+    @setupGroups()
 
   render: ->
     super
@@ -37,6 +41,15 @@ module.exports = class VotingRightsCollectionView extends CollectionView
     unless @idea_thread.isNew()
       voting_right.set 'idea_thread_id', @idea_thread.get('id')
       voting_right.save()
+
+  setupGroups: ->
+    @groups = new Groups()
+    @groups.on 'setVotingRights', (voting_rights) =>
+      @toggleGroups()
+      _.each voting_rights, (right) =>
+        # add to collection unless it's in there already
+        unless @collection.findWhere(right)
+          @collection.add(right)
 
   promptForGroupName: (e) ->
     e.preventDefault()
@@ -58,3 +71,15 @@ module.exports = class VotingRightsCollectionView extends CollectionView
       $save_link.show()
     else
       $save_link.hide()
+
+  toggleGroups: (e) ->
+    e.preventDefault() if e
+    @$el.find('.show-groups').toggleClass('active')
+    if !@subview('my_groups') or @subview('my_groups').disposed
+      groups_view = new GroupsCollectionView
+        collection: @groups
+        container: @$el
+      @subview 'my_groups', groups_view
+    else
+      @removeSubview('my_groups') if @subview('my_groups')
+
