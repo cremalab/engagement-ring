@@ -5,18 +5,34 @@ IdeaThread = require 'models/idea_thread'
 IdeaThreadView = require 'views/idea_threads/idea_thread_view'
 Vote = require 'models/vote'
 User = require 'models/user'
+NotifierStubs = require 'test/lib/notifier_stubs'
+VotingRights  = require 'collections/voting_rights_collection'
+
+
+# Note! Many view methods are triggered by events from the Notifier class which
+# passes along JSON from the Faye server. For tests, these are stubbed out in
+# NotifierStubs - test/lib/notifier_stubs
 
 describe 'IdeasCollectionView', ->
   beforeEach ->
     Chaplin.mediator.user = new User
       email: 'test@cremalab.com'
       id: 1
+    Chaplin.mediator.apiURL = (path) ->
+      "http://nowhere.local/#{path}"
     @current_user = Chaplin.mediator.user
     @user_id = @current_user.get('id')
 
     @idea_thread = new IdeaThread
       user_id: 1
       id: 1
+      voting_rights: new VotingRights
+
+    @idea_thread.get('voting_rights').add
+      autocomplete_search: "Ross Brown"
+      autocomplete_value: @current_user.get('id')
+      idea_thread_id: 1
+      user_id: @current_user.get('id')
 
     @thread_view = new IdeaThreadView
       model: @idea_thread
@@ -27,63 +43,89 @@ describe 'IdeasCollectionView', ->
       region: 'ideas'
       thread_view: @thread_view
 
-    @first_idea = new Idea
-      title: 'Newest Idea'
-      description: 'fresh'
-      user_id: @user_id
-      id: 1
-
-    @second_idea = new Idea
-      title: 'Pancakes for lunch'
-      description: 'with blueberries on top'
-      user_id: @user_id
-      id: 2
-      votes: []
-
   afterEach ->
     @view.dispose()
     @thread_view.dispose()
 
-  it 'should add ideas', ->
-    idea_count = @view.collection.size()
-    @view.addIdea()
-    expect(@view.collection.size()).to.equal idea_count + 1
-    expect(@view.$el.find("[name='title']").length).to.equal 1
-    expect(@view.$el.find("[name='description']").length).to.equal 1
-    expect(@view.$el.find("[name='when']").length).to.equal 1
 
-  it 'should vote for new alternate ideas a user creates', ->
+  it 'should add idea on click of button', ->
+    idea_count = @collection.size()
+    @view.$el.find('.ideate').click()
+    expect(@collection.size()).to.equal idea_count + 1
 
-    @collection.add @first_idea
+    # new idea should not have an id
+    expect(@collection.last().get('id')).to.be.an('undefined')
 
-    @first_idea.get('votes').add
-      user_id: @user_id
-      idea_id: 1
+  it 'should add idea on faye event', ->
+    idea_count = @collection.size()
+    notifier = NotifierStubs.idea(1, @view.thread_id)
 
-    @collection.add @second_idea
+    @view.addIdea(notifier)
+    expect(@collection.size()).to.equal idea_count + 1
 
-    @second_idea.get('votes').add
-      user_id: @user_id
-      idea_id: 2
+  it 'should update idea on faye event', ->
+    notifier = NotifierStubs.idea(1, @view.thread_id)
+    @view.addIdea(notifier)
+    idea_count = @collection.size()
+    notifier['title'] = 'Boogaloo'
+    @view.addIdea(notifier)
 
-    Chaplin.mediator.publish('saved_idea', @first_idea, @collection)
-    expect(@first_idea.get('votes').length).to.equal 0
-    expect(@first_idea.get('votes').length).to.equal > 0
+    expect(@collection.size()).to.equal idea_count
+    re = new RegExp("\\b(" + notifier['title'] + ")\\b", 'ig')
+    expect(@view.$el.text()).to.match(re)
 
-  it 'should only allow one vote per collection', ->
-    @collection.add @first_idea
-    @first_idea.get('votes').add
-      user_id: @user_id
-      idea_id: 1
-    expect(@first_idea.get('votes').length).to.equal 1
 
-    @collection.add @second_idea
-    new_vote = new Vote
-      user_id: @user_id
-      idea_id: 2
-    @second_idea.get('votes').add(new_vote)
+  it 'should remove idea on faye event', ->
+    @collection.add({id: 1, title: "Goodbye cruel world!"})
+    idea_count = @collection.size()
 
-    Chaplin.mediator.publish 'vote', new_vote, @second_idea
-    expect(@first_idea.get('votes').length).to.equal 0
-    expect(@view.currentUserVote().get('idea_id')).to.equal(2)
-    expect(@view.currentUserVotedIdea()).to.equal @second_idea
+    notifier = NotifierStubs.deleted_idea(1, @view.thread_id)
+
+    @view.addIdea(notifier)
+    expect(@collection.size()).to.equal idea_count - 1
+
+  it 'should insert idea form on edit', ->
+    @collection.add({id: 1, title: "Incorrect title"})
+    model = @collection.last()
+    @view.editIdea(model)
+    expect(@view.editing_view).to.exist
+    expect(model.get('edited')).to.be.true
+    expect(@view.editing_view.constructor.name).to.equal('IdeaEditView')
+
+  it 'should unset edited property of idea on cancel', ->
+    @collection.add({id: 1, title: "Incorrect title"})
+    model = @collection.last()
+    @view.editIdea(model)
+    expect(model.get('edited')).to.be.true
+    @view.$el.find('.cancel').click()
+    expect(model.get('edited')).to.be.a('undefined')
+    expect(@view.editing_view).to.not.be.ok
+
+  it 'should render edit view if model is new', ->
+    @collection.add({title: "Incorrect title"})
+    model = @collection.last()
+    expect(@view.viewForModel(model).constructor.name).to.equal('IdeaEditView')
+
+  it 'should render show view if model has ID', ->
+    @collection.add({id: 1, title: "Incorrect title"})
+    model = @collection.last()
+    expect(@view.viewForModel(model).constructor.name).to.equal('IdeaView')
+
+
+  it 'should reassign user vote', ->
+    idea_stub = NotifierStubs.idea(1, @view.thread_id)
+    _.extend idea_stub, {votes: [{user_id: @current_user.get('id'), idea_id: 1, id:1}]}
+    @view.addIdea(idea_stub)
+    idea = @collection.last()
+
+    expect(idea.get('votes').length).to.equal 1
+
+    idea_stub['title'] = "Better idea"
+    idea_stub['id']    = 2
+    _.extend idea_stub, {votes: [{user_id: @current_user.get('id'), idea_id: 2, id: 2}]}
+
+    @view.addIdea(idea_stub)
+    second_idea = @collection.last()
+
+    expect(idea.get('votes').length).to.equal 0
+    expect(second_idea.get('votes').length).to.equal 1

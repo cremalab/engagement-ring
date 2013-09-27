@@ -25,7 +25,7 @@ module.exports = class IdeaThreadView extends View
     super
     @collection_view = options.collection_view
     @ideas  = @model.get('ideas')
-    @setOriginal()
+    @setOriginal() if @ideas
 
   setOriginal: ->
     @original_idea = @ideas.findWhere
