@@ -111,8 +111,14 @@ describe 'IdeasCollectionView', ->
     model = @collection.last()
     expect(@view.viewForModel(model).constructor.name).to.equal('IdeaView')
 
+  it 'should add user vote from faye event', ->
+    @collection.add({id: 1, title: "Cool idea"})
+    expect(@collection.last().get('votes').length).to.equal 0
+    vote = NotifierStubs.vote(1, @current_user.get('id'))
+    @view.updateVote(vote)
+    expect(@collection.last().get('votes').length).to.equal 1
 
-  it 'should reassign user vote', ->
+  it 'should reassign user vote when adding idea', ->
     idea_stub = NotifierStubs.idea(1, @view.thread_id)
     _.extend idea_stub, {votes: [{user_id: @current_user.get('id'), idea_id: 1, id:1}]}
     @view.addIdea(idea_stub)
@@ -129,3 +135,6 @@ describe 'IdeasCollectionView', ->
 
     expect(idea.get('votes').length).to.equal 0
     expect(second_idea.get('votes').length).to.equal 1
+
+
+
