@@ -17,15 +17,10 @@ module.exports = class CurrentUserInfoView extends View
     @checkNotificationPrefs()
 
   storeUser: ->
-    console.log 'stored'
     store.set('current_user', @model.attributes)
-    console.log store.get('current_user')
 
   checkNotificationPrefs: ->
     @browser_permission = window.webkitNotifications.checkPermission()
-
-    console.log 'browser_permission'
-    console.log @browser_permission
 
     if @browser_permission is 0 and @model.get('notifications')
       @model.set('notifications', true)
@@ -46,7 +41,9 @@ module.exports = class CurrentUserInfoView extends View
           if window.webkitNotifications.checkPermission() is 0
             @model.set('notifications', true)
 
-    @model.save @model.attributes,
+    attrs = _.clone @model.attributes
+    delete attrs.profile
+    @model.save attrs,
       success: (user, response) =>
         @publishEvent 'set_current_user', response
         @render()

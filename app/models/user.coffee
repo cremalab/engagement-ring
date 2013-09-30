@@ -14,6 +14,7 @@ module.exports = class User extends Model
     new_attr = _.clone(this.attributes)
     delete new_attr.auth
     delete new_attr.profile
+    console.log new_attr
     json = {user : new_attr}
     _.extend json.user, {profile_attributes: profile}
     return json
@@ -25,8 +26,9 @@ module.exports = class User extends Model
 
   initialize: ->
     super
-    profile = new Profile(@profile)
-    @set('profile', profile)
+    unless @get('profile').constructor.name is 'Profile'
+      profile = new Profile(@get('profile'))
+      @set('profile', profile)
 
   display_name: ->
     if @get('profile').get('first_name')
