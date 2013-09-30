@@ -22,10 +22,19 @@ module.exports = class CurrentUserInfoView extends View
   checkNotificationPrefs: ->
     @browser_permission = window.webkitNotifications.checkPermission()
 
-    if @browser_permission is 0 and @model.get('notifications')
-      @model.set('notifications', true)
+    if @model.get('notifications')
+      if @browser_permission != 0
+        @model.set('notifications', false)
+        attrs = _.clone @model.attributes
+        delete attrs.profile
+        @model.save attrs,
+          success: (user, response) =>
+            @publishEvent 'set_current_user', response
+            @render()
+
     else
       @model.set('notifications', false)
+      attrs = _.clone @model.attributes
 
   setNotificationPrefs: (e) ->
     window.webkitNotifications.requestPermission()
@@ -40,6 +49,7 @@ module.exports = class CurrentUserInfoView extends View
         window.webkitNotifications.requestPermission (whatever) =>
           if window.webkitNotifications.checkPermission() is 0
             @model.set('notifications', true)
+            @render()
 
     attrs = _.clone @model.attributes
     delete attrs.profile

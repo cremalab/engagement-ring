@@ -14,7 +14,6 @@ module.exports = class User extends Model
     new_attr = _.clone(this.attributes)
     delete new_attr.auth
     delete new_attr.profile
-    console.log new_attr
     json = {user : new_attr}
     _.extend json.user, {profile_attributes: profile}
     return json
