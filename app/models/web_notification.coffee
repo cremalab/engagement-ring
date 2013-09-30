@@ -8,7 +8,6 @@ module.exports = class WebNotification extends Model
     @createWebNotification()
 
   createWebNotification: (title, content) ->
-    # function defined in step 2
     @notification = window.webkitNotifications.createNotification "/icon.png", @get('title'), @get('content')
     if @notification
       @notification.show()
