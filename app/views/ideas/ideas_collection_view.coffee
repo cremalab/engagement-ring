@@ -160,10 +160,6 @@ module.exports = class IdeasCollectionView extends CollectionView
 
     return current_voted_idea
 
-  removeCurrentUserVote: ->
-    vote = @currentUserVote()
-    vote.destroy() if vote
-
 
   checkEmpty: ->
     if @collection.size() == 0

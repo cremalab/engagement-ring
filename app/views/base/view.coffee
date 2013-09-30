@@ -56,4 +56,8 @@ module.exports = class View extends Chaplin.View
           if @model.get(attr) is undefined
             $el.text ''
           else
-            $el.text @model.get(attr)
+            if attr is 'when'
+              timely = moment(@model.get(attr)).calendar()
+              $el.text timely
+            else
+              $el.text @model.get(attr)
