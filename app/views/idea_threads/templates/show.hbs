@@ -1,13 +1,16 @@
 <h1>
-  <input name='title' placeholder="Topic" />
+  <input data-bind='title' name='title' placeholder="Topic"  autofocus />
 </h1>
 {{#if id}}
   <a href="/ideas/{{id}}" class='permalink'>Permalink</a>
 {{/if}}
 <br/><br/>
 {{#hasPermission user_id }}
-  <a href='#' class='archive'>ARCHIVE</a>
+  {{#if id}}
+    <a href='#' class='archive'>ARCHIVE</a>
+  {{/if}}
 {{/hasPermission}}
-{{ status }}
+
 <div class='voters'></div>
+
 <div class='ideas'></div>

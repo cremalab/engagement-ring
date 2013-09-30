@@ -63,6 +63,10 @@ Handlebars.registerHelper 'hasPermission', (user_id, options) ->
   if user_id == Chaplin.mediator.user.get('id')
     options.fn(this)
 
+Handlebars.registerHelper 'unlessCurrentUser', (user_id, options) ->
+  unless user_id == Chaplin.mediator.user.get('id')
+    options.fn(this)
+
 Handlebars.registerHelper "if", (conditional, options) ->
   if conditional
     options.fn this

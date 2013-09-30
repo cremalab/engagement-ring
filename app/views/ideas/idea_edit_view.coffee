@@ -28,12 +28,7 @@ module.exports = class IdeaEditView extends View
   exit: ->
     @collection_view.escapeForm @model
     @collection_view.setupKeyBindings()
-
-  showDetails: ->
-    @translateDate()
-    details_view = new IdeaDetailsEditView container: @$el, model: @model
-    @subview 'details_view', details_view
-    @natural_input.remove()
+    @publishEvent 'escapeForm'
 
   save: ->
     @updateModelFromFields =>

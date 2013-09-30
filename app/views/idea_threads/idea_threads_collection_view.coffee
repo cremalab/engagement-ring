@@ -31,6 +31,7 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
     @subscribeEvent 'save_idea_thread', @cleanup
     @subscribeEvent 'escapeForm', @cleanup
     @subscribeEvent 'notifier:update_idea_thread', @updateIdeaThread
+    @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
 
   newIdeaThread: (e) ->
     if @new_idea_thread

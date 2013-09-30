@@ -28,9 +28,15 @@ module.exports = class IdeaThread extends Model
 
   total_votes: ->
     ideas = @get('ideas')
-    totals = ideas.pluck('total_votes')
-    totals.reduce (memo, num) ->
-      memo + num
+    if ideas.length > 0
+
+      ideas_vote_totals = []
+      ideas.each (idea) ->
+        ideas_vote_totals.push idea.get('votes').length
+      ideas_vote_totals.reduce (memo, num) ->
+        memo + num
+    else
+      0
 
   parse: (idea_thread) ->
     ideas = idea_thread.ideas

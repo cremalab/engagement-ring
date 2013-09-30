@@ -26,6 +26,8 @@ module.exports = class IdeasCollectionView extends CollectionView
     @subscribeEvent 'saved_idea', @updateModel
     @subscribeEvent 'notifier:update_idea', @addIdea
     @subscribeEvent 'notifier:update_vote', @updateVote
+    @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
+    @subscribeEvent 'escapeForm', @checkEmpty
 
 
   newIdea: (e) ->
@@ -105,6 +107,10 @@ module.exports = class IdeasCollectionView extends CollectionView
     vote = model.get('votes').findWhere
       user_id: user_id
 
+    if collection
+      model_in_collection = collection.find(model)
+      model_in_collection.set(model.attributes)
+
     @checkVote(vote, model, false) if vote
 
 
@@ -123,7 +129,6 @@ module.exports = class IdeasCollectionView extends CollectionView
   checkVote: (vote, idea, remote) ->
     idea_in_collection = @collection.get(idea)
     user_id = vote.get('user_id')
-    console.log @thread_view.model
     if idea_in_collection and @thread_view.model and @thread_view.model.userCanVote(@current_user.id)
       old_vote = @currentUserVote(user_id)
       if old_vote
@@ -140,6 +145,7 @@ module.exports = class IdeasCollectionView extends CollectionView
 
   currentUserVote: (user_id) ->
     current_idea = @currentUserVotedIdea(user_id)
+
     if current_idea
       votes = current_idea.get('votes')
       vote = votes.findWhere
@@ -151,6 +157,7 @@ module.exports = class IdeasCollectionView extends CollectionView
       vote = idea.get('votes').findWhere
         user_id: user_id
       return true if vote
+
     return current_voted_idea
 
   removeCurrentUserVote: ->
@@ -160,4 +167,8 @@ module.exports = class IdeasCollectionView extends CollectionView
 
   checkEmpty: ->
     if @collection.size() == 0
-      @thread_view.model.destroy()
+      if @thread_view.model
+        if @thread_view.model.isNew()
+          @thread_view.model.dispose()
+        else
+          @thread_view.model.destroy()

@@ -1,4 +1,6 @@
 {{ autocomplete_search }}
 {{#hasPermission thread_user_id }}
-  <a href='#' class='remove'>remove</a>
+  {{#unlessCurrentUser user_id }}
+    <a href='#' class='remove'>remove</a>
+  {{/unlessCurrentUser}}
 {{/hasPermission}}
