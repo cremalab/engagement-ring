@@ -1,4 +1,6 @@
-Model = require 'models/base/model'
+Model               = require 'models/base/model'
+WebNotification     = require 'models/web_notification'
+NotificationCreator = require 'lib/notification_creator'
 
 module.exports = class Notifier extends Model
 
@@ -11,6 +13,8 @@ module.exports = class Notifier extends Model
       for_signature = "#{secret}#{subscription.channel}#{subscription.timestamp}"
       signature = new SHA1(for_signature).hexdigest()
 
+      @subscribeEvent 'notifier:create', @notifyWeb
+
       PrivatePub.sign
         server: mediator.streamURL('/faye')
         channel: subscription.channel
@@ -18,16 +22,28 @@ module.exports = class Notifier extends Model
         timestamp: subscription.timestamp
 
       PrivatePub.subscribe "/message/channel", (data, channel) =>
-        @notify(data)
+        payload = jQuery.parseJSON(data.message)
+        model_name = payload.model_name
+        delete payload.model_name
+        @notifyApp(model_name, payload)
+        @createWebNotification(model_name, payload) if mediator.user.get('notifications')
 
-  notify: (data) ->
-    data = jQuery.parseJSON(data.message)
-    model_name = data.model_name
-    delete data.model_name
+  notifyApp: (model_name, payload) ->
     switch model_name
       when 'IdeaThread'
-        mediator.publish 'notifier:update_idea_thread', data
+        mediator.publish 'notifier:update_idea_thread', payload
       when 'Idea'
-        mediator.publish 'notifier:update_idea', data
+        mediator.publish 'notifier:update_idea', payload
       when 'Vote'
-        mediator.publish 'notifier:update_vote', data
+        mediator.publish 'notifier:update_vote', payload
+
+  createWebNotification: (model_name, payload) ->
+    notification = new NotificationCreator(model_name, payload)
+    if notification.attributes
+      @notifyWeb notification.attributes.title, notification.attributes.content
+
+  notifyWeb: (title, content) ->
+    if title
+      notification = new WebNotification
+        title: title
+        content: content

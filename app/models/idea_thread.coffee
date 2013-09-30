@@ -25,6 +25,12 @@ module.exports = class IdeaThread extends Model
       idea = new Idea
       @set 'ideas', ideas
       @set 'voting_rights', voting_rights
+    else
+      if _.isArray(@get('voting_rights'))
+        voting_rights = new VotingRightsCollection(@get('voting_rights'))
+        @set 'voting_rights', voting_rights
+
+
 
   total_votes: ->
     ideas = @get('ideas')

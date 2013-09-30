@@ -32,6 +32,7 @@ module.exports = class SessionsController extends Controller
   setCurrentUser: (user) ->
     if user is 'clear'
       Chaplin.mediator.user.clear()
+      Chaplin.mediator.user.set('id', null)
       store.clear('current_user')
     else
       Chaplin.mediator.user = new User(user)
