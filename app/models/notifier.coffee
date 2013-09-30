@@ -26,7 +26,7 @@ module.exports = class Notifier extends Model
         model_name = payload.model_name
         delete payload.model_name
         @notifyApp(model_name, payload)
-        @createWebNotification(model_name, payload)
+        @createWebNotification(model_name, payload) if mediator.user.get('notifications')
 
   notifyApp: (model_name, payload) ->
     switch model_name

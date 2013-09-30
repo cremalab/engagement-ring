@@ -8,14 +8,11 @@ module.exports = class WebNotification extends Model
     @createWebNotification()
 
   createWebNotification: (title, content) ->
-    if window.webkitNotifications.checkPermission() is 0 # 0 is PERMISSION_ALLOWED
-      # function defined in step 2
-      @notification = window.webkitNotifications.createNotification "icon.png", @get('title'), @get('content')
-      if @notification
-        @notification.show()
-        return @notification
-    else
-      window.webkitNotifications.requestPermission()
+    # function defined in step 2
+    @notification = window.webkitNotifications.createNotification "/icon.png", @get('title'), @get('content')
+    if @notification
+      @notification.show()
+      return @notification
 
   dispose: ->
     @notification.cancel()

@@ -33,3 +33,7 @@ module.exports = class User extends Model
       return @get('profile').get('first_name')
     else
       return @get 'email'
+
+  save: ->
+    _.omit @, 'notifications'
+    super

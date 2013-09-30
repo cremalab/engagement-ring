@@ -15,8 +15,6 @@ module.exports = class NotificationCreator
 
   createIdeaThreadNotification: (payload) ->
     thread = new IdeaThread(payload)
-    console.log 'thread notification'
-    console.log thread
     unless payload.deleted
       unless payload.user_id is @current_user.get('id') # no need to notify creator
         if thread.userCanVote(@current_user.get('id'))
