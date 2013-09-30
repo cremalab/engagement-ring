@@ -15,7 +15,6 @@ module.exports = class VotingRightsCollectionView extends CollectionView
   listSelector: '.voting-rights'
   listen:
     'add collection': 'setThreadID'
-    'add collection': 'updateGroupUI'
     'remove collection': 'updateGroupUI'
   events:
     'click .save-group': 'promptForGroupName'
@@ -41,6 +40,7 @@ module.exports = class VotingRightsCollectionView extends CollectionView
     unless @idea_thread.isNew()
       voting_right.set 'idea_thread_id', @idea_thread.get('id')
       voting_right.save()
+    @updateGroupUI()
 
   setupGroups: ->
     @groups = new Groups()
