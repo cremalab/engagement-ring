@@ -1,4 +1,6 @@
-Model = require 'models/base/model'
+Model               = require 'models/base/model'
+WebNotification     = require 'models/web_notification'
+NotificationCreator = require 'lib/notification_creator'
 
 module.exports = class Notifier extends Model
 
@@ -11,6 +13,8 @@ module.exports = class Notifier extends Model
       for_signature = "#{secret}#{subscription.channel}#{subscription.timestamp}"
       signature = new SHA1(for_signature).hexdigest()
 
+      @subscribeEvent 'notifier:create', @notifyWeb
+
       PrivatePub.sign
         server: mediator.streamURL('/faye')
         channel: subscription.channel
@@ -18,37 +22,28 @@ module.exports = class Notifier extends Model
         timestamp: subscription.timestamp
 
       PrivatePub.subscribe "/message/channel", (data, channel) =>
-        data = jQuery.parseJSON(data.message)
-        @notifyWeb(data)
-        @notifyApp(data)
+        payload = jQuery.parseJSON(data.message)
+        model_name = payload.model_name
+        delete payload.model_name
+        @notifyApp(model_name, payload)
+        @createWebNotification(model_name, payload)
 
-  notifyApp: (data) ->
-    model_name = data.model_name
-    delete data.model_name
+  notifyApp: (model_name, payload) ->
     switch model_name
       when 'IdeaThread'
-        mediator.publish 'notifier:update_idea_thread', data
+        mediator.publish 'notifier:update_idea_thread', payload
       when 'Idea'
-        mediator.publish 'notifier:update_idea', data
+        mediator.publish 'notifier:update_idea', payload
       when 'Vote'
-        mediator.publish 'notifier:update_vote', data
+        mediator.publish 'notifier:update_vote', payload
 
-  notifyWeb: (data) ->
-    model_name = data.model_name
-    delete data.model_name
-    switch model_name
-      when 'IdeaThread'
-        notification = @createWebNotification("New Idea Thread", data.title)
-        notification.show()
-      # when 'Idea'
-      # when 'Vote'
+  createWebNotification: (model_name, payload) ->
+    notification = new NotificationCreator(model_name, payload)
+    if notification.attributes
+      @notifyWeb notification.attributes.title, notification.attributes.content
 
-    notification.show() if notification
-
-  createWebNotification: (title, content) ->
-    if window.webkitNotifications.checkPermission() is 0 # 0 is PERMISSION_ALLOWED
-      # function defined in step 2
-      notification = window.webkitNotifications.createNotification "icon.png", title, content
-      return notification
-    else
-      window.webkitNotifications.requestPermission()
+  notifyWeb: (title, content) ->
+    if title
+      notification = new WebNotification
+        title: title
+        content: content
