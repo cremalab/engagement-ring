@@ -25,11 +25,16 @@ module.exports = class User extends Model
 
   initialize: ->
     super
-    profile = new Profile(@profile)
-    @set('profile', profile)
+    unless @get('profile').constructor.name is 'Profile'
+      profile = new Profile(@get('profile'))
+      @set('profile', profile)
 
   display_name: ->
     if @get('profile').get('first_name')
       return @get('profile').get('first_name')
     else
       return @get 'email'
+
+  save: ->
+    _.omit @, 'notifications'
+    super
