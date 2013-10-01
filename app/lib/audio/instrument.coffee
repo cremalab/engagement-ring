@@ -2,20 +2,27 @@ module.exports = class Instrument
   constructor: (context, options) ->
     @context = context
     @type    = options.type
+    @bus     = options.bus
 
   createOsc: ->
     osc = @context.createOscillator()
     osc.type = @type or 0
-    osc.connect(@context.destination)
 
     @polyfill(osc) unless osc.start
 
     return osc
 
+  connect: ->
+    if @bus
+      @osc.connect(@bus.input)
+    else
+      @osc.connect(@context.destination)
+
   playNote: (freq, duration, callback) ->
     unless freq is -1
       @osc = @createOsc()
       @osc.frequency.value = freq or 440
+      @connect()
       @osc.start(0)
 
     length = setTimeout =>

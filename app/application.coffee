@@ -22,5 +22,3 @@ module.exports = class Application extends Chaplin.Application
     Chaplin.mediator.sessions_controller = new SessionsController()
     Chaplin.mediator.groups_controller   = new GroupsController()
     super
-
-  new AudioNotification()
