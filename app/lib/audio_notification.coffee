@@ -17,8 +17,8 @@ module.exports = class AudioNotification
   sequence: (source) ->
     sequence = new Sequencer
       tempo: tempo
-      pattern_input: @pattern # String to be converted to pattern
+      sequence: @pattern
       osc: source
-      complete: ->
+      oncomplete: ->
         console.log 'done'
     sequence.start()

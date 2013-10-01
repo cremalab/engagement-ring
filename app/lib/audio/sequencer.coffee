@@ -9,14 +9,36 @@ module.exports = class Sequencer
     "G4": 392.00
     "A4": 440.00
     "B4": 493.88
+    "rest": -1
 
   constructor: (options) ->
     @osc           = options.osc
     @tempo         = options.tempo or 120
-    @pattern_input = options.pattern_input
-    @options       = options
+    @sequence      = options.sequence or []
+    @complete      = options.oncomplete
+
     @setupDurations()
-    @createSequence()
+
+    # Demo sequence for now. Will be generated
+    # from @pattern_input somehow.
+
+    @sequence = [
+      note: "C4", duration: "quarter"
+    ,
+      note: "G4", duration: 'half'
+    ,
+      note: "E4", duration: 'whole'
+    ,
+      note: "C4", duration: 'whole'
+    ,
+      note: "rest", duration: 'eighth'
+    ,
+      note: "E4", duration: 'eighth'
+    ,
+      note: "F4", duration: 'quarter'
+    ,
+      note: "E4", duration: 'quarter'
+    ]
 
   setupDurations: ->
     base      = 60000 / @tempo
@@ -34,32 +56,13 @@ module.exports = class Sequencer
       'eighth'   : eighth
       'sixteenth': sixteenth
 
-  createSequence: ->
-
-    # Demo sequence for now. Will be generated
-    # from @pattern_input somehow.
-
-    @sequence = [
-      note: "C4", duration: "quarter"
-    ,
-      note: "G4", duration: 'half'
-    ,
-      note: "E4", duration: 'whole'
-    ,
-      note: "C4", duration: 'whole'
-    ,
-      note: "D4", duration: 'eighth'
-    ,
-      note: "E4", duration: 'eighth'
-    ,
-      note: "F4", duration: 'quarter'
-    ,
-      note: "E4", duration: 'quarter'
-    ]
 
   start: ->
-    i    = 0
-    @playStep(i)
+    if @sequence.length is 0
+      throw "Sequencer needs some steps: e.g. [{note: 'G4', duration: 'quarter'}]"
+    else
+      i    = 0
+      @playStep(i)
 
   playStep: (i) ->
     step = @sequence[i]
@@ -71,7 +74,7 @@ module.exports = class Sequencer
         @playStep(i)
 
   completeCallback: ->
-    if @options.complete
-      @options.complete()
+    if @complete
+      @complete()
 
 
