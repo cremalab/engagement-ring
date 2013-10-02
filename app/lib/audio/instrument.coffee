@@ -10,17 +10,23 @@ module.exports = class Instrument
   createOsc: ->
     osc = @context.createOscillator()
     osc.type = @type or 0
-
     @polyfill(osc) unless osc.start
-
+    @createEnvelope(osc)
     return osc
 
+  createEnvelope: (osc) ->
+    @vca = new VCA(@context)
+    @envelope = new EnvelopeGenerator(@context)
+
+    osc.connect(@vca.input)
+    @envelope.connect(@vca.amplitude)
+
+
   connect: ->
-    console.log @bus
     if @bus
-      @osc.connect(@bus.input)
+      @vca.connect(@bus.input)
     else
-      @osc.connect(@context.destination)
+      @vca.connect(@context.destination)
 
   playNote: (freq, duration, callback) ->
     unless freq is -1
@@ -28,6 +34,7 @@ module.exports = class Instrument
       @osc.frequency.value = freq or 440
       @connect()
       @osc.start(0)
+      @envelope.trigger()
 
     length = setTimeout =>
       @stop()

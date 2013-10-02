@@ -16,7 +16,6 @@ module.exports = class AudioNotification
     @createTone()
 
   createTone: ->
-    console.log @audio_bus
     voice1 = new Instrument @stage,
       type: 3
       bus: @audio_bus
@@ -28,12 +27,4 @@ module.exports = class AudioNotification
       sequence: avatar.sequence
       scale: avatar.scale
       instrument: voice1
-      oncomplete: =>
-        console.log 'done'
     sequence.start()
-
-webkitAudioContext::createGain = ->
-  if webkitAudioContext.prototype.createGain
-    webkitAudioContext.createGain()
-  else
-    webkitAudioContext.prototype.createGainNode()

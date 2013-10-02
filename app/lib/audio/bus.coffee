@@ -12,7 +12,7 @@ module.exports = class AudioBus
     tuna = new Tuna(context)
 
     delay = new tuna.Delay
-      feedback: .5 #0 to 1+
+      feedback: .3 #0 to 1+
       delayTime: 200 #how many milliseconds should the wet signal be delayed?
       wetLevel: .6 #0 to 1+
       dryLevel: 1 #0 to 1+

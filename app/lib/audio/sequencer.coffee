@@ -36,7 +36,6 @@ module.exports = class Sequencer
 
   playStep: (i) ->
     step = @sequence[i]
-    console.log step
 
     @instrument.playNote @scale[step.note], @durations[step.duration], =>
       i = i + 1
