@@ -68,7 +68,6 @@ module.exports = class SessionsController extends Controller
     @redirectTo '/login'
 
   setupTokenAccess: ->
-    console.log 'TOEKN ACCESSS'
     if Chaplin.mediator.user.get('auth')
       auth = Chaplin.mediator.user.get('auth')
       auth = Chaplin.mediator.user.get('auth')
