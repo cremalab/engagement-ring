@@ -53,7 +53,22 @@ module.exports = class Notifier extends Model
     unless payload.deleted
       unless payload.user_id is mediator.user.get('id')
         if payload.user_name
-          new AudioNotification(@stage, payload.user_name, @audio_bus)
+          if @accessToThread(model_name, payload)
+            new AudioNotification(@stage, payload.user_name, @audio_bus)
+
+  accessToThread: (model_name, payload) ->
+      switch model_name
+        when 'IdeaThread'
+          thread_id = payload.id
+        when 'Vote'
+          thread_id = payload.thread_id
+        when 'Idea'
+          thread_id = payload.idea_thread_id
+
+      access = false
+      @publishEvent 'find_thread', thread_id, (thread) =>
+        access = true if thread
+      return access
 
   notifyWeb: (title, content) ->
     if title
