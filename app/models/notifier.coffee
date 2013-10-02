@@ -1,12 +1,17 @@
 Model               = require 'models/base/model'
 WebNotification     = require 'models/web_notification'
 NotificationCreator = require 'lib/notification_creator'
+AudioNotification   = require 'lib/audio_notification'
+Bus                 = require 'lib/audio/bus'
 
 module.exports = class Notifier extends Model
 
   mediator = Chaplin.mediator
   initialize: ->
     super
+    if "webkitAudioContext" of window
+      @setupAudio()
+
     if mediator.user.get('subscription')
       secret = 'ef86e27e03206aae17f800e700fa98ff0e8ac779c1741d1dbf90d3a3d34df2b8'
       subscription = mediator.user.get('subscription')
@@ -27,6 +32,8 @@ module.exports = class Notifier extends Model
         delete payload.model_name
         @notifyApp(model_name, payload)
         @createWebNotification(model_name, payload) if mediator.user.get('notifications')
+        @createAudioNotification(model_name, payload) if "webkitAudioContext" of window
+
 
   notifyApp: (model_name, payload) ->
     switch model_name
@@ -42,8 +49,19 @@ module.exports = class Notifier extends Model
     if notification.attributes
       @notifyWeb notification.attributes.title, notification.attributes.content
 
+  createAudioNotification: (model_name, payload) ->
+    unless payload.deleted
+      unless payload.user_id is mediator.user.get('id')
+        if payload.user_name
+          new AudioNotification(@stage, payload.user_name, @audio_bus)
+
   notifyWeb: (title, content) ->
     if title
       notification = new WebNotification
         title: title
         content: content
+
+  setupAudio: ->
+    @stage = new webkitAudioContext()
+    @audio_bus = new Bus(@stage)
+    @audio_bus.connect(@stage.destination)
