@@ -51,7 +51,7 @@ module.exports = class Notifier extends Model
 
   createAudioNotification: (model_name, payload) ->
     unless payload.deleted
-      unless payload.user.id is mediator.user.get('id')
+      unless payload.user_id is mediator.user.get('id')
         if payload.user_name
           new AudioNotification(@stage, payload.user_name, @audio_bus)
 

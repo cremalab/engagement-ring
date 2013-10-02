@@ -1,5 +1,3 @@
-# NOTE: CREATE AUDIO CONTEXT IN NOTIFIER
-
 Instrument  = require 'lib/audio/instrument'
 Sequencer   = require 'lib/audio/sequencer'
 AudioAvatar = require 'lib/audio/audio_avatar'
