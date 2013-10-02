@@ -35,11 +35,15 @@ module.exports = class SessionsController extends Controller
       Chaplin.mediator.user.set('id', null)
       store.clear('current_user')
     else
+      is_new = Chaplin.mediator.user.isNew()
       Chaplin.mediator.user = new User(user)
       store.set('current_user', user)
 
-    # Send auth credentials with all subsequent requests
-    @setupTokenAccess()
+      if is_new
+        # Send auth credentials with all subsequent requests
+        @setupTokenAccess()
+      else
+        @publishEvent 'auth_complete'
 
   getCurrentUser: ->
     # Check if a user exists in the mediator or localstorage:
@@ -64,6 +68,7 @@ module.exports = class SessionsController extends Controller
     @redirectTo '/login'
 
   setupTokenAccess: ->
+    console.log 'TOEKN ACCESSS'
     if Chaplin.mediator.user.get('auth')
       auth = Chaplin.mediator.user.get('auth')
       auth = Chaplin.mediator.user.get('auth')
