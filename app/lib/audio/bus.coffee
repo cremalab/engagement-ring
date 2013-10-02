@@ -1,3 +1,5 @@
+# Inspired by this awesome case study: http://www.html5rocks.com/en/tutorials/casestudies/jamwithchrome-audio/
+
 module.exports = class AudioBus
   constructor: (context) ->
     @input  = context.createGainNode()

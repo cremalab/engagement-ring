@@ -1,21 +1,18 @@
+# NOTE: CREATE AUDIO CONTEXT IN NOTIFIER
+
 Instrument  = require 'lib/audio/instrument'
 Sequencer   = require 'lib/audio/sequencer'
 AudioAvatar = require 'lib/audio/audio_avatar'
-Bus         = require 'lib/audio/bus'
 Chromatic   = require 'lib/audio/scales/chromatic'
 
 module.exports = class AudioNotification
 
   tempo = 160
 
-  constructor: (pattern_input) ->
+  constructor: (pattern_input, context) ->
+    @stage = context
     @pattern = pattern_input
-
-    if "webkitAudioContext" of window
-      @stage = new webkitAudioContext()
-      @audio_bus = new Bus(@stage)
-      @audio_bus.connect(@stage.destination)
-      @createTone()
+    @createTone()
 
   createTone: ->
     voice1 = new Instrument @stage,
@@ -29,7 +26,7 @@ module.exports = class AudioNotification
       sequence: avatar.sequence
       scale: avatar.scale
       instrument: voice1
-      oncomplete: ->
+      oncomplete: =>
         console.log 'done'
     sequence.start()
 

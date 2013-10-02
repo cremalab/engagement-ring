@@ -2,7 +2,6 @@ SessionsController = require 'controllers/sessions_controller'
 GroupsController   = require 'controllers/groups_controller'
 User = require 'models/user'
 Notifier = require 'models/notifier'
-AudioNotification = require 'lib/audio_notification'
 
 # The application object.
 module.exports = class Application extends Chaplin.Application

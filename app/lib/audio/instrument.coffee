@@ -1,3 +1,6 @@
+VCA = require 'lib/audio/vca'
+EnvelopeGenerator = require 'lib/audio/envelope_generator'
+
 module.exports = class Instrument
   constructor: (context, options) ->
     @context = context

@@ -1,6 +1,8 @@
 Model               = require 'models/base/model'
 WebNotification     = require 'models/web_notification'
 NotificationCreator = require 'lib/notification_creator'
+AudioNotification   = require 'lib/audio_notification'
+Bus                 = require 'lib/audio/bus'
 
 module.exports = class Notifier extends Model
 
@@ -27,6 +29,10 @@ module.exports = class Notifier extends Model
         delete payload.model_name
         @notifyApp(model_name, payload)
         @createWebNotification(model_name, payload) if mediator.user.get('notifications')
+        @createAudioNotification(model_name, payload) if "webkitAudioContext" of window
+
+    if "webkitAudioContext" of window
+      @setupAudio()
 
   notifyApp: (model_name, payload) ->
     switch model_name
@@ -42,8 +48,19 @@ module.exports = class Notifier extends Model
     if notification.attributes
       @notifyWeb notification.attributes.title, notification.attributes.content
 
+  createAudioNotification: (model_name, payload) ->
+    unless payload.deleted
+      unless payload.user.id is mediator.user.get('id')
+        if payload.user_name
+          new AudioNotification(payload.user_name, @stage)
+
   notifyWeb: (title, content) ->
     if title
       notification = new WebNotification
         title: title
         content: content
+
+  setupAudio: ->
+    @stage = new webkitAudioContext()
+    @audio_bus = new Bus(@stage)
+    @audio_bus.connect(@stage.destination)
