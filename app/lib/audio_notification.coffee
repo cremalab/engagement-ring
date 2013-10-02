@@ -9,12 +9,14 @@ module.exports = class AudioNotification
 
   tempo = 160
 
-  constructor: (pattern_input, context) ->
+  constructor: (context, pattern_input, audio_bus) ->
     @stage = context
     @pattern = pattern_input
+    @audio_bus = audio_bus
     @createTone()
 
   createTone: ->
+    console.log @audio_bus
     voice1 = new Instrument @stage,
       type: 3
       bus: @audio_bus

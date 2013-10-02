@@ -16,6 +16,7 @@ module.exports = class Instrument
     return osc
 
   connect: ->
+    console.log @bus
     if @bus
       @osc.connect(@bus.input)
     else
