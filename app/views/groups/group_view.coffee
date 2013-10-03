@@ -2,7 +2,6 @@ View = require 'views/base/view'
 Membership = require 'models/membership'
 MembershipsView = require 'views/memberships/memberships_collection_view'
 TagListInput = require 'views/form_elements/tag_list_input'
-VotingRight = require 'models/voting_right'
 UserSearchCollection = require 'collections/user_search_collection'
 
 module.exports = class GroupView extends View
@@ -43,7 +42,7 @@ module.exports = class GroupView extends View
       destination_model: @model
       source_collection: @all_users
       collection: @memberships
-      label: "Voters"
+      label: "Members"
       attr: "id"
       tag_model: Membership
       tag_template: require('/views/idea_threads/templates/voter')
