@@ -21,3 +21,6 @@ module.exports =
       id: 1
       idea_id: idea_id
       user_id: user_id
+      user_name: "Ross Brown"
+      thread_title: "Lunch"
+      idea_title: "Grinders"
