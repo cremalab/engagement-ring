@@ -15,8 +15,6 @@ module.exports = class IdeaThreadView extends View
     ideas: '.ideas'
     voters: '.voters'
   textBindings: true
-  listen:
-    "change collection": "setOriginal"
   events:
     'click .archive': 'archive'
 

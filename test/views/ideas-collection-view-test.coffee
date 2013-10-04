@@ -60,15 +60,15 @@ describe 'IdeasCollectionView', ->
     idea_count = @collection.size()
     notifier = NotifierStubs.idea(1, @view.thread_id)
 
-    @view.addIdea(notifier)
+    @view.updateIdeas(notifier)
     expect(@collection.size()).to.equal idea_count + 1
 
   it 'should update idea on faye event', ->
     notifier = NotifierStubs.idea(1, @view.thread_id)
-    @view.addIdea(notifier)
+    @view.updateIdeas(notifier)
     idea_count = @collection.size()
     notifier['title'] = 'Boogaloo'
-    @view.addIdea(notifier)
+    @view.updateIdeas(notifier)
 
     expect(@collection.size()).to.equal idea_count
     re = new RegExp("\\b(" + notifier['title'] + ")\\b", 'ig')
@@ -81,7 +81,7 @@ describe 'IdeasCollectionView', ->
 
     notifier = NotifierStubs.deleted_idea(1, @view.thread_id)
 
-    @view.addIdea(notifier)
+    @view.updateIdeas(notifier)
     expect(@collection.size()).to.equal idea_count - 1
 
   it 'should insert idea form on edit', ->
@@ -134,7 +134,7 @@ describe 'IdeasCollectionView', ->
   it 'should reassign user vote when adding idea', ->
     idea_stub = NotifierStubs.idea(1, @view.thread_id)
     _.extend idea_stub, {votes: [{user_id: @current_user.get('id'), idea_id: 1, id:1}]}
-    @view.addIdea(idea_stub)
+    @view.updateIdeas(idea_stub)
     idea = @collection.last()
 
     expect(idea.get('votes').length).to.equal 1
@@ -143,7 +143,7 @@ describe 'IdeasCollectionView', ->
     idea_stub['id']    = 2
     _.extend idea_stub, {votes: [{user_id: @current_user.get('id'), idea_id: 2, id: 2}]}
 
-    @view.addIdea(idea_stub)
+    @view.updateIdeas(idea_stub)
     second_idea = @collection.last()
 
     expect(idea.get('votes').length).to.equal 0
