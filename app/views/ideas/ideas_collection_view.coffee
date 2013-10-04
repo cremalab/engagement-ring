@@ -24,7 +24,7 @@ module.exports = class IdeasCollectionView extends CollectionView
     @thread_view = options.thread_view
     @thread_id   = @thread_view.model.get('id')
     @subscribeEvent 'saved_idea', @updateModel
-    @subscribeEvent 'notifier:update_idea', @addIdea
+    @subscribeEvent 'notifier:update_idea', @updateIdeas
     @subscribeEvent 'notifier:update_vote', @updateVote
     @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
     @subscribeEvent 'escapeForm', @checkEmpty
@@ -41,23 +41,28 @@ module.exports = class IdeasCollectionView extends CollectionView
 
     @collection.add idea, {at: idea_count + 1}
 
-  addIdea: (data) ->
+  updateIdeas: (data) ->
     if data.deleted
-      idea = @collection.findWhere
-        id: data.id
-      @collection.remove(idea) if idea
+      @removeIdea(data)
     else
-      if @thread_id is data.idea_thread_id
-        existing = @collection.findWhere
-          id: data.id
-        if existing
-          data = _.pick(data, ['title', 'description', 'when'])
-          existing.set data
-          @updateModel existing, @collection
-        else
-          idea = new Idea(data)
-          @collection.add idea
-          @updateModel idea, @collection
+      @addIdea(data)
+
+  addIdea: (data) ->
+    existing = @collection.findWhere
+      id: data.id
+    if existing
+      data = _.pick(data, ['title', 'description', 'when'])
+      existing.set data
+      @updateModel existing, @collection
+    else
+      idea = new Idea(data)
+      @collection.add idea
+      @updateModel idea, @collection
+
+  removeIdea: (data) ->
+    idea = @collection.findWhere
+      id: data.id
+    @collection.remove(idea) if idea
 
   editIdea: (model) ->
     @removeViewForItem(model)
@@ -68,6 +73,10 @@ module.exports = class IdeasCollectionView extends CollectionView
     @new_idea = model
 
   escapeForm: (idea) ->
+    @editing_view.dispose() if @editing_view
+    @editing_view = null
+    @new_idea = null
+
     if idea
       idea.unset('edited')
       if idea.isNew()
@@ -91,18 +100,16 @@ module.exports = class IdeasCollectionView extends CollectionView
     view
 
   save: (model) ->
-    @editing_view.dispose() if @editing_view
-    @editing_view = null
+    @thread_view.$el.addClass('syncing')
     if @thread_view.model.isNew()
       @thread_view.save()
     else
       @publishEvent 'save_idea', model, @collection, @
-      @collection.remove(model)
+
 
   updateModel: (model, collection) ->
-    @editing_view.dispose() if @editing_view
-    @editing_view = null
-    @new_idea = null
+    @thread_view.$el.removeClass('syncing')
+    @escapeForm()
     user_id = model.get 'user_id'
     vote = model.get('votes').findWhere
       user_id: user_id

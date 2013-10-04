@@ -12,7 +12,7 @@ describe 'IdeaThreadsCollection', ->
     @current_user = Chaplin.mediator.user
     @user_id = @current_user.get('id')
 
-  it 'should find a thread', ->
+  it 'should return a found thread on event', ->
     thread =
       "id":420
       "title":"Stuff"
