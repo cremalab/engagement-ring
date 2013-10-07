@@ -25,7 +25,7 @@ module.exports = class IdeasCollectionView extends CollectionView
     @thread_id   = @thread_view.model.get('id')
     @subscribeEvent 'saved_idea', @updateModel
     @subscribeEvent 'notifier:update_idea', @updateIdeas
-    @subscribeEvent 'notifier:update_vote', @updateVote
+    @subscribeEvent 'notifier:update_vote', @resort
     @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
     @subscribeEvent 'escapeForm', @checkEmpty
 
@@ -108,7 +108,7 @@ module.exports = class IdeasCollectionView extends CollectionView
 
 
   updateModel: (model, collection) ->
-    @thread_view.$el.removeClass('syncing')
+    @thread_view.$el.removeClass('syncing') if @thread_view.$el
     @escapeForm()
     user_id = model.get 'user_id'
     vote = model.get('votes').findWhere
@@ -118,54 +118,9 @@ module.exports = class IdeasCollectionView extends CollectionView
       model_in_collection = collection.find(model)
       model_in_collection.set(model.attributes)
 
-    @checkVote(vote, model, false) if vote
-
-
-  updateVote: (data) ->
-    unless data.deleted
-      idea = @collection.findWhere
-        id: data.idea_id
-      if idea
-        votes = idea.get('votes')
-        vote = new Vote(data)
-        @checkVote(vote, idea, true)
 
   resort: ->
     @collection.sort()
-
-  checkVote: (vote, idea, remote) ->
-    idea_in_collection = @collection.get(idea)
-    user_id = vote.get('user_id')
-    if idea_in_collection and @thread_view.model and @thread_view.model.userCanVote(@current_user.id)
-      old_vote = @currentUserVote(user_id)
-      if old_vote
-        @currentUserVotedIdea(user_id).get('votes').remove(old_vote)
-      if vote
-        if remote
-          idea.get('votes').add vote
-          @resort()
-        else
-          idea.get('votes').create vote.attributes
-      else
-        @resort()
-
-
-  currentUserVote: (user_id) ->
-    current_idea = @currentUserVotedIdea(user_id)
-
-    if current_idea
-      votes = current_idea.get('votes')
-      vote = votes.findWhere
-        user_id: user_id
-      return vote
-
-  currentUserVotedIdea: (user_id) ->
-    current_voted_idea = @collection.find (idea) =>
-      vote = idea.get('votes').findWhere
-        user_id: user_id
-      return true if vote
-
-    return current_voted_idea
 
 
   checkEmpty: ->

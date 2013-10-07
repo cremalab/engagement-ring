@@ -27,6 +27,7 @@ module.exports = class Notifier extends Model
         timestamp: subscription.timestamp
 
       PrivatePub.subscribe "/message/channel", (data, channel) =>
+        # console.log data.message
         payload = jQuery.parseJSON(data.message)
         model_name = payload.model_name
         delete payload.model_name
