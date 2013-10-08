@@ -50,7 +50,7 @@ module.exports = class IdeaView extends View
         user:
           email: current_user.get('email')
           id: current_user.get('id')
-      @collection_view.checkVote vote, @model
+      vote.save()
 
   toggleUserVote: (voted, user_vote) ->
     if voted
@@ -62,11 +62,14 @@ module.exports = class IdeaView extends View
 
   updateVotesCount: (a,b) ->
     @model.set('total_votes', @votes.length)
+    @collection_view.resort()
 
   destroy: (e) ->
     e.preventDefault() if e
     @model.destroy
-      success: =>
+      success: (idea,b) =>
+        @collection_view.collection.remove(idea)
+        console.log @collection_view.collection
         @collection_view.checkEmpty()
 
   renderViewInCollection: (object) ->
