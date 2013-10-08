@@ -13,11 +13,24 @@ module.exports = class Idea extends Model
 
   initialize: ->
     super
-    @set 'votes', new VotesCollection(@get 'votes')
+    votes = new VotesCollection(@get 'votes')
+    votes.idea = @
+    @set 'votes', votes
+
+  hasVote: (vote_id) ->
+    votes = @get('votes')
+    existing = votes.findWhere
+      id: vote_id
+    if existing
+      return true
+    else
+      return false
 
   parse: (idea) ->
     votes = idea.votes
-    idea.votes = new VotesCollection(votes)
+    votes = new VotesCollection(votes)
+    votes.idea = @
+    idea.votes = votes
     return idea
 
   toJSON: ->

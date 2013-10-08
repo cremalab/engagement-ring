@@ -7,10 +7,13 @@ module.exports = class NotificationCreator
     @current_user    = Chaplin.mediator.user
     switch model_name
       when "IdeaThread"
+        @thread_id = payload.id
         @createIdeaThreadNotification(payload)
       when "Idea"
+        @thread_id = payload.thread_id
         @createIdeaNotification(payload)
       when "Vote"
+        @thread_id = payload.thread_id
         @createVoteNotification(payload)
 
   createIdeaThreadNotification: (payload) ->
@@ -26,7 +29,7 @@ module.exports = class NotificationCreator
             content: content
 
   createIdeaNotification: (payload) ->
-    unless payload.deleted or payload.user_id is @current_user.get('id')
+    if @isRelevantNotification(payload)
       user_name = "#{payload.user.profile.first_name} #{payload.user.profile.last_name}"
       title = "New Idea from: #{user_name}"
       content = payload.title
@@ -36,7 +39,17 @@ module.exports = class NotificationCreator
         content: content
 
   createVoteNotification: (payload) ->
-    unless payload.deleted or payload.user_id is @current_user.get('id')
+    if @isRelevantNotification(payload)
       @attributes =
         title: "#{payload.user_name} voted on #{payload.idea_title}"
         content: "on the thread: #{payload.thread_title}"
+
+  isRelevantNotification: (payload) ->
+    if payload.deleted or payload.user_id is @current_user.get('id')
+      return false
+    else
+      found = false
+      Chaplin.mediator.publish 'find_thread', @thread_id, (thread) =>
+        if thread
+          found = thread
+      return found

@@ -23,12 +23,10 @@ module.exports = class IdeasCollectionView extends CollectionView
     super
     @thread_view = options.thread_view
     @thread_id   = @thread_view.model.get('id')
-    @subscribeEvent 'saved_idea', @updateModel
-    @subscribeEvent 'notifier:update_idea', @updateIdeas
-    @subscribeEvent 'notifier:update_vote', @updateVote
     @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
     @subscribeEvent 'escapeForm', @checkEmpty
-
+    @subscribeEvent 'save_idea', @escapeForm
+    @listenTo @collection, 'change:edited', @handleEdit
 
   newIdea: (e) ->
     e.preventDefault() if e
@@ -41,57 +39,44 @@ module.exports = class IdeasCollectionView extends CollectionView
 
     @collection.add idea, {at: idea_count + 1}
 
-  updateIdeas: (data) ->
-    if data.deleted
-      @removeIdea(data)
-    else
-      @addIdea(data)
-
-  addIdea: (data) ->
-    existing = @collection.findWhere
-      id: data.id
-    if existing
-      data = _.pick(data, ['title', 'description', 'when'])
-      existing.set data
-      @updateModel existing, @collection
-    else
-      idea = new Idea(data)
-      @collection.add idea
-      @updateModel idea, @collection
-
-  removeIdea: (data) ->
-    idea = @collection.findWhere
-      id: data.id
-    @collection.remove(idea) if idea
-
   editIdea: (model) ->
     @removeViewForItem(model)
+    @updateVisibleItems model, true
     model.set 'edited', true
-    @editing_view = new IdeaEditView model: model, collection_view: @
 
-    @insertView(model, @editing_view)
-    @new_idea = model
+  handleEdit: (model) ->
+    @renderAllItems()
 
   escapeForm: (idea) ->
-    @editing_view.dispose() if @editing_view
-    @editing_view = null
+    @thread_view.$el.removeClass('syncing') if @thread_view.$el
     @new_idea = null
 
     if idea
-      idea.unset('edited')
+
+      @removeViewForItem(idea)
       if idea.isNew()
         @collection.remove(idea)
         @new_idea = null
       else
-        @updateModel(idea)
+        idea.unset('edited')
+
     else
       @collection.remove(@new_idea)
       @new_idea = null
-      @publishEvent 'escapeForm'
+      @checkEmpty()
+
+    @editing_view.dispose() if @editing_view
+    @editing_view = null
+
+    @resort()
 
   initItemView: (model) ->
-    if model.isNew()
-      view = new IdeaEditView model: model, collection_view: @
+    if model.isNew() or model.get('edited')
+      view = new IdeaEditView
+        model: model
+        collection_view: @
+        autoRender: true
+        autoAttach: true
       @editing_view = view
       @new_idea = model
     else
@@ -106,67 +91,8 @@ module.exports = class IdeasCollectionView extends CollectionView
     else
       @publishEvent 'save_idea', model, @collection, @
 
-
-  updateModel: (model, collection) ->
-    @thread_view.$el.removeClass('syncing')
-    @escapeForm()
-    user_id = model.get 'user_id'
-    vote = model.get('votes').findWhere
-      user_id: user_id
-
-    if collection
-      model_in_collection = collection.find(model)
-      model_in_collection.set(model.attributes)
-
-    @checkVote(vote, model, false) if vote
-
-
-  updateVote: (data) ->
-    unless data.deleted
-      idea = @collection.findWhere
-        id: data.idea_id
-      if idea
-        votes = idea.get('votes')
-        vote = new Vote(data)
-        @checkVote(vote, idea, true)
-
   resort: ->
     @collection.sort()
-
-  checkVote: (vote, idea, remote) ->
-    idea_in_collection = @collection.get(idea)
-    user_id = vote.get('user_id')
-    if idea_in_collection and @thread_view.model and @thread_view.model.userCanVote(@current_user.id)
-      old_vote = @currentUserVote(user_id)
-      if old_vote
-        @currentUserVotedIdea(user_id).get('votes').remove(old_vote)
-      if vote
-        if remote
-          idea.get('votes').add vote
-          @resort()
-        else
-          idea.get('votes').create vote.attributes
-      else
-        @resort()
-
-
-  currentUserVote: (user_id) ->
-    current_idea = @currentUserVotedIdea(user_id)
-
-    if current_idea
-      votes = current_idea.get('votes')
-      vote = votes.findWhere
-        user_id: user_id
-      return vote
-
-  currentUserVotedIdea: (user_id) ->
-    current_voted_idea = @collection.find (idea) =>
-      vote = idea.get('votes').findWhere
-        user_id: user_id
-      return true if vote
-
-    return current_voted_idea
-
 
   checkEmpty: ->
     if @collection.size() == 0
