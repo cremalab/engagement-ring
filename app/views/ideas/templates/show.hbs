@@ -3,7 +3,7 @@
     <img class="avatar" src="{{ gravatar user.email }}" alt="{{ displayName user }}" title="{{ displayName user }}">
   </div>
   <div class="ideaInfo">
-    <h2 class="ideaTitle" ><span data-bind='title'>{{ title }}</span> {{#if when}}<span class="ideaTitleWhen" data-bind='when'>— {{#timely}}{{ when }}{{/timely}}</span>{{/if}}</h2>
+    <h2 class="ideaTitle" ><span data-bind='title'>{{ title }}</span></h2>
     {{#if description}}<p data-bind='description' class="ideaDescription">{{ description }}</p>{{/if}}
   </div>
   <div class="ideaAction">

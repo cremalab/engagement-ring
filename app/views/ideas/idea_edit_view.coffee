@@ -10,8 +10,6 @@ module.exports = class IdeaEditView extends View
   events:
     'click .submit': 'save'
     'click .cancel': 'exit'
-  listen:
-    'change model': 'displayWhen'
 
   initialize: (options) ->
     super
@@ -20,10 +18,6 @@ module.exports = class IdeaEditView extends View
   render: ->
     super
     Mousetrap.unbind('n')
-    @natural_input = new DateInputView
-      model: @model
-      attr: 'when'
-      el: @$el.find('.natural-language')
 
   exit: ->
     @collection_view.escapeForm @model
@@ -33,14 +27,6 @@ module.exports = class IdeaEditView extends View
   save: ->
     @updateModelFromFields =>
       @collection_view.save(@model)
-
-  displayWhen: (model) ->
-    changed = _.keys model.changed
-    if changed.indexOf('when') > -1
-      if model.changed.when is undefined or model.changed.when is null
-        @$el.find('.when').text('')
-      else
-        @$el.find('.when').text moment(@model.get('when')).format("dddd MMM D, ha")
 
   updateModelFromFields: (callback) ->
     description = @$el.find("[name='description']").val()
