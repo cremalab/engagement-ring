@@ -50,7 +50,10 @@ module.exports = class IdeaView extends View
         user:
           email: current_user.get('email')
           id: current_user.get('id')
-      vote.save()
+      @$el.find(".vote").addClass('voted')
+      vote.save vote.attributes,
+        success: (vote) =>
+          @votes.add(vote)
 
   toggleUserVote: (voted, user_vote) ->
     if voted
