@@ -13,6 +13,7 @@ module.exports = class GroupsController extends Controller
     model.save model.attributes,
       success: (model, response) =>
         @publishEvent 'saved_group', model
+        @publishEvent 'flash_message', "Your group #{model.get('name')} was saved"
       error: (model, response) =>
         @publishEvent 'renderError', response
 
