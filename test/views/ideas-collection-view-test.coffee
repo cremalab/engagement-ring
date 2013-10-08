@@ -111,43 +111,49 @@ describe 'IdeasCollectionView', ->
     model = @collection.last()
     expect(@view.viewForModel(model).constructor.name).to.equal('IdeaView')
 
-  it 'should add user vote from faye event', ->
-    @collection.add({id: 1, title: "Cool idea"})
-    expect(@collection.last().get('votes').length).to.equal 0
-    vote = NotifierStubs.vote(1, @current_user.get('id'))
-    @view.updateVote(vote)
-    expect(@collection.last().get('votes').length).to.equal 1
 
-  it 'should remove old vote when changing vote', ->
-    @collection.add({id: 1, title: "Cool idea"})
-    @collection.add({id: 2, title: "Cooler idea"})
+  # Moved the below functionality to VotesCollection
 
-    vote = NotifierStubs.vote(1, @current_user.get('id'))
-    @view.updateVote(vote)
-    expect(@collection.findWhere(id: 1).get('votes').length).to.equal 1
+  # it 'should add user vote from faye event', ->
+  #   @collection.add({id: 1, title: "Cool idea"})
+  #   expect(@collection.last().get('votes').length).to.equal 0
+  #   vote = NotifierStubs.vote(1, @current_user.get('id'))
+  #   @view.updateVote(vote)
+  #   expect(@collection.last().get('votes').length).to.equal 1
 
-    vote = NotifierStubs.vote(2, @current_user.get('id'))
-    @view.updateVote(vote)
-    expect(@collection.findWhere(id: 1).get('votes').length).to.equal 0
-    expect(@collection.findWhere(id: 2).get('votes').length).to.equal 1
 
-  it 'should reassign user vote when adding idea', ->
-    idea_stub = NotifierStubs.idea(1, @view.thread_id)
-    _.extend idea_stub, {votes: [{user_id: @current_user.get('id'), idea_id: 1, id:1}]}
-    @view.updateIdeas(idea_stub)
-    idea = @collection.last()
+  # Moved the below functionality server-side
 
-    expect(idea.get('votes').length).to.equal 1
+  # it 'should remove old vote when changing vote', ->
+  #   @collection.add({id: 1, title: "Cool idea"})
+  #   @collection.add({id: 2, title: "Cooler idea"})
 
-    idea_stub['title'] = "Better idea"
-    idea_stub['id']    = 2
-    _.extend idea_stub, {votes: [{user_id: @current_user.get('id'), idea_id: 2, id: 2}]}
+  #   vote = NotifierStubs.vote(1, @current_user.get('id'))
+  #   @view.updateVote(vote)
+  #   expect(@collection.findWhere(id: 1).get('votes').length).to.equal 1
 
-    @view.updateIdeas(idea_stub)
-    second_idea = @collection.last()
+  #   vote = NotifierStubs.vote(2, @current_user.get('id'))
+  #   @view.updateVote(vote)
+  #   expect(@collection.findWhere(id: 1).get('votes').length).to.equal 0
+  #   expect(@collection.findWhere(id: 2).get('votes').length).to.equal 1
 
-    expect(idea.get('votes').length).to.equal 0
-    expect(second_idea.get('votes').length).to.equal 1
+  # it 'should reassign user vote when adding idea', ->
+  #   idea_stub = NotifierStubs.idea(1, @view.thread_id)
+  #   _.extend idea_stub, {votes: [{user_id: @current_user.get('id'), idea_id: 1, id:1}]}
+  #   @view.updateIdeas(idea_stub)
+  #   idea = @collection.last()
+
+  #   expect(idea.get('votes').length).to.equal 1
+
+  #   idea_stub['title'] = "Better idea"
+  #   idea_stub['id']    = 2
+  #   _.extend idea_stub, {votes: [{user_id: @current_user.get('id'), idea_id: 2, id: 2}]}
+
+  #   @view.updateIdeas(idea_stub)
+  #   second_idea = @collection.last()
+
+  #   expect(idea.get('votes').length).to.equal 0
+  #   expect(second_idea.get('votes').length).to.equal 1
 
 
 
