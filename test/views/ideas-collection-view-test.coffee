@@ -56,33 +56,6 @@ describe 'IdeasCollectionView', ->
     # new idea should not have an id
     expect(@collection.last().get('id')).to.be.an('undefined')
 
-  it 'should add idea on faye event', ->
-    idea_count = @collection.size()
-    notifier = NotifierStubs.idea(1, @view.thread_id)
-
-    @view.updateIdeas(notifier)
-    expect(@collection.size()).to.equal idea_count + 1
-
-  it 'should update idea on faye event', ->
-    notifier = NotifierStubs.idea(1, @view.thread_id)
-    @view.updateIdeas(notifier)
-    idea_count = @collection.size()
-    notifier['title'] = 'Boogaloo'
-    @view.updateIdeas(notifier)
-
-    expect(@collection.size()).to.equal idea_count
-    re = new RegExp("\\b(" + notifier['title'] + ")\\b", 'ig')
-    expect(@view.$el.text()).to.match(re)
-
-
-  it 'should remove idea on faye event', ->
-    @collection.add({id: 1, title: "Goodbye cruel world!"})
-    idea_count = @collection.size()
-
-    notifier = NotifierStubs.deleted_idea(1, @view.thread_id)
-
-    @view.updateIdeas(notifier)
-    expect(@collection.size()).to.equal idea_count - 1
 
   it 'should insert idea form on edit', ->
     @collection.add({id: 1, title: "Incorrect title"})
@@ -111,49 +84,6 @@ describe 'IdeasCollectionView', ->
     model = @collection.last()
     expect(@view.viewForModel(model).constructor.name).to.equal('IdeaView')
 
-
-  # Moved the below functionality to VotesCollection
-
-  # it 'should add user vote from faye event', ->
-  #   @collection.add({id: 1, title: "Cool idea"})
-  #   expect(@collection.last().get('votes').length).to.equal 0
-  #   vote = NotifierStubs.vote(1, @current_user.get('id'))
-  #   @view.updateVote(vote)
-  #   expect(@collection.last().get('votes').length).to.equal 1
-
-
-  # Moved the below functionality server-side
-
-  # it 'should remove old vote when changing vote', ->
-  #   @collection.add({id: 1, title: "Cool idea"})
-  #   @collection.add({id: 2, title: "Cooler idea"})
-
-  #   vote = NotifierStubs.vote(1, @current_user.get('id'))
-  #   @view.updateVote(vote)
-  #   expect(@collection.findWhere(id: 1).get('votes').length).to.equal 1
-
-  #   vote = NotifierStubs.vote(2, @current_user.get('id'))
-  #   @view.updateVote(vote)
-  #   expect(@collection.findWhere(id: 1).get('votes').length).to.equal 0
-  #   expect(@collection.findWhere(id: 2).get('votes').length).to.equal 1
-
-  # it 'should reassign user vote when adding idea', ->
-  #   idea_stub = NotifierStubs.idea(1, @view.thread_id)
-  #   _.extend idea_stub, {votes: [{user_id: @current_user.get('id'), idea_id: 1, id:1}]}
-  #   @view.updateIdeas(idea_stub)
-  #   idea = @collection.last()
-
-  #   expect(idea.get('votes').length).to.equal 1
-
-  #   idea_stub['title'] = "Better idea"
-  #   idea_stub['id']    = 2
-  #   _.extend idea_stub, {votes: [{user_id: @current_user.get('id'), idea_id: 2, id: 2}]}
-
-  #   @view.updateIdeas(idea_stub)
-  #   second_idea = @collection.last()
-
-  #   expect(idea.get('votes').length).to.equal 0
-  #   expect(second_idea.get('votes').length).to.equal 1
 
 
 

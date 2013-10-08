@@ -69,6 +69,7 @@ module.exports = class IdeaView extends View
     @model.destroy
       success: (idea,b) =>
         @collection_view.collection.remove(idea)
+        console.log @collection_view.collection
         @collection_view.checkEmpty()
 
   renderViewInCollection: (object) ->
