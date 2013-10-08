@@ -62,6 +62,7 @@ module.exports = class IdeaView extends View
 
   updateVotesCount: (a,b) ->
     @model.set('total_votes', @votes.length)
+    @collection_view.resort()
 
   destroy: (e) ->
     e.preventDefault() if e

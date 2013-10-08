@@ -25,7 +25,6 @@ module.exports = class IdeasCollectionView extends CollectionView
     @thread_id   = @thread_view.model.get('id')
     @subscribeEvent 'saved_idea', @updateModel
     @subscribeEvent 'notifier:update_idea', @updateIdeas
-    @subscribeEvent 'notifier:update_vote', @resort
     @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
     @subscribeEvent 'escapeForm', @checkEmpty
 
