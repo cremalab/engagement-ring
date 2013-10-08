@@ -1,24 +1,24 @@
 View = require 'views/base/view'
 
-module.exports = class AlertView extends View
+module.exports = class FlashMessageView extends View
   autoRender: true
   autoAttach: true
-  template: require './templates/alert'
+  template: require './templates/flash_message'
   events:
-    'click .dismiss': 'dismissAlert'
+    'click .dismiss': 'dismissFlash'
 
   initialize: ->
     super
-    @subscribeEvent 'dismissAlert', @dismissAlert
+    @subscribeEvent 'dismissFlash', @dismissFlash
 
   render: ->
     super
     # Dismiss after 5 seconds
     lifespan = setTimeout =>
-      @dismissAlert()
+      @dismissFlash()
       clearTimeout(lifespan)
     , 5000
 
-  dismissAlert: (e) ->
+  dismissFlash: (e) ->
     e.preventDefault() if e
     @model.dispose() if @model

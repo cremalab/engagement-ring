@@ -1,6 +1,6 @@
 View      = require 'views/base/view'
-Alert     = require 'models/alert'
-AlertView = require 'views/layout/alert_view'
+FlashMessage     = require 'models/flash_message'
+FlashMessageView = require 'views/layout/flash_message_view'
 
 # Site view is a top-level view which is bound to body.
 module.exports = class SiteView extends View
@@ -10,18 +10,17 @@ module.exports = class SiteView extends View
     header: '#header-container'
     main: '#page-container'
     user_info: '#user_info'
-    alerts: '#alerts'
+    flash_messages: '#flash_messages'
   template: require 'views/layout/templates/site'
 
   initialize: ->
     super
-    @subscribeEvent 'alert', @renderAlert
-    @subscribeEvent 'clear_alerts', @clearAlerts
+    @subscribeEvent 'flash_message', @renderFlash
+    @subscribeEvent 'clear_flash_message', @clearFlash
 
-  renderAlert: (message) ->
+  renderFlash: (message) ->
     @publishEvent 'dismissAlert'
-    @alert  = new Alert(message: message)
-    @alertView = new AlertView(model: @alert, region: 'alerts')
-    console.log @alertView.$el
-  clearAlerts: ->
-    @alert.dispose() if @alert
+    @flashMessage  = new FlashMessage(message: message)
+    @flashMessageView = new FlashMessageView(model: @flashMessage, region: 'flash_messages')
+  clearFlash: ->
+    @flashMessage.dispose() if @flashMessage
