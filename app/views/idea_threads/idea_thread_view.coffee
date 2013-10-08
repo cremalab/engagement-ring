@@ -7,6 +7,7 @@ VotingRights = require 'collections/voting_rights_collection'
 VotingRightsView = require 'views/voting_rights/voting_rights_collection_view'
 TagListInput = require 'views/form_elements/tag_list_input'
 UserSearchCollection = require 'collections/user_search_collection'
+DateInputView = require 'views/form_elements/date_input_view'
 
 module.exports = class IdeaThreadView extends View
   template: require './templates/show'
@@ -27,6 +28,8 @@ module.exports = class IdeaThreadView extends View
       @ideas.thread_id = @model.get('id')
       @setOriginal() if @ideas
 
+    @listenTo @model, 'change:expiration', @displayExpiration
+
   setOriginal: ->
     @original_idea = @ideas.findWhere
       id: @model.get('original_idea_id')
@@ -35,9 +38,10 @@ module.exports = class IdeaThreadView extends View
   render: ->
     super
     @$el.find("input[name='title']").on 'keydown', (e) =>
-      if e.keyCode is 13
-        @model.set('title', $(e.target).val())
-        @save()
+      @handleKeyInput(e)
+    @$el.find("input.text-expiration").on 'keydown', (e) =>
+      @handleKeyInput(e)
+
     @modelBinder = new Backbone.ModelBinder()
     @modelBinder.bind @model, @$el
     @ideas_view = new IdeasCollectionView
@@ -46,6 +50,25 @@ module.exports = class IdeaThreadView extends View
       thread_view: @
       original_idea: @original_idea
     @setupVotingRights()
+
+    @natural_input = new DateInputView
+      model: @model
+      attr: 'expiration'
+      el: @$el.find('.text-expiration')
+
+    @subview 'expiration_input', @natural_input
+    @displayExpiration(@model)
+
+  displayExpiration: (model) ->
+    if model.get('expiration') is undefined or model.get('expiration') is null
+      @$el.find('.date-helper').text('')
+    else
+      @$el.find('.date-helper').text moment(@model.get('expiration')).format("dddd MMM D, h:mma")
+
+  handleKeyInput: (e) ->
+    if e.keyCode is 13
+      @model.set('title', @$el.find("input[name='title']").val())
+      @save()
 
   setupVotingRights: ->
     @voting_rights = @model.get('voting_rights')

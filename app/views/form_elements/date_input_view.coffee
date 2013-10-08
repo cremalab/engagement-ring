@@ -15,6 +15,9 @@ module.exports = module.exports = class DateInputView extends View
   render: ->
     super
     @$el.attr('name', @attribute)
+    attr_val = @model.get(@attribute)
+    if attr_val
+      @$el.val moment(attr_val).calendar()
 
   translateDate: ->
     input_val = @$el.val()

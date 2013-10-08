@@ -1,6 +1,9 @@
 <h1>
   <input data-bind='title' name='title' placeholder="Topic"  autofocus />
 </h1>
+<input class='text-expiration' placeholder='expires on...'>
+<input type='hidden' name='expiration'/>
+<small class='date-helper'></small>
 {{#if id}}
   <a href="/ideas/{{id}}" class='permalink'>Permalink</a>
 {{/if}}
