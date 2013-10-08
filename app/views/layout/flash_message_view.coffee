@@ -13,11 +13,11 @@ module.exports = class FlashMessageView extends View
 
   render: ->
     super
-    # Dismiss after 5 seconds
+    # Dismiss after lifespan
     lifespan = setTimeout =>
       @dismissFlash()
       clearTimeout(lifespan)
-    , 5000
+    , @model.get('lifespan')
 
   dismissFlash: (e) ->
     e.preventDefault() if e
