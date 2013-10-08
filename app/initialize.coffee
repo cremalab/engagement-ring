@@ -5,7 +5,7 @@ routes = require 'routes'
 $ ->
 
   new Application {
-    title: 'Brunch example application',
+    title: 'Vot.io',
     controllerSuffix: '_controller',
     routes
   }

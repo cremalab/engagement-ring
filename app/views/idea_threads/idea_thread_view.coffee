@@ -25,7 +25,6 @@ module.exports = class IdeaThreadView extends View
     @ideas  = @model.get('ideas')
     if @ideas
       @ideas.thread_id = @model.get('id')
-      console.log @ideas
       @setOriginal() if @ideas
 
   setOriginal: ->

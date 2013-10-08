@@ -15,6 +15,7 @@ module.exports = class ProfilesController extends Controller
       id: Chaplin.mediator.user.get('id')
     @model.fetch
       success: =>
+        @adjustTitle 'Edit My Profile'
         @view = new UserEditView
           model: @model
           region: 'main'

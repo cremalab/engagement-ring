@@ -17,6 +17,7 @@ module.exports = class GroupsController extends Controller
         @publishEvent 'renderError', response
 
   index: (params) ->
+    @adjustTitle 'My Groups'
     @collection = new Groups()
     @view       = new GroupsView region: 'main', collection: @collection
     @collection.fetch()

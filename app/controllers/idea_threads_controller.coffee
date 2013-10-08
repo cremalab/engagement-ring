@@ -26,6 +26,7 @@ module.exports = class IdeaThreadsController extends Controller
     @collection = new IdeaThreads()
     @collection.fetch()
     @view = new IdeaThreadsCollectionView collection: @collection, region: 'main'
+    @adjustTitle('Dashboard')
 
   show: (params) ->
     @model = new IdeaThread
