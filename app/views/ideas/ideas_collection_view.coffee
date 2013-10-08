@@ -44,7 +44,7 @@ module.exports = class IdeasCollectionView extends CollectionView
     if data.deleted
       @removeIdea(data)
     else
-      @addIdea(data)
+      @addIdea(data) if data.idea_thread_id == @thread_id
 
   addIdea: (data) ->
     existing = @collection.findWhere
