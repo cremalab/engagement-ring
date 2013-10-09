@@ -106,6 +106,7 @@ module.exports = class IdeaThreadView extends View
     # attrs = _.clone @model.attributes
     # @publishEvent 'save_idea_thread', @model, @ideas, @collection_view, @
     @model.save()
+    @dispose() if @model.isNew()
 
   archive: (e) ->
     e.preventDefault()
