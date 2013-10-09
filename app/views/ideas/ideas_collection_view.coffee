@@ -24,9 +24,9 @@ module.exports = class IdeasCollectionView extends CollectionView
     @thread_view = options.thread_view
     @thread_id   = @thread_view.model.get('id')
     @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
-    @subscribeEvent 'escapeForm', @checkEmpty
     @subscribeEvent 'save_idea', @escapeForm
     @listenTo @collection, 'change:edited', @handleEdit
+    @listenTo @collection, 'change:id', @renderItem
 
   newIdea: (e) ->
     e.preventDefault() if e
@@ -52,7 +52,6 @@ module.exports = class IdeasCollectionView extends CollectionView
     @new_idea = null
 
     if idea
-
       @removeViewForItem(idea)
       if idea.isNew()
         @collection.remove(idea)
@@ -63,7 +62,6 @@ module.exports = class IdeasCollectionView extends CollectionView
     else
       @collection.remove(@new_idea)
       @new_idea = null
-      @checkEmpty()
 
     @editing_view.dispose() if @editing_view
     @editing_view = null
@@ -93,11 +91,3 @@ module.exports = class IdeasCollectionView extends CollectionView
 
   resort: ->
     @collection.sort()
-
-  checkEmpty: ->
-    if @collection.size() == 0
-      if @thread_view.model
-        if @thread_view.model.isNew()
-          @thread_view.model.dispose()
-        else
-          @thread_view.model.destroy()

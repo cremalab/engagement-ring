@@ -6,7 +6,6 @@ IdeasCollection = require 'collections/ideas_collection'
 VotesCollection = require 'collections/votes_collection'
 Vote = require 'models/vote'
 Idea = require 'models/idea'
-VotingRights = require 'collections/voting_rights_collection'
 template = require './templates/collection'
 
 module.exports = class IdeaThreadsCollectionView extends CollectionView
@@ -30,7 +29,6 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
     super
     @subscribeEvent 'save_idea_thread', @cleanup
     @subscribeEvent 'escapeForm', @cleanup
-    @subscribeEvent 'notifier:update_idea_thread', @updateIdeaThread
     @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
 
   newIdeaThread: (e) ->
@@ -40,12 +38,6 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
     else
       current_user_id = @current_user.get('id')
       ideas = new IdeasCollection()
-      vote = new Vote
-      idea = new Idea
-        user_id: current_user_id
-      idea.get('votes').add
-        user_id: current_user_id
-      ideas.add(idea)
 
       @new_idea_thread = new IdeaThread
         user_id: Chaplin.mediator.user.get('id')
@@ -62,38 +54,9 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
     @setupKeyBindings()
 
   initItemView: (model) ->
-    new IdeaThreadView model: model, collection_view: @
-
-  updateIdeaThread: (attributes) ->
-    thread = @collection.findWhere
-      id: attributes.id
-    if attributes.deleted
-      @collection.remove(thread) if thread
+    if model.isNew()
+      new IdeaThreadView model: model, collection_view: @
     else
-      rights = new VotingRights(attributes.voting_rights)
-      right = rights.findWhere
-        user_id: @current_user.get('id')
-      if right
-        new_attr = _.clone attributes
-        delete new_attr.ideas
-        delete new_attr.voting_rights
-        voting_rights = new VotingRights(attributes.voting_rights)
-        ideas = new IdeasCollection(attributes.ideas)
-
-        if thread
-          thread.unset 'ideas'
-          thread.unset 'voting_rights'
-          thread.set(new_attr)
-          thread.set 'ideas', ideas
-          thread.set 'voting_rights', voting_rights
-          @renderItem(thread)
-        else
-          thread = new IdeaThread(attributes)
-          thread.set 'ideas', ideas
-          thread.set 'voting_rights', voting_rights
-          @collection.add thread
-
-      else
-        @collection.remove(thread)
+      new IdeaThreadView model: model, collection_view: @
 
 

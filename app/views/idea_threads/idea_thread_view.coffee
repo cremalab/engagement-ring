@@ -18,6 +18,7 @@ module.exports = class IdeaThreadView extends View
   textBindings: true
   events:
     'click .archive': 'archive'
+    'click .submit' : 'save'
 
 
   initialize: (options) ->
@@ -26,7 +27,7 @@ module.exports = class IdeaThreadView extends View
     @ideas  = @model.get('ideas')
     if @ideas
       @ideas.thread_id = @model.get('id')
-      @setOriginal() if @ideas
+      # @setOriginal() if @ideas and @model.get('original_idea_id')
 
     @listenTo @model, 'change:expiration', @displayExpiration
 
@@ -37,19 +38,13 @@ module.exports = class IdeaThreadView extends View
 
   render: ->
     super
-    @$el.find("input[name='title']").on 'keydown', (e) =>
-      @handleKeyInput(e)
-    @$el.find("input.text-expiration").on 'keydown', (e) =>
+    @$el.find("input[name='title'], input.text-expiration").on 'keydown', (e) =>
       @handleKeyInput(e)
 
     @modelBinder = new Backbone.ModelBinder()
     @modelBinder.bind @model, @$el
-    @ideas_view = new IdeasCollectionView
-      collection: @ideas
-      region: 'ideas'
-      thread_view: @
-      original_idea: @original_idea
     @setupVotingRights()
+    @renderIdeasView()
 
     @natural_input = new DateInputView
       model: @model
@@ -58,6 +53,15 @@ module.exports = class IdeaThreadView extends View
 
     @subview 'expiration_input', @natural_input
     @displayExpiration(@model)
+
+  renderIdeasView: ->
+    @ideas_view.dispose() if @ideas_view
+    @ideas = @model.get('ideas')
+    @ideas_view = new IdeasCollectionView
+      collection: @ideas
+      region: 'ideas'
+      thread_view: @
+      original_idea: @original_idea
 
   displayExpiration: (model) ->
     if model.get('expiration') is undefined or model.get('expiration') is null
@@ -68,6 +72,7 @@ module.exports = class IdeaThreadView extends View
   handleKeyInput: (e) ->
     if e.keyCode is 13
       @model.set('title', @$el.find("input[name='title']").val())
+      @model.set('description', @$el.find("textarea[name='description']").val())
       @save()
 
   setupVotingRights: ->
@@ -96,11 +101,11 @@ module.exports = class IdeaThreadView extends View
     @subview('profile_input', profile_input)
 
 
-  save: ->
-    attrs = _.clone @model.attributes
-    @publishEvent 'save_idea_thread', @model, @ideas, @collection_view, attrs
-    @collection_view.collection.remove @model
-    @dispose()
+  save: (e) ->
+    e.preventDefault() if e
+    # attrs = _.clone @model.attributes
+    # @publishEvent 'save_idea_thread', @model, @ideas, @collection_view, @
+    @model.save()
 
   archive: (e) ->
     e.preventDefault()

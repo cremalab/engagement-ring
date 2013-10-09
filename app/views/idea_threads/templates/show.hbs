@@ -1,9 +1,21 @@
-<h1>
-  <input data-bind='title' name='title' placeholder="Topic"  autofocus />
+{{#hasPermission user_id }}
+  <h1><input name='title' placeholder="Topic"  autofocus /></h1>
+{{else}}
+  <h1 data-bind='title'>{{title}}</h1>
+{{/hasPermission}}
 </h1>
-<input class='text-expiration' placeholder='expires on...'>
-<input type='hidden' name='expiration'/>
+{{#hasPermission user_id }}
+  <input class='text-expiration' placeholder='expires on...'>
+  <input type='hidden' name='expiration'/>
+{{/hasPermission}}
 <small class='date-helper'></small>
+<br/>
+{{#hasPermission user_id }}
+  <textarea name='description' placeholder='description'></textarea>
+{{else}}
+  <p data-bind='description'>{{ description }}</p>
+{{/hasPermission}}
+<br/>
 {{#if id}}
   <a href="/ideas/{{id}}" class='permalink'>Permalink</a>
 {{/if}}
@@ -17,3 +29,6 @@
 <div class='voters'></div>
 
 <div class='ideas'></div>
+{{#unless id }}
+  <button class="submit">Submit</button>
+{{/unless}}

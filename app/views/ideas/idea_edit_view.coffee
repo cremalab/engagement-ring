@@ -25,7 +25,8 @@ module.exports = class IdeaEditView extends View
 
   save: ->
     @updateModelFromFields =>
-      @collection_view.save(@model)
+      @model.save()
+      # @collection_view.save(@model)
 
   updateModelFromFields: (callback) ->
     description = @$el.find("[name='description']").val()
