@@ -19,15 +19,3 @@ describe 'IdeaEditView', ->
     @thread.get('ideas').add({})
     @idea = @thread.get('ideas').last()
     @view = new IdeaEditView model: @idea
-
-  it 'should display formatted date when valid', ->
-    @view.natural_input.$el.val('Tomorrow at 3 pm')
-    @view.natural_input.translateDate()
-    tomorrow_at_3 = moment().add('days',1)
-    tomorrow_at_3.set('hour', 15)
-    tomorrow_at_3 = tomorrow_at_3.format("dddd MMM D, ha")
-    expect(@view.$el.find('.when').text()).to.equal tomorrow_at_3
-
-    @view.natural_input.$el.val('')
-    @view.natural_input.translateDate()
-    expect(@view.$el.find('.when').text()).to.equal ''
