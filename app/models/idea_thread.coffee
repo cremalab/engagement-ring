@@ -21,15 +21,15 @@ module.exports = class IdeaThread extends Model
       voting_rights.add
         user_id: current_user_id
         autocomplete_value: current_user_id
-      vote = new Vote
-      idea = new Idea
       @set 'ideas', ideas
       @set 'voting_rights', voting_rights
     else
       if _.isArray(@get('voting_rights'))
         voting_rights = new VotingRightsCollection(@get('voting_rights'))
         @set 'voting_rights', voting_rights
-
+      if _.isArray(@get('ideas'))
+        ideas = new IdeasCollection(@get('ideas'))
+        @set 'ideas', ideas
 
 
   total_votes: ->
@@ -45,8 +45,11 @@ module.exports = class IdeaThread extends Model
       0
 
   parse: (idea_thread) ->
-    ideas = idea_thread.ideas
-    idea_thread.ideas = new IdeasCollection(ideas)
+    if idea_thread.ideas.length > 0
+      ideas = idea_thread.ideas
+      idea_thread.ideas = new IdeasCollection(ideas)
+    else
+      idea_thread.ideas = new IdeasCollection()
     voting_rights = idea_thread.voting_rights
     idea_thread.voting_rights = new VotingRightsCollection(voting_rights)
     return idea_thread
@@ -59,7 +62,8 @@ module.exports = class IdeaThread extends Model
     delete new_attr.ideas
     delete new_attr.voting_rights
     json = {idea_thread : new_attr}
-    _.extend json.idea_thread, {ideas_attributes: ideas, voting_rights_attributes: voting_rights}
+    _.extend json.idea_thread, {voting_rights_attributes: voting_rights}
+    _.extend json.idea_thread, {ideas_attributes: ideas} if ideas.length
     return json
 
   userCanVote: (user_id) ->
