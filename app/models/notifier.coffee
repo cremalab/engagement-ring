@@ -29,10 +29,11 @@ module.exports = class Notifier extends Model
       PrivatePub.subscribe "/message/channel", (data, channel) =>
         payload = jQuery.parseJSON(data.message)
         model_name = payload.model_name
-        delete payload.model_name
-        @notifyApp(model_name, payload)
-        @createWebNotification(model_name, payload) if mediator.user.get('notifications')
-        @createAudioNotification(model_name, payload) if "webkitAudioContext" of window
+        unless payload.user_id is Chaplin.mediator.user.get('id')
+          delete payload.model_name
+          @notifyApp(model_name, payload)
+          @createWebNotification(model_name, payload) if mediator.user.get('notifications')
+          @createAudioNotification(model_name, payload) if "webkitAudioContext" of window
 
 
   notifyApp: (model_name, payload) ->

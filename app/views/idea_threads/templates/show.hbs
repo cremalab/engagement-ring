@@ -1,12 +1,19 @@
 {{#hasPermission user_id }}
+
+  {{#unless id}}
+    <button class="flyout cancel">
+      <div class="flyoutIcon"></div>
+      <div class="flyoutTray">
+        <div class="flyoutText"></div>
+      </div>
+    </button>
+  {{/unless}}
+
   <h1><input name='title' placeholder="Topic"  autofocus /></h1>
-{{else}}
-  <h1 data-bind='title'>{{title}}</h1>
-{{/hasPermission}}
-</h1>
-{{#hasPermission user_id }}
   <input class='text-expiration' placeholder='expires on...'>
   <input type='hidden' name='expiration'/>
+{{else}}
+  <h1 data-bind='title'>{{title}}</h1>
 {{/hasPermission}}
 <small class='date-helper'></small>
 <br/>
@@ -23,12 +30,13 @@
 {{#hasPermission user_id }}
   {{#if id}}
     <a href='#' class='archive'>ARCHIVE</a>
+    <a href='#' class='destroy'>DESTROY</a>
   {{/if}}
 {{/hasPermission}}
 
 <div class='voters'></div>
-
-<div class='ideas'></div>
-{{#unless id }}
+{{#if id}}
+  <div class='ideas'></div>
+{{else}}
   <button class="submit">Submit</button>
-{{/unless}}
+{{/if}}

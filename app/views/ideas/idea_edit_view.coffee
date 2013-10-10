@@ -13,19 +13,19 @@ module.exports = class IdeaEditView extends View
   initialize: (options) ->
     super
     @collection_view = options.collection_view
+    @listenTo @model, 'change:id', @dispose
 
   render: ->
     super
     Mousetrap.unbind('n')
 
   exit: ->
-    @collection_view.escapeForm @model
     @collection_view.setupKeyBindings()
-    @publishEvent 'escapeForm'
+    @model.set('edited', false)
 
   save: ->
     @updateModelFromFields =>
-      @collection_view.save(@model)
+      @model.save()
 
   updateModelFromFields: (callback) ->
     description = @$el.find("[name='description']").val()

@@ -18,7 +18,9 @@ module.exports = class IdeaThreadView extends View
   textBindings: true
   events:
     'click .archive': 'archive'
+    'click .destroy': 'destroyThread'
     'click .submit' : 'save'
+    'click .cancel' : 'cancel'
 
 
   initialize: (options) ->
@@ -27,14 +29,19 @@ module.exports = class IdeaThreadView extends View
     @ideas  = @model.get('ideas')
     if @ideas
       @ideas.thread_id = @model.get('id')
-      # @setOriginal() if @ideas and @model.get('original_idea_id')
+      @setOriginal() if @ideas and @model.get('original_idea_id')
 
     @listenTo @model, 'change:expiration', @displayExpiration
+    @listenTo @model, 'change:id', @render
 
   setOriginal: ->
     @original_idea = @ideas.findWhere
       id: @model.get('original_idea_id')
     @original_idea.set 'original', true
+
+  cancel: (e) ->
+    e.preventDefault()
+    @model.dispose()
 
   render: ->
     super
@@ -103,12 +110,20 @@ module.exports = class IdeaThreadView extends View
 
   save: (e) ->
     e.preventDefault() if e
-    # attrs = _.clone @model.attributes
-    # @publishEvent 'save_idea_thread', @model, @ideas, @collection_view, @
-    @model.save()
-    @dispose() if @model.isNew()
+    @model.save @model.attributes,
+      success: =>
+        title = @model.get('title')
+        @collection_view.cleanup()
+        if @model.get('status') is 'archived'
+          @publishEvent 'flash_message', "#{title} was archived"
+        else
+          @publishEvent 'flash_message', "#{title} was saved"
 
   archive: (e) ->
     e.preventDefault()
     @model.set 'status', 'archived'
     @save()
+
+  destroyThread: (e) ->
+    e.preventDefault()
+    @model.destroy()
