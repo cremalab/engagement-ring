@@ -24,8 +24,6 @@ module.exports = class IdeasCollectionView extends CollectionView
     @thread_view = options.thread_view
     @thread_id   = @thread_view.model.get('id')
     @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
-    @subscribeEvent 'escapeForm', @checkEmpty
-    @subscribeEvent 'save_idea', @escapeForm
     @listenTo @collection, 'change:edited', @handleEdit
 
   newIdea: (e) ->
@@ -39,20 +37,23 @@ module.exports = class IdeasCollectionView extends CollectionView
 
     @collection.add idea, {at: idea_count + 1}
 
-  editIdea: (model) ->
-    @removeViewForItem(model)
-    @updateVisibleItems model, true
-    model.set 'edited', true
 
-  handleEdit: (model) ->
-    @renderAllItems()
+  handleEdit: (model, edited) ->
+    if edited
+      @reRender(model)
+    else
+      @escapeForm(model)
+
+  reRender: (model) ->
+    @removeViewForItem(model)
+    view = @initItemView(model)
+    @insertView(model, view)
 
   escapeForm: (idea) ->
     @thread_view.$el.removeClass('syncing') if @thread_view.$el
     @new_idea = null
 
     if idea
-
       @removeViewForItem(idea)
       if idea.isNew()
         @collection.remove(idea)
@@ -63,7 +64,6 @@ module.exports = class IdeasCollectionView extends CollectionView
     else
       @collection.remove(@new_idea)
       @new_idea = null
-      @checkEmpty()
 
     @editing_view.dispose() if @editing_view
     @editing_view = null
@@ -86,18 +86,11 @@ module.exports = class IdeasCollectionView extends CollectionView
 
   save: (model) ->
     @thread_view.$el.addClass('syncing')
-    if @thread_view.model.isNew()
-      @thread_view.save()
-    else
-      @publishEvent 'save_idea', model, @collection, @
+    model.save model.attributes,
+      success: =>
+        console.log 'SUCESSSSSS'
+        console.log model
+        @renderItem(model)
 
   resort: ->
     @collection.sort()
-
-  checkEmpty: ->
-    if @collection.size() == 0
-      if @thread_view.model
-        if @thread_view.model.isNew()
-          @thread_view.model.dispose()
-        else
-          @thread_view.model.destroy()

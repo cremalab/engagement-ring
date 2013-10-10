@@ -51,13 +51,9 @@ module.exports = class View extends Chaplin.View
     if @textBindings
       attributes = _.keys model.changed
       _.each attributes, (attr) =>
-        $el = @$el.find("[data-bind='#{attr}']")
+        $el = @$el.find("[data-bind='#{attr}']:first")
         if $el.length
           if @model.get(attr) is undefined
             $el.text ''
           else
-            if attr is 'when'
-              timely = moment(@model.get(attr)).calendar()
-              $el.text timely
-            else
-              $el.text @model.get(attr)
+            $el.text @model.get(attr)

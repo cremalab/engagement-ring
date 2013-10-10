@@ -31,7 +31,7 @@ module.exports = class Ideas extends Collection
     existing = @findWhere
       id: data.id
     if existing
-      data = _.pick(data, ['title', 'description', 'when'])
+      data = _.pick(data, ['title', 'description', 'expiration', 'description'])
       existing.set data
       @updateModel existing
     else

@@ -1,6 +1,28 @@
-<h1>
-  <input data-bind='title' name='title' placeholder="Topic"  autofocus />
-</h1>
+{{#hasPermission user_id }}
+
+  {{#unless id}}
+    <button class="flyout cancel">
+      <div class="flyoutIcon"></div>
+      <div class="flyoutTray">
+        <div class="flyoutText"></div>
+      </div>
+    </button>
+  {{/unless}}
+
+  <h1><input name='title' placeholder="Topic"  autofocus /></h1>
+  <input class='text-expiration' placeholder='expires on...'>
+  <input type='hidden' name='expiration'/>
+{{else}}
+  <h1 data-bind='title'>{{title}}</h1>
+{{/hasPermission}}
+<small class='date-helper'></small>
+<br/>
+{{#hasPermission user_id }}
+  <textarea name='description' placeholder='description'></textarea>
+{{else}}
+  <p data-bind='description'>{{ description }}</p>
+{{/hasPermission}}
+<br/>
 {{#if id}}
   <a href="/ideas/{{id}}" class='permalink'>Permalink</a>
 {{/if}}
@@ -8,9 +30,13 @@
 {{#hasPermission user_id }}
   {{#if id}}
     <a href='#' class='archive'>ARCHIVE</a>
+    <a href='#' class='destroy'>DESTROY</a>
   {{/if}}
 {{/hasPermission}}
 
 <div class='voters'></div>
-
-<div class='ideas'></div>
+{{#if id}}
+  <div class='ideas'></div>
+{{else}}
+  <button class="submit">Submit</button>
+{{/if}}

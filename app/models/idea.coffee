@@ -16,6 +16,8 @@ module.exports = class Idea extends Model
     votes = new VotesCollection(@get 'votes')
     votes.idea = @
     @set 'votes', votes
+    @listenTo @, 'change:updated_at', =>
+      @set 'edited', false
 
   hasVote: (vote_id) ->
     votes = @get('votes')

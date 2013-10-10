@@ -7,6 +7,7 @@ VotingRights = require 'collections/voting_rights_collection'
 VotingRightsView = require 'views/voting_rights/voting_rights_collection_view'
 TagListInput = require 'views/form_elements/tag_list_input'
 UserSearchCollection = require 'collections/user_search_collection'
+DateInputView = require 'views/form_elements/date_input_view'
 
 module.exports = class IdeaThreadView extends View
   template: require './templates/show'
@@ -14,9 +15,12 @@ module.exports = class IdeaThreadView extends View
   regions:
     ideas: '.ideas'
     voters: '.voters'
-  textBindings: true
+  # textBindings: true
   events:
     'click .archive': 'archive'
+    'click .destroy': 'destroyThread'
+    'click .submit' : 'save'
+    'click .cancel' : 'cancel'
 
 
   initialize: (options) ->
@@ -25,27 +29,58 @@ module.exports = class IdeaThreadView extends View
     @ideas  = @model.get('ideas')
     if @ideas
       @ideas.thread_id = @model.get('id')
-      @setOriginal() if @ideas
+      @setOriginal() if @ideas and @model.get('original_idea_id')
+
+    @listenTo @model, 'change:expiration', @displayExpiration
+    @listenTo @model, 'change:id', @render
 
   setOriginal: ->
     @original_idea = @ideas.findWhere
       id: @model.get('original_idea_id')
     @original_idea.set 'original', true
 
+  cancel: (e) ->
+    e.preventDefault()
+    @model.dispose()
+
   render: ->
     super
-    @$el.find("input[name='title']").on 'keydown', (e) =>
-      if e.keyCode is 13
-        @model.set('title', $(e.target).val())
-        @save()
+    @$el.find("input[name='title'], input.text-expiration").on 'keydown', (e) =>
+      @handleKeyInput(e)
+
     @modelBinder = new Backbone.ModelBinder()
     @modelBinder.bind @model, @$el
+    @setupVotingRights()
+    @renderIdeasView()
+
+    @natural_input = new DateInputView
+      model: @model
+      attr: 'expiration'
+      el: @$el.find('.text-expiration')
+
+    @subview 'expiration_input', @natural_input
+    @displayExpiration(@model)
+
+  renderIdeasView: ->
+    @ideas_view.dispose() if @ideas_view
+    @ideas = @model.get('ideas')
     @ideas_view = new IdeasCollectionView
       collection: @ideas
       region: 'ideas'
       thread_view: @
       original_idea: @original_idea
-    @setupVotingRights()
+
+  displayExpiration: (model) ->
+    if model.get('expiration') is undefined or model.get('expiration') is null
+      @$el.find('.date-helper').text('')
+    else
+      @$el.find('.date-helper').text moment(@model.get('expiration')).format("dddd MMM D, h:mma")
+
+  handleKeyInput: (e) ->
+    if e.keyCode is 13
+      @model.set('title', @$el.find("input[name='title']").val())
+      @model.set('description', @$el.find("textarea[name='description']").val())
+      @save()
 
   setupVotingRights: ->
     @voting_rights = @model.get('voting_rights')
@@ -73,13 +108,22 @@ module.exports = class IdeaThreadView extends View
     @subview('profile_input', profile_input)
 
 
-  save: ->
-    attrs = _.clone @model.attributes
-    @publishEvent 'save_idea_thread', @model, @ideas, @collection_view, attrs
-    @collection_view.collection.remove @model
-    @dispose()
+  save: (e) ->
+    e.preventDefault() if e
+    @model.save @model.attributes,
+      success: =>
+        title = @model.get('title')
+        @collection_view.cleanup()
+        if @model.get('status') is 'archived'
+          @publishEvent 'flash_message', "#{title} was archived"
+        else
+          @publishEvent 'flash_message', "#{title} was saved"
 
   archive: (e) ->
     e.preventDefault()
     @model.set 'status', 'archived'
     @save()
+
+  destroyThread: (e) ->
+    e.preventDefault()
+    @model.destroy()

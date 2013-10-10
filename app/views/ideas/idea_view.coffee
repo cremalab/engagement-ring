@@ -36,7 +36,7 @@ module.exports = class IdeaView extends View
 
   edit: (e) ->
     e.preventDefault()
-    @collection_view.editIdea @model
+    @model.set('edited', true)
 
   vote: (e) ->
     if @user_vote
@@ -69,11 +69,7 @@ module.exports = class IdeaView extends View
 
   destroy: (e) ->
     e.preventDefault() if e
-    @model.destroy
-      success: (idea,b) =>
-        @collection_view.collection.remove(idea)
-        console.log @collection_view.collection
-        @collection_view.checkEmpty()
+    @model.destroy()
 
   renderViewInCollection: (object) ->
     changed = _.keys(object.changed)
