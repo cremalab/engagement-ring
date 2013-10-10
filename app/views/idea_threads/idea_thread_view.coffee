@@ -15,7 +15,7 @@ module.exports = class IdeaThreadView extends View
   regions:
     ideas: '.ideas'
     voters: '.voters'
-  textBindings: true
+  # textBindings: true
   events:
     'click .archive': 'archive'
     'click .destroy': 'destroyThread'
