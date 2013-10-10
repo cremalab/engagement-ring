@@ -60,7 +60,7 @@ describe 'IdeasCollectionView', ->
   it 'should insert idea form on edit', ->
     @collection.add({id: 1, title: "Incorrect title"})
     model = @collection.last()
-    @view.editIdea(model)
+    model.set('edited', true)
     expect(@view.editing_view).to.exist
     expect(model.get('edited')).to.be.true
     expect(@view.editing_view.constructor.name).to.equal('IdeaEditView')
@@ -68,7 +68,7 @@ describe 'IdeasCollectionView', ->
   it 'should unset edited property of idea on cancel', ->
     @collection.add({id: 1, title: "Incorrect title"})
     model = @collection.last()
-    @view.editIdea(model)
+    model.set('edited', true)
     expect(model.get('edited')).to.be.true
     @view.$el.find('.cancel').click()
     expect(model.get('edited')).to.be.a('undefined')
