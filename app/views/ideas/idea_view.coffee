@@ -2,6 +2,8 @@ View = require 'views/base/view'
 Vote = require 'models/vote'
 Votes = require 'collections/votes_collection'
 VotesView = require 'views/votes/votes_collection_view'
+Comments = require 'collections/comments_collection'
+CommentsView = require 'views/comments/comments_collection_view'
 
 module.exports = class IdeaView extends View
   template: require './templates/show'
@@ -12,6 +14,7 @@ module.exports = class IdeaView extends View
       "idea"
   events:
     'click .vote': 'vote'
+    'click .comments': 'toggleComments'
     'click .edit': 'edit'
     'click .destroy': 'destroy'
   textBindings: true
@@ -75,3 +78,23 @@ module.exports = class IdeaView extends View
     changed = _.keys(object.changed)
     if _.indexOf(changed, 'title') > 0
       @collection_view.renderItem(@model) if @collection_view
+
+  toggleComments: (e) ->
+    e.preventDefault()
+    if @subview('comments')
+      @removeSubview('comments')
+    else
+
+      # Create an empty collection unless one is cached
+      unless @comments
+        @comments = new Comments([], idea_id: @model.get('id'))
+
+      comments_view = new CommentsView
+        collection: @comments
+        ## We'll probably stick this view in a higher-level
+        ## application region:
+
+        # region: 'sidepanel'
+        container: @$el
+      @subview('comments', comments_view)
+
