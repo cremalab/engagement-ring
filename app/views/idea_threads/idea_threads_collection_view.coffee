@@ -29,11 +29,17 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
     @subscribeEvent 'escapeForm', @cleanup
     @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
     @subscribeEvent 'add_new_idea_thread', @newIdeaThread
+    @listenTo @collection, 'dispose', @cleanup
+    @listenTo @collection, 'change:updated_at', (model) =>
+      @filter @filterer, (view, included) ->
+        unless included
+          view.$el.hide()
+
 
   newIdeaThread: (e) ->
     if @new_idea_thread
       new_idea_thread_view = @viewForModel(@new_idea_thread)
-      @$el.find("input[name='title']").focus()
+      new_idea_thread_view.$el.find("input[name='title']").focus()
     else
       current_user_id = @current_user.get('id')
       ideas = new IdeasCollection()
@@ -44,18 +50,11 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
       @collection.add(@new_idea_thread, {at: 0})
 
 
-  cleanup: ->
-    empty_thread = @collection.find (thread) ->
-      thread.get('ideas').models.length is 0
-    empty_thread.dispose() if empty_thread
-
+  cleanup: (a,b,c) ->
     @new_idea_thread = null
     @setupKeyBindings()
 
   initItemView: (model) ->
-    if model.isNew()
-      new IdeaThreadView model: model, collection_view: @
-    else
-      new IdeaThreadView model: model, collection_view: @
+    new IdeaThreadView model: model, collection_view: @
 
 

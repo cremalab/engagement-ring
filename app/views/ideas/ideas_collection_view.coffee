@@ -24,9 +24,7 @@ module.exports = class IdeasCollectionView extends CollectionView
     @thread_view = options.thread_view
     @thread_id   = @thread_view.model.get('id')
     @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
-    @subscribeEvent 'save_idea', @escapeForm
     @listenTo @collection, 'change:edited', @handleEdit
-    @listenTo @collection, 'change:id', @renderItem
 
   newIdea: (e) ->
     e.preventDefault() if e
@@ -39,13 +37,17 @@ module.exports = class IdeasCollectionView extends CollectionView
 
     @collection.add idea, {at: idea_count + 1}
 
-  editIdea: (model) ->
-    @removeViewForItem(model)
-    @updateVisibleItems model, true
-    model.set 'edited', true
 
-  handleEdit: (model) ->
-    @renderAllItems()
+  handleEdit: (model, edited) ->
+    if edited
+      @reRender(model)
+    else
+      @escapeForm(model)
+
+  reRender: (model) ->
+    @removeViewForItem(model)
+    view = @initItemView(model)
+    @insertView(model, view)
 
   escapeForm: (idea) ->
     @thread_view.$el.removeClass('syncing') if @thread_view.$el
@@ -84,10 +86,11 @@ module.exports = class IdeasCollectionView extends CollectionView
 
   save: (model) ->
     @thread_view.$el.addClass('syncing')
-    if @thread_view.model.isNew()
-      @thread_view.save()
-    else
-      @publishEvent 'save_idea', model, @collection, @
+    model.save model.attributes,
+      success: =>
+        console.log 'SUCESSSSSS'
+        console.log model
+        @renderItem(model)
 
   resort: ->
     @collection.sort()

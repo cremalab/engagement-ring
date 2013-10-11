@@ -36,8 +36,8 @@ module.exports = class IdeaThreadsController extends Controller
         @view = new IdeaThreadView model: @model, region: 'main', autoRender: true
         @adjustTitle @model.get('title')
 
-  update: (model, ideas_collection, ideas_collection_view, attrs) ->
-    model.save attrs,
+  update: (model) ->
+    model.save model.attributes,
       error: (model, response) =>
         console.log $.parseJSON(response.responseText)
         @publishEvent 'renderError', response
