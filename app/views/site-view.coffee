@@ -4,14 +4,15 @@ FlashMessageView = require 'views/layout/flash_message_view'
 
 # Site view is a top-level view which is bound to body.
 module.exports = class SiteView extends View
-  container: 'body'
-  id: 'site-container'
+  el: 'body'
   regions:
     header: '#header-container'
-    main: '#page-container'
+    main: '#content-container'
     user_info: '#user_info'
     flash_messages: '#flash_messages'
   template: require 'views/layout/templates/site'
+  events:
+    "click .headerAction .add" : "addNewIdeaThread"
 
   initialize: ->
     super
@@ -24,3 +25,7 @@ module.exports = class SiteView extends View
     @flashMessageView = new FlashMessageView(model: @flashMessage, region: 'flash_messages')
   clearFlash: ->
     @flashMessage.dispose() if @flashMessage
+
+  addNewIdeaThread: (e) ->
+    e.preventDefault()
+    @publishEvent 'add_new_idea_thread'
