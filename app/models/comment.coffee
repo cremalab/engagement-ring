@@ -3,7 +3,7 @@ Model = require 'models/base/model'
 module.exports = class Comment extends Model
   defaults:
     content: ""
-    created_at: moment()
+    created_at: moment().toISOString()
 
   initialize: ->
     super
