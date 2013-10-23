@@ -18,8 +18,18 @@ module.exports = class Activity extends Model
         else
           "revoked their vote"
       when "Comment"
-        "left a comment"
+
+        'said "' + @truncatedContent() + '"'
       when "Idea"
         "created an idea"
 
     user_name + " " + message
+
+  truncatedContent: ->
+    content = @get('parameters').content
+    limit = 30
+    length  = content.length
+    if length > limit
+      return content.substring(0,limit) + "..."
+    else
+      return content
