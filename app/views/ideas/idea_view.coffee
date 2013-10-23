@@ -4,6 +4,7 @@ Votes = require 'collections/votes_collection'
 VotesView = require 'views/votes/votes_collection_view'
 Comments = require 'collections/comments_collection'
 CommentsView = require 'views/comments/comments_collection_view'
+ActivitiesView = require 'views/activities/activities_collection_view'
 
 module.exports = class IdeaView extends View
   template: require './templates/show'
@@ -18,21 +19,20 @@ module.exports = class IdeaView extends View
     'click .edit': 'edit'
     'click .destroy': 'destroy'
   textBindings: true
+  regions:
+    activities: '.activities'
 
   initialize: (options) ->
     super
     @collection_view = options.collection_view
     @listenTo @model, 'change', @renderViewInCollection
     @listenTo @model, 'save', @renderViewInCollection
+    @votes = @model.get('votes')
 
   render: ->
     super
-    @votes = @model.get('votes')
-    votes_view = new VotesView
-      collection: @votes
-      el: @$el.find('.ideaVoters')
-      idea_view: @
-    @subview 'votes', votes_view
+    @createVotesView()
+    @createActivitiesView()
 
     @listenTo @votes, 'add', @updateVotesCount
     @listenTo @votes, 'remove', @updateVotesCount
@@ -40,6 +40,18 @@ module.exports = class IdeaView extends View
   edit: (e) ->
     e.preventDefault()
     @model.set('edited', true)
+
+  createVotesView: ->
+    votes_view = new VotesView
+      collection: @votes
+      el: @$el.find('.ideaVoters')
+      idea_view: @
+    @subview 'votes', votes_view
+
+  createActivitiesView: ->
+    activities_view = new ActivitiesView
+      collection: @model.get('related_activities')
+      region: 'activities'
 
   vote: (e) ->
     if @user_vote
