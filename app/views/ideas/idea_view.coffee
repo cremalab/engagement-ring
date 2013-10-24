@@ -28,6 +28,7 @@ module.exports = class IdeaView extends View
     @listenTo @model, 'change', @renderViewInCollection
     @listenTo @model, 'save', @renderViewInCollection
     @votes = @model.get('votes')
+    @subscribeEvent 'notifier:update_comment', @updateCommentCount
 
   render: ->
     super
@@ -78,9 +79,16 @@ module.exports = class IdeaView extends View
       @$el.find(".vote").removeClass('voted')
       @user_vote = null
 
-  updateVotesCount: (a,b) ->
+  updateVotesCount: ->
     @model.set('total_votes', @votes.length)
     @collection_view.resort()
+
+  updateCommentCount: ->
+    if @comments
+      @model.set('comment_count', @comments.length)
+    else
+      # +1 if it hasn't fetched the comments yet
+      @model.set('comment_count', @model.get('comment_count') + 1)
 
   destroy: (e) ->
     e.preventDefault() if e
@@ -100,6 +108,8 @@ module.exports = class IdeaView extends View
       # Create an empty collection unless one is cached
       unless @comments
         @comments = new Comments([], idea_id: @model.get('id'))
+        @listenTo @comments, 'add', @updateCommentCount
+        @listenTo @comments, 'remove', @updateCommentCount
 
       comments_view = new CommentsView
         collection: @comments

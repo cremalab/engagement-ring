@@ -11,16 +11,19 @@ module.exports = class ActivitiesCollectionView extends CollectionView
 
   render: ->
     super
-    @$el.append("<a href='#' class='view-all-activity'>View all activity</a>")
+    @more_button = @$el.append("<button href='#' class='view-all-activity'>View all activity</button>")
 
   viewAll: (e) ->
     e.preventDefault()
+    if @subview('activity_feed')
+      @removeSubview('activity_feed')
+    else
+      full_collection = new ActivitiesCollection([], @collection.idea)
+      activity_feed = new ActivitiesFullCollectionView
+        collection: full_collection
+        # Put this in the sidebar region or modal
+        # region: 'sidepanel'
+        # region: 'flash_messages'
+        container: @$el
 
-    full_collection = new ActivitiesCollection([], @collection.idea)
-
-    activity_feed = new ActivitiesFullCollectionView
-      collection: full_collection
-      # Put this in the sidebar region or modal
-      # region: 'sidepanel'
-      region: 'flash_messages'
-      # container: @$el
+      @subview 'activity_feed', activity_feed

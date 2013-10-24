@@ -9,10 +9,6 @@ module.exports = class ActivitiesFullCollectionView extends CollectionView
     super
     @collection.fetch()
 
-  render: ->
-    super
-    @$el.append("<a href='#' class='view-all-activity'>View all activity</a>")
-
   viewAll: (e) ->
     e.preventDefault()
 
