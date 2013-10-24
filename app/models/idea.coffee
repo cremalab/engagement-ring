@@ -18,7 +18,8 @@ module.exports = class Idea extends Model
     votes.idea = @
     @set 'votes', votes
 
-    activities = new ActivitiesCollection(@get('related_activities'), @)
+    # ActivitiesCollection arguements: Items, Idea, Collection Limit
+    activities = new ActivitiesCollection(@get('related_activities'), @, 10)
     @set 'related_activities', activities
 
     @listenTo @, 'change:updated_at', =>
@@ -34,7 +35,8 @@ module.exports = class Idea extends Model
       return false
 
   parse: (idea) ->
-    activities = new ActivitiesCollection(idea.related_activities, @)
+    # ActivitiesCollection arguements: Items, Idea, Collection Limit
+    activities = new ActivitiesCollection(idea.related_activities, @, 10)
     idea.related_activities = activities
     votes = idea.votes
     votes = new VotesCollection(votes)

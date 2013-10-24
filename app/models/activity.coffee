@@ -27,9 +27,10 @@ module.exports = class Activity extends Model
 
   truncatedContent: ->
     content = @get('parameters').content
-    limit = 30
-    length  = content.length
-    if length > limit
-      return content.substring(0,limit) + "..."
-    else
-      return content
+    if content
+      limit = 30
+      length  = content.length
+      if length > limit
+        return content.substring(0,limit) + "..."
+      else
+        return content

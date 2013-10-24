@@ -3,8 +3,16 @@ View = require 'views/base/view'
 module.exports = class ActivityView extends View
   autoRender: true
   autoAttach: true
-  template: require './templates/show'
-  className: 'avatar tooltip'
+
+  initialize: (options) ->
+    super
+    if options.full_view
+      # Line-item based template
+      @full_view = true
+      @template = require './templates/full_show'
+    else
+      # Avatar-based template
+      @template = require './templates/show'
 
   render: ->
     super
@@ -18,3 +26,5 @@ module.exports = class ActivityView extends View
     action = split[1]
 
     @$el.addClass("#{item} #{action}")
+    unless @full_view
+      @$el.addClass 'avatar tooltip'
