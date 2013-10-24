@@ -56,7 +56,9 @@ module.exports = class TagListInput extends AutocompleteInput
         @addTag tag
   addTag: (match) ->
     tag = new @TagModel()
-    tag.set match.attributes
+    attr = _.clone match.attributes
+    delete attr.id
+    tag.set attr
     normalized_name = tag.get('autocomplete_value')
     existing = @collection.findWhere({autocomplete_value: normalized_name})
     if existing
