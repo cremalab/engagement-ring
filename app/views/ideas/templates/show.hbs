@@ -8,7 +8,7 @@
   </div>
   <div class="ideaAction">
     <button class='vote' data-bind='total_votes'>{{ total_votes }}</button>
-    <button class='comments'>Comments</button>
+    <button class='comments'><span data-bind='comment_count'>{{ comment_count }}</span> Comments</button>
   </div>
 </div>
 <div class="ideaVoters"></div>
@@ -18,3 +18,4 @@
   <button class='plain destroy'></button>
 </div>
 {{/hasPermission}}
+<div class='activities'></div>
