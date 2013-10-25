@@ -5,6 +5,7 @@ IdeaThreads = require 'collections/idea_threads_collection'
 IdeaThreadsCollectionView = require 'views/idea_threads/idea_threads_collection_view'
 IdeaEditView = require 'views/ideas/idea_edit_view'
 IdeaThreadView = require 'views/idea_threads/idea_thread_view'
+ActionButtonView = require 'views/layout/action_button_view'
 
 module.exports = class IdeaThreadsController extends Controller
 
@@ -26,6 +27,10 @@ module.exports = class IdeaThreadsController extends Controller
     @collection = new IdeaThreads()
     @collection.fetch()
     @view = new IdeaThreadsCollectionView collection: @collection, region: 'main'
+    action_view = new ActionButtonView
+      region: 'headerAction'
+      action_type: 'new_thread'
+
     @adjustTitle('Dashboard')
 
   show: (params) ->

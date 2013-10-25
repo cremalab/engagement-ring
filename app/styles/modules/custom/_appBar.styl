@@ -1,6 +1,11 @@
 .appBar
   @extends $grid
-  border-spacing unit() unit(2)
 
 .appBarCol
-  text-align center
+
+  &.headerAction
+    text-align left
+  &.brand
+    text-align center
+  &.settings
+    text-align right

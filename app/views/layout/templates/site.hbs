@@ -1,24 +1,28 @@
 <div class="scaffold">
+
   <div class="scaffoldColumn primary">
-    <div id='flash_messages'></div>
-    <header class="appBar" id="header-container">
-      <div class="appBarCol headerAction">
-        <button class="add">Add thread</button>
-      </div>
-      <div class="appBarCol">
-        <img class="logo" src="/images/votio-logo.svg">
-      </div>
-      <div class="appBarCol">
-        <div id='user_info'></div>
-      </div>
-    </header>
-    <main id="content-container">
-    </main>
+    <div class="contentWidth">
+
+      <div id='flash_messages'></div>
+      
+      <header class="appBar">
+        <div class="appBarCol" data-region="headerAction"></div>
+        <div class="appBarCol brand">
+          <img class="logo" src="/images/votio-logo.svg">
+        </div>
+        <div class="appBarCol settings" data-region="headerMenu"></div>
+      </header>
+
+      <main id="content-container" data-region="main"></main>
+
+    </div>
   </div>
+
   <div class="scaffoldColumn secondary"></div>
+
 </div>
 
 <div class="scaffold secondary">
   <div class="scaffoldColumn primary"></div>
-  <aside id="chat-container" class="scaffoldColumn secondary"></aside>
+  <aside class="scaffoldColumn secondary" data-region="sidePane"></aside>
 </div>

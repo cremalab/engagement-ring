@@ -1,0 +1,32 @@
+unless id
+  .flyout.cancel
+    .flyoutIcon
+    .flyoutTray
+      .flyoutText
+
+.thread
+  .threadCard
+    .threadInfo
+      .threadInfoAuthor
+      .threadInfoMain
+        h1
+          input(name='title', placeholder='Topic', autofocus='autofocus')
+        input.text-expiration(placeholder='expires on...')
+        input(type='hidden', name='expiration')
+
+        small.date-helper
+          textarea(name='description' placeholder='description')
+
+        if id
+          a.permalink(href="/ideas/{{id}}") Permalink
+          a.archive(href='#') ARCHIVE
+          a.destroy(href='#') DESTROY
+
+      .threadInfoMeta
+    .threadVoters
+      .voters
+  .threadLeader
+if id
+  .ideas
+else
+  button.submit Submit

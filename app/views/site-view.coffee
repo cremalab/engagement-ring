@@ -6,8 +6,9 @@ FlashMessageView = require 'views/layout/flash_message_view'
 module.exports = class SiteView extends View
   el: 'body'
   regions:
-    header: '#header-container'
-    main: '#content-container'
+    headerAction: "[data-region='headerAction']"
+    headerMenu: "[data-region='headerMenu']"
+    main: "[data-region='main']"
     user_info: '#user_info'
     flash_messages: '#flash_messages'
   template: require 'views/layout/templates/site'
