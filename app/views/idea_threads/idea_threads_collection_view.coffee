@@ -15,8 +15,6 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
   animationEndClass: 'collection-animation-end'
   template: template
   listSelector: '.collectionItems'
-  events:
-    'click .add': 'newIdeaThread'
   key_bindings:
     'n': 'newIdeaThread'
   filterer: (item, index) ->
@@ -30,6 +28,7 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
     @subscribeEvent 'save_idea_thread', @cleanup
     @subscribeEvent 'escapeForm', @cleanup
     @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
+    @subscribeEvent 'add_new_idea_thread', @newIdeaThread
     @listenTo @collection, 'dispose', @cleanup
     @listenTo @collection, 'change:updated_at', (model) =>
       @filter @filterer, (view, included) ->

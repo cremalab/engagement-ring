@@ -1,6 +1,5 @@
 SiteView = require 'views/site-view'
-HeaderView = require 'views/layout/header_view'
-CurrentUserInfoView = require 'views/layout/current_user_info_view'
+HeaderMenu = require 'views/layout/headerMenu'
 
 module.exports = class Controller extends Chaplin.Controller
   # Compositions persist stuff between controllers.
@@ -17,5 +16,4 @@ module.exports = class Controller extends Chaplin.Controller
     else
       Chaplin.mediator.sessions_controller.getCurrentUser()
   composers: ->
-    @compose 'header', HeaderView, region: 'header', model: Chaplin.mediator.user
-    @compose 'user-info', CurrentUserInfoView, region: 'user_info', model: Chaplin.mediator.user
+    @compose 'headerMenu', HeaderMenu, region: 'headerMenu', model: Chaplin.mediator.user
