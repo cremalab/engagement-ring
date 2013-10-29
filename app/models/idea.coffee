@@ -1,5 +1,6 @@
 Model = require '/models/base/model'
 VotesCollection = require 'collections/votes_collection'
+ActivitiesCollection = require 'collections/activities_collection'
 
 module.exports = class Idea extends Model
   urlRoot: ->
@@ -16,6 +17,11 @@ module.exports = class Idea extends Model
     votes = new VotesCollection(@get 'votes')
     votes.idea = @
     @set 'votes', votes
+
+    # ActivitiesCollection arguements: Items, Idea, Collection Limit
+    activities = new ActivitiesCollection(@get('recent_activities'), @, 10)
+    @set 'recent_activities', activities
+
     @listenTo @, 'change:updated_at', =>
       @set 'edited', false
 
@@ -29,6 +35,9 @@ module.exports = class Idea extends Model
       return false
 
   parse: (idea) ->
+    # ActivitiesCollection arguements: Items, Idea, Collection Limit
+    activities = new ActivitiesCollection(idea.recent_activities, @, 10)
+    idea.recent_activities = activities
     votes = idea.votes
     votes = new VotesCollection(votes)
     votes.idea = @

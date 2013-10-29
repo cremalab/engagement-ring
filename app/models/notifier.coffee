@@ -34,6 +34,8 @@ module.exports = class Notifier extends Model
           @notifyApp(model_name, payload)
           @createWebNotification(model_name, payload) if mediator.user.get('notifications')
           @createAudioNotification(model_name, payload) if "webkitAudioContext" of window
+        if model_name is 'Activity'
+          @notifyApp(model_name, payload)
 
 
   notifyApp: (model_name, payload) ->
@@ -44,6 +46,10 @@ module.exports = class Notifier extends Model
         mediator.publish 'notifier:update_idea', payload
       when 'Vote'
         mediator.publish 'notifier:update_vote', payload
+      when 'Comment'
+        mediator.publish 'notifier:update_comment', payload
+      when 'Activity'
+        mediator.publish 'notifier:update_activity', payload
 
   createWebNotification: (model_name, payload) ->
     notification = new NotificationCreator(model_name, payload)

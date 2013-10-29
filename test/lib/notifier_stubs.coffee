@@ -26,6 +26,13 @@ module.exports =
       thread_title: "Lunch"
       idea_title: "Grinders"
 
+  comment: (idea_id, user_id) ->
+    stub =
+      idea_id: idea_id
+      user_id: user_id
+      user_name: "User Name!"
+      created_at: moment()
+
   idea_thread: (thread_id, user_id) ->
     id: thread_id
     title: "Snack"
