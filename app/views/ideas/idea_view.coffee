@@ -51,7 +51,7 @@ module.exports = class IdeaView extends View
 
   createActivitiesView: ->
     activities_view = new ActivitiesView
-      collection: @model.get('related_activities')
+      collection: @model.get('recent_activities')
       region: 'activities'
 
   vote: (e) ->
