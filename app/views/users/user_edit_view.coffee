@@ -10,13 +10,7 @@ module.exports = class RegistrationView extends View
   template: template
   events:
     "submit": 'save'
-  listen:
-    "change model": 'learn'
 
-  learn: (a,b) ->
-    console.log a
-    console.log b
-    console.log @model
 
   save: (e) ->
     e.preventDefault() if e

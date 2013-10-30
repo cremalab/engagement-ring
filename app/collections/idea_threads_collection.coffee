@@ -29,7 +29,6 @@ module.exports = class IdeaThreads extends Collection
   updateIdeaThread: (attributes) ->
     existing = @findWhere
       id: attributes.id
-    console.log existing
     if attributes.deleted
       @remove(existing) if existing
 
@@ -44,6 +43,5 @@ module.exports = class IdeaThreads extends Collection
         else
           idea_thread
           @add idea_thread
-          console.log idea_thread
       else
         @remove(existing)
