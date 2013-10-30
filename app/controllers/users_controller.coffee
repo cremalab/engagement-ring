@@ -3,9 +3,11 @@ User = require 'models/user'
 ProfileEditView = require 'views/profiles/profile_edit_view'
 UserEditView = require 'views/users/user_edit_view'
 RegistrationView = require 'views/users/registration_view'
+Profile = require 'models/profile'
 
 module.exports = class ProfilesController extends Controller
   initialize: ->
+    super
     @subscribeEvent 'save_user', @update
 
   index: ->

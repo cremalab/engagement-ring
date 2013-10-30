@@ -33,7 +33,11 @@ module.exports = class Notifier extends Model
           delete payload.model_name
           @notifyApp(model_name, payload)
           @createWebNotification(model_name, payload) if mediator.user.get('notifications')
-          @createAudioNotification(model_name, payload) if "webkitAudioContext" of window
+          if "webkitAudioContext" of window and mediator.user.get('notification_setting').get('sound')
+            console.log 'AUDIO'
+            @createAudioNotification(model_name, payload)
+          else
+            console.log 'NO AUDIO'
         if model_name is 'Activity'
           @notifyApp(model_name, payload)
 
@@ -59,16 +63,15 @@ module.exports = class Notifier extends Model
   createAudioNotification: (model_name, payload) ->
     unless payload.deleted
       unless payload.user_id is mediator.user.get('id')
-        if payload.user_name
-          if @accessToThread(model_name, payload)
-            new AudioNotification(@stage, payload.user_name, @audio_bus)
+        if @accessToThread(model_name, payload)
+          new AudioNotification(@stage, payload.user.autocomplete_search, @audio_bus)
 
   accessToThread: (model_name, payload) ->
       switch model_name
         when 'IdeaThread'
           thread_id = payload.id
         when 'Vote'
-          thread_id = payload.thread_id
+          thread_id = payload.idea_thread_id
         when 'Idea'
           thread_id = payload.idea_thread_id
 
