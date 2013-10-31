@@ -1,5 +1,5 @@
 module.exports = (match) ->
-  match '', 'idea_threads#index'
+  match '', 'idea_threads#index', name: 'dashboard'
 
   match 'profiles', 'profiles#index'
   match 'profiles/new', 'profiles#edit'
@@ -10,11 +10,11 @@ module.exports = (match) ->
   # match 'users/:id/edit', 'users#edit'
 
   match 'register', 'users#new'
-  match 'login', 'logins#new'
-  match 'logout', 'sessions#logout'
+  match 'login', 'logins#new', name: 'login'
+  match 'logout', 'sessions#logout', name: 'logout'
 
   # match 'ideas', 'ideas#index'
-  match 'ideas', 'idea_threads#index'
-  match 'ideas/:id', 'idea_threads#show'
+  match 'ideas', 'idea_threads#index', name: 'ideas'
+  match 'ideas/:id', 'idea_threads#show', name: 'idea'
 
   match 'groups', 'groups#index'

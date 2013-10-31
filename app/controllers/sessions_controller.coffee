@@ -15,7 +15,7 @@ module.exports = class SessionsController extends Controller
     session_creds.save session_creds.attributes,
       success: (user, resp) =>
         @setCurrentUser resp
-        @redirectTo '/'
+        @redirectTo "dashboard"
       error: (session, resp) =>
         @publishEvent 'renderError', resp
 
@@ -26,7 +26,7 @@ module.exports = class SessionsController extends Controller
       urlRoot: ->
         Chaplin.mediator.apiURL('/logout')
       success: =>
-        @redirectTo "/"
+        @redirectTo "dashboard"
 
 
   setCurrentUser: (user) ->
@@ -65,7 +65,7 @@ module.exports = class SessionsController extends Controller
       @handleUnauthorized()
 
   handleUnauthorized: ->
-    @redirectTo '/login'
+    @redirectTo 'login'
 
   setupTokenAccess: ->
     if Chaplin.mediator.user.get('auth')

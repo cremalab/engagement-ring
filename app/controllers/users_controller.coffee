@@ -37,7 +37,7 @@ module.exports = class ProfilesController extends Controller
     user.save user.attributes,
       success: (user, response) =>
         @publishEvent 'set_current_user', response
-        @redirectTo '/'
+        @redirectTo 'dashboard'
       error: (model, response) =>
         console.log $.parseJSON(response.responseText)
         @publishEvent 'renderError', response
