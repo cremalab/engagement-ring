@@ -83,12 +83,13 @@ module.exports = class IdeaView extends View
     @model.set('total_votes', @votes.length)
     @collection_view.resort()
 
-  updateCommentCount: ->
+  updateCommentCount: (payload) ->
     if @comments
       @model.set('comment_count', @comments.length)
     else
-      # +1 if it hasn't fetched the comments yet
-      @model.set('comment_count', @model.get('comment_count') + 1)
+      if payload.idea_id is @model.get('id')
+        # +1 if it hasn't fetched the comments yet
+        @model.set('comment_count', @model.get('comment_count') + 1)
 
   destroy: (e) ->
     e.preventDefault() if e
