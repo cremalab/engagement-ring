@@ -14,10 +14,10 @@ module.exports = class IdeaView extends View
     else
       "idea"
   events:
-    'click .vote': 'vote'
-    'click .comments': 'toggleComments'
-    'click .edit': 'edit'
-    'click .destroy': 'destroy'
+    'click button.vote': 'vote'
+    'click button.comments': 'toggleComments'
+    'click button.edit': 'edit'
+    # 'click .destroy': 'destroy'
   textBindings: true
   regions:
     activities: '.activities'

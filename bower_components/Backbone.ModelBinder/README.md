@@ -760,6 +760,14 @@ If you define a converter, you might want to pay attention to the converter's 5t
 <br>
 
 ## Release Notes / Versions
+
+### v 1.0.5 September 30, 2013
+* Fixed issue 164 - Works with jQuery.noConflict
+* Added the ability to set static and instance options for the CollectionBinder.  As of now, there is only one option: 'autoSort'.  You can set the option globally via Backbone.CollectionBinder.SetOptions.
+* Added the ability to use template functions with the CollectionBinder.ElManagerFactory.  Normally, I wouldn't use the ElManagerFactory except for very simple situations - especially because the content of the data isn't updated.
+If you would like to use this option, simply pass a compiled _.template instead of html to the ElManagerFactory constructor. Internally the ElManagerFactory will call the template and pass {model: this._model.toJSON()} to the template function.
+* Fix for issue 162.  Undid fix for 133.  Unnecessary Model.set calls for checkboxes and radio buttons.
+
 ### v 1.0.4 August 19, 2013
 * Fixed the _.bindAll function calls to specify the function names being bound to.
 * Added the ability to add a global converter via Backbone.ModelBinder.SetOptions({converter: xxx});
@@ -780,8 +788,8 @@ If you define a converter, you might want to pay attention to the converter's 5t
   or for a single instance modelBinder.bind(this.model, this.el, bindings, {modelSetOptions: {validate: true}});
   For single instance options, the bindings can be a fully configured set of bindings or the value of null if you want the default bindings.
 * bindCustomTriggers() has now been incorporated to the generic options argument at the class or instance level.
-  For example: to set custom triggers options globally for all binders Backbone.ModelBinder.SetOptions({changeTriggers: {'': 'change': '', 'keyup'}});
-  or for a single instance modelBinder.bind(this.model, this.el, {changeTriggers: {'': 'change': '', 'keyup'}});
+  For example: to set custom triggers options globally for all binders Backbone.ModelBinder.SetOptions({changeTriggers: {'': 'change keyup'}});
+  or for a single instance modelBinder.bind(this.model, this.el, {changeTriggers: {'': 'change keyup'}});
 * Added the els parameter to the converter functions
 * Added the changeTriggers to customize which view events trigger the model binder copies values from the view to the model
 * Added the modelSetOptions to allow the ModelBinder to send messages to the Model.set function and corresponding callbacks

@@ -25,6 +25,6 @@ module.exports = class ActivityView extends View
     item   = split[0]
     action = split[1]
 
-    @$el.addClass("#{item} #{action}")
+    @$el.addClass("item-#{item} action-#{action}")
     unless @full_view
       @$el.addClass 'avatar tooltip'
