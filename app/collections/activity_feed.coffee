@@ -6,7 +6,7 @@ module.exports = class ActivityFeed extends Chaplin.Collection
     switch attrs.model_name
       when "Activity"
         new Activity(attrs)
-      when "Comment"
+      else
         new Comment(attrs)
 
   comparator: (item) ->
@@ -27,6 +27,7 @@ module.exports = class ActivityFeed extends Chaplin.Collection
 
   addComment: (payload) ->
     if payload.idea_id is @idea_id
+      @idea.get('comments').add(payload)
       @add(payload)
 
   setURL: ->

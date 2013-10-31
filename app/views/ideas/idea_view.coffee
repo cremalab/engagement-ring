@@ -2,8 +2,8 @@ View = require 'views/base/view'
 Vote = require 'models/vote'
 Votes = require 'collections/votes_collection'
 VotesView = require 'views/votes/votes_collection_view'
-CommentsView = require 'views/comments/comments_collection_view'
 ActivitiesView = require 'views/activities/activities_collection_view'
+Comments = require 'collections/comments_collection'
 
 module.exports = class IdeaView extends View
   template: require './templates/show'
@@ -14,9 +14,8 @@ module.exports = class IdeaView extends View
       "idea"
   events:
     'click button.vote': 'vote'
-    'click button.comments': 'toggleComments'
     'click button.edit': 'edit'
-    # 'click .destroy': 'destroy'
+    'click .destroy': 'destroy'
   textBindings: true
   regions:
     activities: '.activities'
@@ -27,7 +26,6 @@ module.exports = class IdeaView extends View
     @listenTo @model, 'change', @renderViewInCollection
     @listenTo @model, 'save', @renderViewInCollection
     @votes = @model.get('votes')
-    @subscribeEvent 'notifier:update_comment', @updateCommentCount
 
   render: ->
     super
@@ -82,13 +80,6 @@ module.exports = class IdeaView extends View
     @model.set('total_votes', @votes.length)
     @collection_view.resort()
 
-  updateCommentCount: (payload) ->
-    if @comments
-      @model.set('comment_count', @comments.length)
-    else
-      if payload.idea_id is @model.get('id')
-        # +1 if it hasn't fetched the comments yet
-        @model.set('comment_count', @model.get('comment_count') + 1)
 
   destroy: (e) ->
     e.preventDefault() if e
@@ -98,25 +89,4 @@ module.exports = class IdeaView extends View
     changed = _.keys(object.changed)
     if _.indexOf(changed, 'title') > 0
       @collection_view.renderItem(@model) if @collection_view
-
-  toggleComments: (e) ->
-    e.preventDefault()
-    if @subview('comments')
-      @removeSubview('comments')
-    else
-
-      # Create an empty collection unless one is cached
-      unless @comments
-        @comments = new Comments([], idea_id: @model.get('id'))
-        @listenTo @comments, 'add', @updateCommentCount
-        @listenTo @comments, 'remove', @updateCommentCount
-
-      comments_view = new CommentsView
-        collection: @comments
-        ## We'll probably stick this view in a higher-level
-        ## application region:
-
-        # region: 'sidepanel'
-        container: @$el
-      @subview('comments', comments_view)
 

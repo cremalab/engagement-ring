@@ -1,6 +1,7 @@
 Model = require '/models/base/model'
 VotesCollection = require 'collections/votes_collection'
 ActivitiesCollection = require 'collections/activities_collection'
+Comments = require 'collections/comments_collection'
 
 module.exports = class Idea extends Model
   urlRoot: ->
@@ -22,6 +23,11 @@ module.exports = class Idea extends Model
     activities = new ActivitiesCollection(@get('recent_activities'), @, 10)
     @set 'recent_activities', activities
 
+    comments = new Comments([], idea: @)
+    @set('comments', comments)
+    for [0...@get('comment_count')]
+      comments.add({})
+
     @listenTo @, 'change:updated_at', =>
       @set 'edited', false
 
@@ -41,6 +47,12 @@ module.exports = class Idea extends Model
     votes = idea.votes
     votes = new VotesCollection(votes)
     votes.idea = @
+
+    comments = new Comments([], idea: idea)
+    idea.comments = comments
+    for [0...idea.comment_count]
+      comments.add({})
+
     idea.votes = votes
     return idea
 

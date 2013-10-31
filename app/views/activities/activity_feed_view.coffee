@@ -12,12 +12,14 @@ module.exports = class ActivityFeedView extends CollectionView
 
   initialize: ->
     super
-    @idea_id = @collection.idea.get('id')
+    @idea     = @collection.idea
+    @idea_id  = @idea.get('id')
+    @comments = @idea.get('comments')
     @collection.fetch
       success: =>
         comments  = @collection.where
           model_name: 'Comment'
-        @comments = new Comments(comments, {idea_id: @idea_id})
+        @comments.set(comments)
 
   render: ->
     super
@@ -28,9 +30,6 @@ module.exports = class ActivityFeedView extends CollectionView
         e.stopPropagation()
         val = @input.val()
         @createNewMessage(val)
-
-  viewAll: (e) ->
-    e.preventDefault()
 
   initItemView: (model) ->
     if model.get('model_name') is 'Comment'
