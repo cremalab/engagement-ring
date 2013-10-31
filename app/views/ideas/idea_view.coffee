@@ -2,7 +2,6 @@ View = require 'views/base/view'
 Vote = require 'models/vote'
 Votes = require 'collections/votes_collection'
 VotesView = require 'views/votes/votes_collection_view'
-Comments = require 'collections/comments_collection'
 CommentsView = require 'views/comments/comments_collection_view'
 ActivitiesView = require 'views/activities/activities_collection_view'
 
