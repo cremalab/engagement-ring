@@ -88,8 +88,6 @@ module.exports = class IdeasCollectionView extends CollectionView
     @thread_view.$el.addClass('syncing')
     model.save model.attributes,
       success: =>
-        console.log 'SUCESSSSSS'
-        console.log model
         @renderItem(model)
 
   resort: ->
