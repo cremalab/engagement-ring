@@ -2,7 +2,8 @@ CollectionView = require 'views/base/collection-view'
 Group     = require 'models/group'
 GroupView = require 'views/groups/group_view'
 template  = require './templates/ideas_collection'
-show_template = require './templates/show'
+show_template = require './templates/idea_show'
+full_template = require './templates/show'
 
 module.exports = class GroupsCollectionView extends CollectionView
   animationDuration: 0
@@ -14,13 +15,17 @@ module.exports = class GroupsCollectionView extends CollectionView
   itemView: GroupView
   fallbackSelector: '.empty'
 
-  initialize: ->
+  initialize: (options) ->
     super
+    @full = options.full_view
     @current_user = Chaplin.mediator.user
     @setupGroups()
 
   initItemView: (model) ->
-    new @itemView model: model, collection_view: @, template: show_template
+    if @full
+      new @itemView model: model, collection_view: @, template: full_template
+    else
+      new @itemView model: model, collection_view: @, template: show_template
 
   setupGroups: ->
     if @collection.length is 0

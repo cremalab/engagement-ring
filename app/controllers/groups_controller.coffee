@@ -20,5 +20,5 @@ module.exports = class GroupsController extends Controller
   index: (params) ->
     @adjustTitle 'My Groups'
     @collection = new Groups()
-    @view       = new GroupsView region: 'main', collection: @collection
+    @view       = new GroupsView region: 'main', collection: @collection, full_view: true
     @collection.fetch()
