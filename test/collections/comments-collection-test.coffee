@@ -23,7 +23,7 @@ describe 'CommentsCollection', ->
       description: "Delicious"
       user_id: @user_id
       id: 1
-    @collection = new Comments([], idea_id: 1)
+    @collection = new Comments([], idea: @idea)
 
   it 'should add a comment from Faye event', ->
     expect(@collection.length).to.equal 0
