@@ -16,6 +16,7 @@ module.exports = class IdeaView extends View
     'click button.vote': 'vote'
     'click button.edit': 'edit'
     'click .destroy': 'destroy'
+    'click button.comments': 'showActivityFeed'
   textBindings: true
   regions:
     activities: '.activities'
@@ -50,6 +51,11 @@ module.exports = class IdeaView extends View
     activities_view = new ActivitiesView
       collection: @model.get('recent_activities')
       region: 'activities'
+    @subview 'activity_feed', activities_view
+
+  showActivityFeed: (e) ->
+    e.preventDefault()
+    @subview('activity_feed').viewAll()
 
   vote: (e) ->
     if @user_vote

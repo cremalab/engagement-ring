@@ -14,7 +14,7 @@ module.exports = class ActivitiesCollectionView extends CollectionView
     @more_button = @$el.append("<button href='#' class='view-all-activity'>View all activity</button>")
 
   viewAll: (e) ->
-    e.preventDefault()
+    e.preventDefault() if e
     if @subview('activity_feed')
       @removeSubview('activity_feed')
     else
