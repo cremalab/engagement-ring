@@ -1,6 +1,7 @@
 Model = require '/models/base/model'
 VotesCollection = require 'collections/votes_collection'
 ActivitiesCollection = require 'collections/activities_collection'
+Comments = require 'collections/comments_collection'
 
 module.exports = class Idea extends Model
   urlRoot: ->
@@ -14,9 +15,14 @@ module.exports = class Idea extends Model
 
   initialize: ->
     super
+    # Setup Votes Collection
     votes = new VotesCollection(@get 'votes')
     votes.idea = @
     @set 'votes', votes
+
+    # Setup Comments collection
+    comments = new Comments(@get('comments'), idea: @)
+    @set('comments', comments)
 
     # ActivitiesCollection arguements: Items, Idea, Collection Limit
     activities = new ActivitiesCollection(@get('recent_activities'), @, 10)
@@ -24,6 +30,7 @@ module.exports = class Idea extends Model
 
     @listenTo @, 'change:updated_at', =>
       @set 'edited', false
+
 
   hasVote: (vote_id) ->
     votes = @get('votes')

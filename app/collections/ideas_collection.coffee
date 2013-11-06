@@ -35,8 +35,7 @@ module.exports = class Ideas extends Collection
       existing.set data
       @updateModel existing
     else
-      idea = new Idea(data)
-      @add idea
+      @add data
 
   removeIdea: (data) ->
     idea = @findWhere
