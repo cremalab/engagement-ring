@@ -20,7 +20,4 @@ module.exports = class IdeaGroupsCollectionView extends CollectionView
 
   setupGroups: ->
     if @collection.length is 0
-      @collection.fetch
-        success: (coll, res) ->
-          console.log coll
-          console.log res
+      @collection.fetch()

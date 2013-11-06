@@ -10,8 +10,8 @@ module.exports = class GroupView extends View
     'click .destroy'  : 'destroy'
     'click .save': 'saveGroup'
 
-  initialize: ->
-    @template = @options.template
+  initialize: (options) ->
+    @template = options.template
     super
 
   addGroup: (e) ->
