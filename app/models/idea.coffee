@@ -15,21 +15,22 @@ module.exports = class Idea extends Model
 
   initialize: ->
     super
+    # Setup Votes Collection
     votes = new VotesCollection(@get 'votes')
     votes.idea = @
     @set 'votes', votes
+
+    # Setup Comments collection
+    comments = new Comments(@get('comments'), idea: @)
+    @set('comments', comments)
 
     # ActivitiesCollection arguements: Items, Idea, Collection Limit
     activities = new ActivitiesCollection(@get('recent_activities'), @, 10)
     @set 'recent_activities', activities
 
-    comments = new Comments([], idea: @)
-    @set('comments', comments)
-    for [0...@get('comment_count')]
-      comments.add({})
-
     @listenTo @, 'change:updated_at', =>
       @set 'edited', false
+
 
   hasVote: (vote_id) ->
     votes = @get('votes')
@@ -47,12 +48,6 @@ module.exports = class Idea extends Model
     votes = idea.votes
     votes = new VotesCollection(votes)
     votes.idea = @
-
-    comments = new Comments([], idea: idea)
-    idea.comments = comments
-    for [0...idea.comment_count]
-      comments.add({})
-
     idea.votes = votes
     return idea
 
