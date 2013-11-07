@@ -60,7 +60,6 @@ module.exports = class IdeaView extends View
 
   vote: (e) ->
     e.preventDefault()
-    console.log 'click'
     @model.performUserVote()
 
   updateVotesCount: ->
