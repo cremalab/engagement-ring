@@ -40,6 +40,7 @@ describe 'IdeasCollectionView', ->
     @collection = new Ideas
     @view = new IdeasCollectionView
       collection: @collection
+      region: 'ideas'
       thread_view: @thread_view
 
   afterEach ->

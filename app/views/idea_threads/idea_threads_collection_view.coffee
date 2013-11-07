@@ -20,12 +20,16 @@ module.exports = class IdeaThreadsCollectionView extends CollectionView
   key_bindings:
     'n': 'newIdeaThread'
   filterer: (item, index) ->
-    if item.get('status') is 'archived'
-      return false
-    else
+    if @archives
       return true
+    else
+      if item.get('status') is 'archived'
+        return false
+      else
+        return true
 
-  initialize: ->
+  initialize: (options) ->
+    @archives = options.archives
     super
     @subscribeEvent 'save_idea_thread', @cleanup
     @subscribeEvent 'escapeForm', @cleanup
