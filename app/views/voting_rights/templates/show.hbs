@@ -3,4 +3,8 @@
   {{#unlessCurrentUser user_id }}
     <a href='#' class='remove'>remove</a>
   {{/unlessCurrentUser}}
+{{else}}
+  {{#hasPermission user_id }}
+    <a href='#' class='remove'>remove myself</a>
+  {{/hasPermission}}
 {{/hasPermission}}
