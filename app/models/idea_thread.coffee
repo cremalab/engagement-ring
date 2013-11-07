@@ -14,6 +14,7 @@ module.exports = class IdeaThread extends Model
 
   initialize: ->
     super
+    @subscribeEvent 'notifier:update_voting_right', @updateVotingRights
 
     if @isNew()
       current_user_id = Chaplin.mediator.user.get('id')
@@ -31,6 +32,11 @@ module.exports = class IdeaThread extends Model
       if _.isArray(@get('ideas'))
         ideas = new IdeasCollection(@get('ideas'))
         @set 'ideas', ideas
+
+
+  updateVotingRights: (payload) ->
+    if payload.deleted
+      @get('voting_rights').remove(payload.id)
 
 
   total_votes: ->
