@@ -27,6 +27,8 @@ module.exports = class IdeaThreads extends Collection
     callback(result)
 
   updateIdeaThread: (attributes) ->
+    console.log 'UPDATE'
+    console.log attributes.voting_rights
     existing = @findWhere
       id: attributes.id
     if attributes.deleted
@@ -35,6 +37,8 @@ module.exports = class IdeaThreads extends Collection
     else
       idea_thread = new IdeaThread(attributes)
       rights = idea_thread.get('voting_rights')
+      rights.set(attributes.voting_rights)
+      console.log rights
       right = rights.findWhere
         user_id: Chaplin.mediator.user.get('id')
       if right

@@ -52,6 +52,8 @@ module.exports = class Notifier extends Model
         mediator.publish 'notifier:update_comment', payload
       when 'Activity'
         mediator.publish 'notifier:update_activity', payload
+      when 'VotingRight'
+        mediator.publish 'notifier:update_voting_right', payload
 
   createWebNotification: (model_name, payload) ->
     notification = new NotificationCreator(model_name, payload)

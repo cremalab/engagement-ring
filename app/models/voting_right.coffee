@@ -6,11 +6,6 @@ module.exports = class VotingRight extends Model
     user_id: null
   urlRoot: ->
     Chaplin.mediator.apiURL('/voting_rights')
-  initialize: ->
-    super
-    @bind 'remove', =>
-      @destroy()
-
 
   toJSON: ->
     new_attr = _.clone(this.attributes)
