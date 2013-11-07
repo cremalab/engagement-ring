@@ -7,6 +7,7 @@ module.exports = class Votes extends Collection
     Chaplin.mediator.apiURL('/votes')
   initialize: (options) ->
     super
+    @current_user = Chaplin.mediator.user
     @subscribeEvent 'notifier:update_vote', @updateVote
 
   updateVote: (data) ->
@@ -26,3 +27,18 @@ module.exports = class Votes extends Collection
     if vote
       @remove(vote)
 
+  currentUserVote: ->
+    @findWhere
+      user_id: @current_user.get('id')
+
+  voteOnIdea: (idea_id) ->
+    if @currentUserVote()
+      @currentUserVote().destroy()
+    else
+      @create
+        user_id: @current_user.get('id')
+        idea_id: idea_id
+        user_name: @current_user.display_name
+        user:
+          email: @current_user.get('email')
+          id: @current_user.get('id')

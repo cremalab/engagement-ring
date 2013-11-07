@@ -5,19 +5,7 @@ module.exports = class VotesView extends View
   # template: require './templates/collection'
   itemView: VoteView
   animationDuration: 0
-  listen:
-    'add collection': 'checkUserVote'
-    'remove collection': 'checkUserVote'
 
   initialize: (options) ->
     super
     @idea_view = options.idea_view
-    @checkUserVote()
-
-  checkUserVote: (model) ->
-    user_vote = @collection.findWhere
-      user_id: Chaplin.mediator.user.get('id')
-    if user_vote
-      @idea_view.toggleUserVote(true, user_vote)
-    else
-      @idea_view.toggleUserVote(false)

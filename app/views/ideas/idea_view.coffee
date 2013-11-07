@@ -32,6 +32,7 @@ module.exports = class IdeaView extends View
     super
     @createVotesView()
     @createActivitiesView()
+    @updateVoteButtonUI()
 
     @listenTo @votes, 'add', @updateVotesCount
     @listenTo @votes, 'remove', @updateVotesCount
@@ -58,33 +59,20 @@ module.exports = class IdeaView extends View
     @subview('activity_feed').viewAll()
 
   vote: (e) ->
-    if @user_vote
-      @user_vote.destroy()
-    else
-      current_user = Chaplin.mediator.user
-      vote = new Vote
-        user_id: current_user.get('id')
-        idea_id: @model.get('id')
-        user_name: current_user.display_name
-        user:
-          email: current_user.get('email')
-          id: current_user.get('id')
-      @$el.find(".vote").addClass('voted')
-      vote.save vote.attributes,
-        success: (vote) =>
-          @votes.add(vote)
-
-  toggleUserVote: (voted, user_vote) ->
-    if voted
-      @$el.find(".vote").addClass('voted')
-      @user_vote = user_vote
-    else
-      @$el.find(".vote").removeClass('voted')
-      @user_vote = null
+    e.preventDefault()
+    console.log 'click'
+    @model.performUserVote()
 
   updateVotesCount: ->
+    @updateVoteButtonUI()
     @model.set('total_votes', @votes.length)
     @collection_view.resort()
+
+  updateVoteButtonUI: ->
+    if @votes.currentUserVote()
+      @$el.find('button.vote').addClass('voted')
+    else
+      @$el.find('button.vote').removeClass('voted')
 
 
   destroy: (e) ->

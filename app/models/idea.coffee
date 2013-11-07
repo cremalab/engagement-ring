@@ -41,6 +41,13 @@ module.exports = class Idea extends Model
     else
       return false
 
+  performUserVote: ->
+    @publishEvent 'find_thread', @get('idea_thread_id'), (thread) =>
+      if thread.isVotable()
+        @get('votes').voteOnIdea(@get('id'))
+      else
+        @publishEvent 'flash_message', "Voting on #{thread.get('title')} is closed"
+
   parse: (idea) ->
     # ActivitiesCollection arguements: Items, Idea, Collection Limit
     activities = new ActivitiesCollection(idea.recent_activities, @, 10)
