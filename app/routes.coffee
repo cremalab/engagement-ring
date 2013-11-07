@@ -15,6 +15,7 @@ module.exports = (match) ->
 
   # match 'ideas', 'ideas#index'
   match 'ideas', 'idea_threads#index', name: 'ideas'
+  match 'ideas/archives', 'idea_threads#archive', name: 'ideas_archives'
   match 'ideas/:id', 'idea_threads#show', name: 'idea'
 
   match 'groups', 'groups#index'

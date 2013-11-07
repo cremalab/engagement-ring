@@ -14,6 +14,7 @@ module.exports = class IdeaThread extends Model
 
   initialize: ->
     super
+
     if @isNew()
       current_user_id = Chaplin.mediator.user.get('id')
       ideas = new IdeasCollection()
@@ -43,6 +44,12 @@ module.exports = class IdeaThread extends Model
         memo + num
     else
       0
+
+  isVotable: ->
+    if @get('status') is 'open'
+      return true
+    else
+      return false
 
   parse: (idea_thread) ->
     if idea_thread.ideas.length > 0

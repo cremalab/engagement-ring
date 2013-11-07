@@ -65,6 +65,12 @@ Handlebars.registerHelper 'hasPermission', (user_id, options) ->
   else
     options.inverse this
 
+Handlebars.registerHelper 'isArchivable', (status, options) ->
+  if status != 'archived'
+    options.fn(this)
+  else
+    options.inverse this
+
 Handlebars.registerHelper 'unlessCurrentUser', (user_id, options) ->
   unless user_id == Chaplin.mediator.user.get('id')
     options.fn(this)

@@ -29,7 +29,7 @@
 <br/><br/>
 {{#hasPermission user_id }}
   {{#if id}}
-    <a href='#' class='archive'>ARCHIVE</a>
+    {{#isArchivable status}}<a href='#' class='archive'>ARCHIVE</a>{{/isArchivable}}
     <a href='#' class='destroy'>DESTROY</a>
   {{/if}}
 {{/hasPermission}}

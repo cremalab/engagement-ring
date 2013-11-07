@@ -28,6 +28,13 @@ module.exports = class IdeaThreadsController extends Controller
     @view = new IdeaThreadsCollectionView collection: @collection, region: 'main'
     @adjustTitle('Dashboard')
 
+  archive: ->
+    @collection = new IdeaThreads()
+    @collection.url = Chaplin.mediator.apiURL('/idea_threads/archives')
+    @collection.fetch()
+    @view = new IdeaThreadsCollectionView collection: @collection, region: 'main', archives: true
+    @adjustTitle('Archive')
+
   show: (params) ->
     @model = new IdeaThread
       id: params.id
