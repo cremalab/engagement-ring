@@ -41,12 +41,14 @@ module.exports = class Idea extends Model
     else
       return false
 
-  performUserVote: ->
-    @publishEvent 'find_thread', @get('idea_thread_id'), (thread) =>
-      if thread.isVotable()
-        @get('votes').voteOnIdea(@get('id'))
+  performUserVote: (idea_thread) ->
+    if idea_thread.isVotable()
+      @get('votes').voteOnIdea(@get('id'))
+    else
+      if idea_thread.get('status') is 'archived'
+        @publishEvent 'flash_message', "Voting on #{idea_thread.get('title')} is closed"
       else
-        @publishEvent 'flash_message', "Voting on #{thread.get('title')} is closed"
+        @publishEvent 'flash_message', "You don't have permission to vote on this topic"
 
   parse: (idea) ->
     # ActivitiesCollection arguements: Items, Idea, Collection Limit

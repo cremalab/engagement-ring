@@ -62,7 +62,7 @@ module.exports = class IdeaView extends View
 
   vote: (e) ->
     e.preventDefault()
-    @model.performUserVote()
+    @model.performUserVote(@idea_thread)
 
   updateVotesCount: ->
     @updateVoteButtonUI()
