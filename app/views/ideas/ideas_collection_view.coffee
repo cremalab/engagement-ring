@@ -26,6 +26,11 @@ module.exports = class IdeasCollectionView extends CollectionView
     @subscribeEvent 'reset_top_level_keys', @setupKeyBindings
     @listenTo @collection, 'change:edited', @handleEdit
 
+  render: ->
+    super
+    unless @thread_view.model.isVotable()
+      @$el.find(".ideate").remove()
+
   newIdea: (e) ->
     e.preventDefault() if e
     idea_count = @collection.length
@@ -36,7 +41,6 @@ module.exports = class IdeasCollectionView extends CollectionView
       user_id: @current_user.get('id')
 
     @collection.add idea, {at: idea_count + 1}
-
 
   handleEdit: (model, edited) ->
     if edited
@@ -77,11 +81,16 @@ module.exports = class IdeasCollectionView extends CollectionView
         collection_view: @
         autoRender: true
         autoAttach: true
+        idea_thread: @thread_view.model
       @editing_view = view
       @new_idea = model
     else
       @new_idea = null
-      view = new IdeaView model: model, collection_view: @, autoRender: true
+      view = new IdeaView
+        model: model
+        collection_view: @
+        autoRender: true
+        idea_thread: @thread_view.model
     view
 
   save: (model) ->

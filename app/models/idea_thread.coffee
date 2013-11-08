@@ -52,10 +52,19 @@ module.exports = class IdeaThread extends Model
       0
 
   isVotable: ->
-    if @get('status') is 'open'
-      return true
+    user_id = Chaplin.mediator.user.get('id')
+
+    if @userCanVote(user_id)
+      participant = true
     else
-      return false
+      participant = false
+
+    if @get('status') is 'open'
+      open = true
+    else
+      open = false
+
+    return open and participant
 
   parse: (idea_thread) ->
     if idea_thread.ideas.length > 0
