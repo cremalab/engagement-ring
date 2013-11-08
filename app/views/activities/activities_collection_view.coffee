@@ -9,6 +9,11 @@ module.exports = class ActivitiesCollectionView extends CollectionView
   events:
     'click .view-all-activity': 'viewAll'
 
+  initialize: (options) ->
+    super
+    @idea_view = options.idea_view
+    @idea_thread = @idea_view.idea_thread
+
   render: ->
     super
     @more_button = @$el.append("<button href='#' class='view-all-activity'>View all activity</button>")
@@ -21,6 +26,7 @@ module.exports = class ActivitiesCollectionView extends CollectionView
       full_collection = new ActivityFeed([], @collection.idea)
       activity_feed = new ActivityFeedView
         collection: full_collection
+        idea_thread: @idea_thread
         # Put this in the sidebar region or modal
         # region: 'sidepanel'
         # region: 'flash_messages'

@@ -10,10 +10,11 @@ module.exports = class ActivityFeedView extends CollectionView
   template: template
   listSelector: '.feed'
 
-  initialize: ->
+  initialize: (options) ->
     super
     @idea     = @collection.idea
     @idea_id  = @idea.get('id')
+    @idea_thread = options.idea_thread
     @comments = @idea.get('comments')
     @collection.fetch
       success: =>
@@ -24,6 +25,11 @@ module.exports = class ActivityFeedView extends CollectionView
   render: ->
     super
     @input = @$el.find('input.message-text')
+
+
+    unless @idea_thread.isVotable()
+      @input.remove()
+
     @input.on 'keydown', (e) =>
       if e.keyCode is 13
         e.preventDefault()

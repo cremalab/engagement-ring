@@ -81,11 +81,16 @@ module.exports = class IdeasCollectionView extends CollectionView
         collection_view: @
         autoRender: true
         autoAttach: true
+        idea_thread: @thread_view.model
       @editing_view = view
       @new_idea = model
     else
       @new_idea = null
-      view = new IdeaView model: model, collection_view: @, autoRender: true
+      view = new IdeaView
+        model: model
+        collection_view: @
+        autoRender: true
+        idea_thread: @thread_view.model
     view
 
   save: (model) ->

@@ -24,6 +24,7 @@ module.exports = class IdeaView extends View
   initialize: (options) ->
     super
     @collection_view = options.collection_view
+    @idea_thread = options.idea_thread
     @listenTo @model, 'change', @renderViewInCollection
     @listenTo @model, 'save', @renderViewInCollection
     @votes = @model.get('votes')
@@ -52,6 +53,7 @@ module.exports = class IdeaView extends View
     activities_view = new ActivitiesView
       collection: @model.get('recent_activities')
       region: 'activities'
+      idea_view: @
     @subview 'activity_feed', activities_view
 
   showActivityFeed: (e) ->
