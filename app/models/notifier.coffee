@@ -11,34 +11,34 @@ module.exports = class Notifier extends Model
     super
     if "webkitAudioContext" of window
       @setupAudio()
-
     if mediator.user.get('subscription')
-      secret = 'ef86e27e03206aae17f800e700fa98ff0e8ac779c1741d1dbf90d3a3d34df2b8'
-      subscription = mediator.user.get('subscription')
-      for_signature = "#{secret}#{subscription.channel}#{subscription.timestamp}"
-      signature = new SHA1(for_signature).hexdigest()
-
       @subscribeEvent 'notifier:create', @notifyWeb
+      @setupPrivatePubListeners()
 
-      PrivatePub.sign
-        server: mediator.streamURL('/faye')
-        channel: subscription.channel
-        signature: signature
-        timestamp: subscription.timestamp
+  setupPrivatePubListeners: ->
+    secret = 'ef86e27e03206aae17f800e700fa98ff0e8ac779c1741d1dbf90d3a3d34df2b8'
+    subscription = mediator.user.get('subscription')
+    for_signature = "#{secret}#{subscription.channel}#{subscription.timestamp}"
+    signature = new SHA1(for_signature).hexdigest()
 
-      PrivatePub.subscribe "/message/channel", (data, channel) =>
-        payload = jQuery.parseJSON(data.message)
-        model_name = payload.model_name
-        unless payload.user_id is Chaplin.mediator.user.get('id')
-          # delete payload.model_name
-          @notifyApp(model_name, payload)
-          @createWebNotification(model_name, payload) if mediator.user.get('notifications')
-          if "webkitAudioContext" of window and mediator.user.get('notification_setting').get('sound')
-            @createAudioNotification(model_name, payload)
-          else
-        if model_name is 'Activity'
-          @notifyApp(model_name, payload)
+    PrivatePub.sign
+      server: mediator.streamURL('/faye')
+      channel: subscription.channel
+      signature: signature
+      timestamp: subscription.timestamp
 
+    PrivatePub.subscribe "/message/channel", (data, channel) =>
+      payload = jQuery.parseJSON(data.message)
+      model_name = payload.model_name
+      unless payload.user_id is Chaplin.mediator.user.get('id')
+        # delete payload.model_name
+        @notifyApp(model_name, payload)
+        @createWebNotification(model_name, payload) if mediator.user.get('notifications')
+        if "webkitAudioContext" of window and mediator.user.get('notification_setting').get('sound')
+          @createAudioNotification(model_name, payload)
+        else
+      if model_name is 'Activity'
+        @notifyApp(model_name, payload)
 
   notifyApp: (model_name, payload) ->
     switch model_name
