@@ -1,6 +1,7 @@
 Comment = require 'models/comment'
+Collection = require 'collections/base/collection'
 
-module.exports = class CommentsCollection extends Chaplin.Collection
+module.exports = class CommentsCollection extends Collection
   model: Comment
 
   initialize: (items, options) ->

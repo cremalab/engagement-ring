@@ -1,4 +1,4 @@
-Collection = require 'models/base/collection'
+Collection = require 'collections/base/collection'
 IdeaThread = require 'models/idea_thread'
 VotingRights = require 'collections/voting_rights_collection'
 

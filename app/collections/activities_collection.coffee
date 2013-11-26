@@ -1,6 +1,7 @@
-Activity = require 'models/activity'
+Activity   = require 'models/activity'
+Collection = require 'collections/base/collection'
 
-module.exports = class ActivitiesCollection extends Chaplin.Collection
+module.exports = class ActivitiesCollection extends Collection
   model: Activity
 
   initialize: (items, idea, limit) ->

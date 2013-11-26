@@ -1,4 +1,4 @@
-Collection  = require 'models/base/collection'
+Collection  = require 'collections/base/collection'
 VotingRight = require 'models/voting_right'
 Group       = require 'models/group'
 
