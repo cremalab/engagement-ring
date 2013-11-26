@@ -26,9 +26,6 @@ module.exports = class IdeaThreadView extends View
     super
     @collection_view = options.collection_view
     @ideas  = @model.get('ideas')
-    if @ideas
-      @ideas.thread_id = @model.get('id')
-      @setOriginal() if @ideas and @model.get('original_idea_id')
 
     @listenTo @model, 'change:expiration', @displayExpiration
     @listenTo @model, 'change:id', @render
@@ -62,12 +59,10 @@ module.exports = class IdeaThreadView extends View
 
   renderIdeasView: ->
     @ideas_view.dispose() if @ideas_view
-    @ideas = @model.get('ideas')
     @ideas_view = new IdeasCollectionView
       collection: @ideas
       region: 'ideas'
       thread_view: @
-      original_idea: @original_idea
 
   displayExpiration: (model) ->
     if model.get('expiration') is undefined or model.get('expiration') is null
