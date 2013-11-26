@@ -9,7 +9,6 @@ module.exports = class SessionsController extends Controller
   initialize: ->
     @subscribeEvent 'login', @login
     @subscribeEvent 'set_current_user', @setCurrentUser
-    @subscribeEvent 'controller_init', @getCurrentUser
 
   login: (session_creds) ->
     session_creds.save session_creds.attributes,
@@ -20,30 +19,28 @@ module.exports = class SessionsController extends Controller
         @publishEvent 'renderError', resp
 
   logout: ->
-    @setCurrentUser('clear')
+    @clearCurrentUser()
     $.ajax
       type: 'GET'
       urlRoot: ->
         Chaplin.mediator.apiURL('/logout')
-      success: =>
-        @redirectTo "dashboard"
+    @redirectTo "dashboard"
 
+  clearCurrentUser: ->
+    Chaplin.mediator.user.clear()
+    Chaplin.mediator.user.set('id', null)
+    store.clear('current_user')
 
   setCurrentUser: (user) ->
-    if user is 'clear'
-      Chaplin.mediator.user.clear()
-      Chaplin.mediator.user.set('id', null)
-      store.clear('current_user')
-    else
-      is_new = Chaplin.mediator.user.isNew()
-      Chaplin.mediator.user = new User(user)
-      store.set('current_user', user)
+    is_new = Chaplin.mediator.user.isNew()
+    Chaplin.mediator.user = new User(user)
+    store.set('current_user', user)
 
-      if is_new
-        # Send auth credentials with all subsequent requests
-        @setupTokenAccess()
-      else
-        @publishEvent 'auth_complete'
+    if is_new
+      # Send auth credentials with all subsequent requests
+      @setupTokenAccess()
+    else
+      @publishEvent 'auth_complete'
 
   getCurrentUser: ->
     # Check if a user exists in the mediator or localstorage:
