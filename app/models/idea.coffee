@@ -6,7 +6,6 @@ Comments = require 'collections/comments_collection'
 module.exports = class Idea extends Model
   urlRoot: ->
     Chaplin.mediator.apiURL('/ideas')
-  paramRoot: 'idea'
   defaults:
     title: null           # string, validates_presence_of
     description: null
@@ -67,10 +66,6 @@ module.exports = class Idea extends Model
     json = {idea : new_attr}
     _.extend json.idea, {votes_attributes: votes}
     return json
-
-  save: ->
-    @unset 'original'
-    super
 
   validate: ->
     if @get('title') is '' or @get('title') is null
