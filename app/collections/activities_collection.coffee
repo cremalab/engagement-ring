@@ -8,7 +8,7 @@ module.exports = class ActivitiesCollection extends Chaplin.Collection
     @idea  = idea
     @limit = limit
     @subscribeEvent 'notifier:update_activity', @addActivity
-    @listenTo @, 'add', @applyLimit
+    @listenTo @, 'add', @applyLimit if @limit
     @setURL()
 
   addActivity: (payload) ->
