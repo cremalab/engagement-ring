@@ -4,7 +4,7 @@ Model = require 'models/base/model'
 
 module.exports = class StreamState extends Model
   defaults:
-    live: false
+    live: true
     # Overrides other model type preferences.
     votes: true
     # (Boolean) If true, for each RealTimeAction with the model_name of "Vote", publish its mediator_event_name with payload immediately and then clean up the RealTimeActionQueue.
@@ -24,7 +24,7 @@ module.exports = class StreamState extends Model
 
   setAll: (val) ->
     if typeof val isnt "boolean"
-      throw "StreamState values must be true or false"
+      throw new Error "StreamState values must be true or false"
     @set
       live: val
       votes: val

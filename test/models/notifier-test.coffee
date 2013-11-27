@@ -21,6 +21,9 @@ describe 'Notifier', ->
     ideas = @thread.get('ideas')
     ideas.add(NotifierStubs.idea(1, @thread.get('id')))
 
+  afterEach ->
+    @notifier.dispose()
+
 
   it 'should create a Web Notification', ->
     vote_stub = NotifierStubs.vote(1, 8, @thread.get('id'))
@@ -37,3 +40,14 @@ describe 'Notifier', ->
     vote_stub = NotifierStubs.vote(1, Chaplin.mediator.user.get('id'), @thread.get('id'))
     web_notification = @notifier.createWebNotification("Vote", vote_stub)
     expect(web_notification).to.be.undefined
+
+  it 'should add actions to RealTimeActionQueue', ->
+    queue = Chaplin.mediator.real_time_action_queue
+    expect(queue.constructor.name).to.equal 'RealTimeActionQueue'
+    expect(queue.constructor.name).to.have.property.models
+    Chaplin.mediator.stream_state.set('live', false)
+    vote_stub = NotifierStubs.vote(1, 8, @thread.get('id'))
+    queue = Chaplin.mediator.real_time_action_queue
+    expect(queue.size()).to.equal 0
+    console.log @notifier.notifyApp('Vote', vote_stub)
+    expect(queue.size()).to.equal 1
