@@ -13,14 +13,6 @@ module.exports = class IdeaThreadsController extends Controller
     @subscribeEvent 'save_idea', @update
     @subscribeEvent 'save_idea_thread', @update
 
-  edit: (params) ->
-    @model = new Idea
-      id: params.id
-    @model.fetch()
-
-    @view = new IdeaEditView
-      model: @model
-      region: 'main'
 
   index: ->
     @collection = new IdeaThreads()

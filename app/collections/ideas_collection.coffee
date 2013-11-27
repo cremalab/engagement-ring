@@ -1,4 +1,4 @@
-Collection = require 'models/base/collection'
+Collection = require 'collections/base/collection'
 Idea = require 'models/idea'
 
 module.exports = class Ideas extends Collection
@@ -23,7 +23,7 @@ module.exports = class Ideas extends Collection
 
   updateIdeas: (data) ->
     if data.deleted
-      @removeIdea(data)
+      @remove(data.id)
     else
       @addIdea(data) if data.idea_thread_id == @thread_id
 
@@ -36,8 +36,3 @@ module.exports = class Ideas extends Collection
       @updateModel existing
     else
       @add data
-
-  removeIdea: (data) ->
-    idea = @findWhere
-      id: data.id
-    @remove(idea) if idea

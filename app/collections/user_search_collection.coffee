@@ -1,4 +1,4 @@
-Collection = require 'models/base/collection'
+Collection = require 'collections/base/collection'
 
 module.exports = class Ideas extends Collection
   model: Chaplin.Model

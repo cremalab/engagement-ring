@@ -18,9 +18,9 @@ describe 'IdeaThreadView', ->
 
     @thread.get('ideas').add({})
     @view = new IdeaThreadView model: @thread
+    @view.render()
 
   # it 'should display formatted date when valid', ->
-  #   console.log @view.natural_input
   #   @view.natural_input.$el.val('Tomorrow at 3 pm')
   #   @view.natural_input.translateDate()
   #   tomorrow_at_3 = moment().add('days',1)

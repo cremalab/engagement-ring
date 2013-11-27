@@ -7,6 +7,9 @@ Vote = require 'models/vote'
 User = require 'models/user'
 NotifierStubs = require 'test/lib/notifier_stubs'
 VotingRights  = require 'collections/voting_rights_collection'
+Application = require 'application'
+SiteView = require 'views/site-view'
+routes = require 'routes'
 
 
 # Note! Many view methods are triggered by events from the Notifier class which
@@ -14,7 +17,15 @@ VotingRights  = require 'collections/voting_rights_collection'
 # NotifierStubs - test/lib/notifier_stubs
 
 describe 'IdeasCollectionView', ->
+  new Application {
+    title: 'Vot.io',
+    controllerSuffix: '_controller',
+    routes
+  }
+  new SiteView
   beforeEach ->
+
+
     Chaplin.mediator.user = new User
       email: 'test@cremalab.com'
       id: 1
@@ -27,6 +38,7 @@ describe 'IdeasCollectionView', ->
       user_id: 1
       id: 1
       voting_rights: new VotingRights
+      ideas: new Ideas
 
     @idea_thread.get('voting_rights').add
       autocomplete_search: "Ross Brown"
@@ -34,14 +46,19 @@ describe 'IdeasCollectionView', ->
       idea_thread_id: 1
       user_id: @current_user.get('id')
 
+    @collection = new Ideas()
+
+
     @thread_view = new IdeaThreadView
       model: @idea_thread
+      region: 'main'
+      autoRender: true
 
-    @collection = new Ideas
     @view = new IdeasCollectionView
       collection: @collection
       region: 'ideas'
       thread_view: @thread_view
+
 
   afterEach ->
     @view.dispose()
@@ -51,6 +68,7 @@ describe 'IdeasCollectionView', ->
   it 'should add idea on click of button', ->
     idea_count = @collection.size()
     @view.$el.find('.ideate').click()
+    @view.newIdea()
     expect(@collection.size()).to.equal idea_count + 1
 
     # new idea should not have an id

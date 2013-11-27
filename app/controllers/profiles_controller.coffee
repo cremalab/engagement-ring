@@ -16,8 +16,3 @@ module.exports = class ProfilesController extends Controller
     @view = new ProfileEditView
       model: @model
       region: 'main'
-
-  show: (params) ->
-    @model = new Profile
-      id: params.id
-    @model.fetch()

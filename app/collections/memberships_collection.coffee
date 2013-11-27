@@ -1,4 +1,4 @@
-Collection = require 'models/base/collection'
+Collection = require 'collections/base/collection'
 Membership = require 'models/membership'
 
 module.exports = class Memberships extends Collection

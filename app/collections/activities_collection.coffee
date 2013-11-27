@@ -1,6 +1,7 @@
-Activity = require 'models/activity'
+Activity   = require 'models/activity'
+Collection = require 'collections/base/collection'
 
-module.exports = class ActivitiesCollection extends Chaplin.Collection
+module.exports = class ActivitiesCollection extends Collection
   model: Activity
 
   initialize: (items, idea, limit) ->
@@ -8,7 +9,7 @@ module.exports = class ActivitiesCollection extends Chaplin.Collection
     @idea  = idea
     @limit = limit
     @subscribeEvent 'notifier:update_activity', @addActivity
-    @listenTo @, 'add', @applyLimit
+    @listenTo @, 'add', @applyLimit if @limit
     @setURL()
 
   addActivity: (payload) ->

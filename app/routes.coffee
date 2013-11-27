@@ -4,7 +4,6 @@ module.exports = (match) ->
   match 'profiles', 'profiles#index'
   match 'profiles/new', 'profiles#edit'
   match 'profiles/:id/edit', 'profiles#edit'
-  match 'profiles/:id/', 'profiles#show'
 
   match 'me/edit', 'users#edit'
   # match 'users/:id/edit', 'users#edit'

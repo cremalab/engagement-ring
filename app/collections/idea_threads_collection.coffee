@@ -1,11 +1,9 @@
-Collection = require 'models/base/collection'
+Collection = require 'collections/base/collection'
 IdeaThread = require 'models/idea_thread'
 VotingRights = require 'collections/voting_rights_collection'
 
 module.exports = class IdeaThreads extends Collection
   model: IdeaThread
-  urlRoot: ->
-    return Chaplin.mediator.apiURL('/idea_threads')
   url: Chaplin.mediator.apiURL('/idea_threads')
 
   initialize: ->
@@ -29,20 +27,17 @@ module.exports = class IdeaThreads extends Collection
   updateIdeaThread: (attributes) ->
     existing = @findWhere
       id: attributes.id
-    if attributes.deleted
-      @remove(existing) if existing
+    idea_thread   = new IdeaThread(attributes)
+    user_id       = Chaplin.mediator.user.get('id')
+    voting_right  = idea_thread.userCanVote(user_id)
 
+    if existing
+      @handleExisting(existing, attributes, voting_right, idea_thread)
     else
-      idea_thread = new IdeaThread(attributes)
-      rights = idea_thread.get('voting_rights')
-      rights.set(attributes.voting_rights)
-      right = rights.findWhere
-        user_id: Chaplin.mediator.user.get('id')
-      if right
-        if existing
-          existing.set(attributes)
-        else
-          idea_thread
-          @add idea_thread
-      else
-        @remove(existing)
+      @add attributes if voting_right
+
+  handleExisting: (existing, attributes, voting_right, idea_thread) ->
+    if attributes.deleted or !voting_right
+      @remove(existing)
+    else
+      existing.set(idea_thread.attributes)
