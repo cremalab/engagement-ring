@@ -31,13 +31,15 @@ module.exports = class Notifier extends Model
       payload = jQuery.parseJSON(data.message)
       model_name = payload.model_name
       unless payload.user_id is Chaplin.mediator.user.get('id')
-        # delete payload.model_name
+        # Unless this model was created by the current user
         @notifyApp(model_name, payload)
         @createWebNotification(model_name, payload) if mediator.user.get('notifications')
         if "webkitAudioContext" of window and mediator.user.get('notification_setting').get('sound')
           @createAudioNotification(model_name, payload)
         else
-      if model_name is 'Activity'
+      else if model_name is 'Activity'
+        # Activities are only delivered via PrivatePub, so Notifier should
+        # always care about them
         @notifyApp(model_name, payload)
 
   notifyApp: (model_name, payload) ->
