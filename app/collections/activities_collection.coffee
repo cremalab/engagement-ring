@@ -9,18 +9,19 @@ module.exports = class ActivitiesCollection extends Collection
     @idea  = idea
     @limit = limit
     @subscribeEvent 'notifier:update_activity', @addActivity
-    @listenTo @, 'add', @applyLimit if @limit
+    @listenTo @, 'add', @applyLimit
     @setURL()
 
   addActivity: (payload) ->
     if payload.recipient_type is 'Idea' and payload.recipient_id is @idea.get('id') or
     payload.trackable_type is 'Idea' and payload.trackable_id is @idea.get('id')
-      @add(payload, at: 0)
+      @add(payload)
 
   applyLimit: ->
-    if @limit
-      if @size() > 10
-        @remove @at(10)
+    if @size() > @limit + 1
+      last = @at(@limit)
+      last_id = last.get('id')
+      @remove @at(@limit)
 
   setURL: ->
     @idea_id = @idea.get('id')
