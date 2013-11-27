@@ -25,8 +25,8 @@ module.exports = class IdeaThreadView extends View
   initialize: (options) ->
     super
     @collection_view = options.collection_view
-    @ideas  = @model.get('ideas')
-
+    @ideas           = @model.get('ideas')
+    @ideas.thread_id = @model.get('id')
     @listenTo @model, 'change:expiration', @displayExpiration
     @listenTo @model, 'change:id', @render
 
