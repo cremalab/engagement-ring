@@ -8,3 +8,11 @@ module.exports = class RealTimeAction extends Model
     # the JSON data delivered by the server. Already being used
     mediator_event_name: ''
     # the name of the mediator event that should be published at the time of Action Queue execution
+    published: false
+
+  fire: ->
+    Chaplin.mediator.publish @get('mediator_event_name'), @get('payload')
+    @set 'published', true
+    @trigger 'fired'
+    console.log "Pubished event #{@get('mediator_event_name')}"
+    return @

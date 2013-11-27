@@ -4,11 +4,13 @@ NotificationCreator = require 'lib/notification_creator'
 AudioNotification   = require 'lib/audio_notification'
 Bus                 = require 'lib/audio/bus'
 
+
 module.exports = class Notifier extends Model
 
   mediator = Chaplin.mediator
   initialize: ->
     super
+    @action_queue = Chaplin.mediator.real_time_action_queue
     if "webkitAudioContext" of window
       @setupAudio()
     if mediator.user.get('subscription')
@@ -45,17 +47,25 @@ module.exports = class Notifier extends Model
   notifyApp: (model_name, payload) ->
     switch model_name
       when 'IdeaThread'
-        mediator.publish 'notifier:update_idea_thread', payload
+        event_name = 'notifier:update_idea_thread'
       when 'Idea'
-        mediator.publish 'notifier:update_idea', payload
+        event_name = 'notifier:update_idea'
       when 'Vote'
-        mediator.publish 'notifier:update_vote', payload
+        event_name = 'notifier:update_vote'
       when 'Comment'
-        mediator.publish 'notifier:update_comment', payload
+        event_name = 'notifier:update_comment'
       when 'Activity'
-        mediator.publish 'notifier:update_activity', payload
+        event_name = 'notifier:update_activity'
       when 'VotingRight'
-        mediator.publish 'notifier:update_voting_right', payload
+        event_name = 'notifier:update_voting_right'
+
+    @queueAction model_name, event_name, payload
+
+  queueAction: (model_name, event_name, payload) ->
+    @action_queue.add
+      model_name: model_name
+      mediator_event_name: event_name
+      payload: payload
 
   createWebNotification: (model_name, payload) ->
     notification = new NotificationCreator(model_name, payload)
