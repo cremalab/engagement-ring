@@ -15,8 +15,13 @@ module.exports = class RealTimeActionQueue extends Collection
     @listenTo @stream_state, 'change', @fireAllActions
 
   fireAction: (action) ->
-    if @stream_state.get('live') is true
+    if _.indexOf(@activeStreams(), action.get('model_name')) > -1
       action.fire()
+
+  activeStreams: ->
+    active = _.filter _.keys(@stream_state.attributes), (key) =>
+      @stream_state.get(key)
+    return active
 
   fireAllActions: ->
     @each (action) =>

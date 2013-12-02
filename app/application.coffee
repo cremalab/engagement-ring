@@ -3,7 +3,6 @@ GroupsController    = require 'controllers/groups_controller'
 RealTimeActionQueue = require 'collections/real_time_action_queue'
 StreamState         = require 'models/stream_state'
 User = require 'models/user'
-Notifier = require 'models/notifier'
 
 # The application object.
 module.exports = class Application extends Chaplin.Application
