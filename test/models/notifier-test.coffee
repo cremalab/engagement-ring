@@ -6,7 +6,7 @@ IdeasCollection = require 'collections/ideas_collection'
 
 describe 'Notifier', ->
   beforeEach ->
-    @notifier = new Notifier
+    @notifier = new Notifier({test: true})
     Chaplin.mediator.user = new User
       email: 'test@cremalab.com'
       id: 1
@@ -49,5 +49,5 @@ describe 'Notifier', ->
     vote_stub = NotifierStubs.vote(1, 8, @thread.get('id'))
     queue = Chaplin.mediator.real_time_action_queue
     expect(queue.size()).to.equal 0
-    console.log @notifier.notifyApp('Vote', vote_stub)
+    @notifier.notifyApp('Vote', vote_stub)
     expect(queue.size()).to.equal 1

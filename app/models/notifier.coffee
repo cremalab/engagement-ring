@@ -8,10 +8,11 @@ Bus                 = require 'lib/audio/bus'
 module.exports = class Notifier extends Model
 
   mediator = Chaplin.mediator
-  initialize: ->
+  initialize: (options) ->
     super
+    @test = options.test
     @action_queue = Chaplin.mediator.real_time_action_queue
-    if "webkitAudioContext" of window
+    if "webkitAudioContext" of window and !@test
       @setupAudio()
     if mediator.user.get('subscription')
       @subscribeEvent 'notifier:create', @notifyWeb
