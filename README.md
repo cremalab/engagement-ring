@@ -6,3 +6,5 @@ with [Brunch](http://brunch.io).
 Auto-build and run a server with `brunch watch --server`. It opens a web-socket
 connection with the Votio Faye server and sends regular RESTful requests to the
 Votio API.
+
+Run the test suite by going to /test in the browser.

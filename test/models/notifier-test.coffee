@@ -45,7 +45,7 @@ describe 'Notifier', ->
     queue = Chaplin.mediator.real_time_action_queue
     expect(queue.constructor.name).to.equal 'RealTimeActionQueue'
     expect(queue.constructor.name).to.have.property.models
-    Chaplin.mediator.stream_state.set('live', false)
+    Chaplin.mediator.stream_state.setAll(false)
     vote_stub = NotifierStubs.vote(1, 8, @thread.get('id'))
     queue = Chaplin.mediator.real_time_action_queue
     expect(queue.size()).to.equal 0

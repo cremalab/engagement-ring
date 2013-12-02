@@ -10,7 +10,7 @@ module.exports = class Notifier extends Model
   mediator = Chaplin.mediator
   initialize: (options) ->
     super
-    @test = options.test
+    @test = if options and options.test then options.test else false
     @action_queue = Chaplin.mediator.real_time_action_queue
     if "webkitAudioContext" of window and !@test
       @setupAudio()
