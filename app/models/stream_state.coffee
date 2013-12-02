@@ -12,6 +12,7 @@ module.exports = class StreamState extends Model
     # (Boolean) If true, for each RealTimeAction with the model_name of "IdeaThread", publish its mediator_event_name with payload immediately and then clean up the RealTimeActionQueue.
     Idea: true
     # (Boolean) If true, for each RealTimeAction with the model_name of "Idea", publish its mediator_event_name with payload immediately and then clean up the RealTimeActionQueue.
+    Activity: true
 
   initialize: ->
     super
@@ -28,3 +29,4 @@ module.exports = class StreamState extends Model
       Comment: val
       IdeaThread: val
       Idea: val
+      Activity: val
