@@ -36,6 +36,11 @@ module.exports = class ActivityFeedView extends CollectionView
         e.stopPropagation()
         val = @input.val()
         @createNewMessage(val)
+    @input.on 'focus', =>
+      @idea_thread.get('ideas').autoSort = false
+    @input.on 'blur', =>
+      @idea_thread.get('ideas').autoSort = true
+      @idea_thread.get('ideas').sort()
 
   initItemView: (model) ->
     if model.get('model_name') is 'Comment'
@@ -56,6 +61,8 @@ module.exports = class ActivityFeedView extends CollectionView
       content: val
       user_id: Chaplin.mediator.user.get('id')
     ,
+      success: =>
+        @publishEvent 'action_queue:continue'
       error: =>
         @publishEvent 'error', "Your message could not be sent."
         @input.val(val)
