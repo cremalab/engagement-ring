@@ -15,7 +15,10 @@ module.exports = class ActivitiesCollection extends Collection
   addActivity: (payload) ->
     if payload.recipient_type is 'Idea' and payload.recipient_id is @idea.get('id') or
     payload.trackable_type is 'Idea' and payload.trackable_id is @idea.get('id')
-      @add(payload)
+      if @limit
+        @add(payload, at: 0)
+      else
+        @add(payload)
 
   applyLimit: ->
     if @size() > @limit + 1
