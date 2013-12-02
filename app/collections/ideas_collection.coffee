@@ -7,9 +7,16 @@ module.exports = class Ideas extends Collection
     Chaplin.mediator.apiURL('/ideas')
   comparator: (idea) ->
     return idea.get('total_votes') * -1
+  sort: ->
+    if @autoSort
+      super
+    else
+      # don't run inherited sort method
+      return true
 
   initialize: (options) ->
     super
+    @autoSort = true
     @subscribeEvent 'saved_idea', @updateModel
     @subscribeEvent 'notifier:update_idea', @updateIdeas
 
