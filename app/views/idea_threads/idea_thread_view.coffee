@@ -22,6 +22,7 @@ module.exports = class IdeaThreadView extends View
     'click .destroy': 'destroyThread'
     'click .submit' : 'save'
     'click .cancel' : 'cancel'
+  textBindings: true
 
 
   initialize: (options) ->
@@ -31,6 +32,11 @@ module.exports = class IdeaThreadView extends View
     @ideas.thread_id = @model.get('id')
     @listenTo @model, 'change:expiration', @displayExpiration
     @listenTo @model, 'change:id', @render
+
+  handleUpdate: (model) ->
+    @displayExpiration() if model.changed.expiration
+    @render() if model.changed.id
+    @render() if model.changed.title
 
   setOriginal: ->
     @original_idea = @ideas.findWhere
