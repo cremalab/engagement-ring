@@ -51,7 +51,7 @@ module.exports = class View extends Chaplin.View
     if @textBindings
       attributes = _.keys model.changed
       _.each attributes, (attr) =>
-        $el = @$el.find("[data-bind='#{attr}']:first")
+        $el = @$el.find("[data-bind='#{attr}']:first").not(".ideaTitle span") # eew
         if $el.length
           if @model.get(attr) is undefined
             $el.text ''
