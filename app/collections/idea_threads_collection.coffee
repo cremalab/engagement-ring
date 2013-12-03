@@ -40,4 +40,12 @@ module.exports = class IdeaThreads extends Collection
     if attributes.deleted or !voting_right
       @remove(existing)
     else
-      existing.set(idea_thread.attributes)
+      rights = idea_thread.get('voting_rights').models
+      existing.get('voting_rights').set(rights)
+      # Setting attributes directly doesn't fire any change events
+      # for the CollectionView, so I've got to manually set the
+      # VotingRights' models and then set the threads's attrs
+
+      attr = _.clone(idea_thread).attributes
+      attr = _.omit attr, 'voting_rights' # remove from attributes
+      existing.set(attr)

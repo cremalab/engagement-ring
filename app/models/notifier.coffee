@@ -40,7 +40,7 @@ module.exports = class Notifier extends Model
         if "webkitAudioContext" of window and mediator.user.get('notification_setting').get('sound')
           @createAudioNotification(model_name, payload)
         else
-      else if model_name is 'Activity'
+      else if model_name is 'Activity' or model_name is 'IdeaThread'
         # Activities are only delivered via PrivatePub, so Notifier should
         # always care about them
         @notifyApp(model_name, payload)

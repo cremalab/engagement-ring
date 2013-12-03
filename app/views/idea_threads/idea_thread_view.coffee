@@ -15,11 +15,14 @@ module.exports = class IdeaThreadView extends View
   regions:
     ideas: '.ideas'
     voters: '.voters'
+  # listen:
+  #   'change:voting_rights model': 'setupVotingRights'
   events:
     'click .archive': 'archive'
     'click .destroy': 'destroyThread'
     'click .submit' : 'save'
     'click .cancel' : 'cancel'
+  textBindings: true
 
 
   initialize: (options) ->
@@ -29,6 +32,11 @@ module.exports = class IdeaThreadView extends View
     @ideas.thread_id = @model.get('id')
     @listenTo @model, 'change:expiration', @displayExpiration
     @listenTo @model, 'change:id', @render
+
+  handleUpdate: (model) ->
+    @displayExpiration() if model.changed.expiration
+    @render() if model.changed.id
+    @render() if model.changed.title
 
   setOriginal: ->
     @original_idea = @ideas.findWhere
@@ -80,8 +88,6 @@ module.exports = class IdeaThreadView extends View
     @voting_rights = @model.get('voting_rights')
     @all_users = new UserSearchCollection()
     @all_users.fetch()
-
-    @model.set 'voting_rights', @voting_rights
 
     @voters_view = new VotingRightsView
       collection: @voting_rights
