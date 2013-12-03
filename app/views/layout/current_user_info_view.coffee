@@ -14,7 +14,7 @@ module.exports = class CurrentUserInfoView extends View
 
   initialize: ->
     super
-    @checkNotificationPrefs()
+    @checkNotificationPrefs() if window.webkitNotifications
 
   storeUser: ->
     store.set('current_user', @model.attributes)
