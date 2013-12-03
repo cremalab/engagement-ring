@@ -39,7 +39,7 @@ module.exports = class VotingRightsCollectionView extends CollectionView
   setThreadID: (voting_right,b,c) ->
     unless @idea_thread.isNew()
       voting_right.set 'idea_thread_id', @idea_thread.get('id')
-      voting_right.save()
+      voting_right.save() if voting_right.isNew()
     @updateGroupUI()
 
   setupGroups: ->
