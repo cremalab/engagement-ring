@@ -11,17 +11,13 @@ module.exports = class AutocompleteItem extends View
   events:
     'click': 'activate'
   initialize: (options) ->
-    # if options.collectionView.options.item_template_base
-    #   @templateName = "#{options.collectionView.options.item_template_base}/list_item"
-    # else
-    #   @templateName = 'tags/show'
-    # super
+    super
     @collectionView = options.collectionView if options && options.collectionView
   activate: ->
     old_active = @model.collection.findWhere active: true
     old_active.set('active', false) if old_active
     @model.set 'active', true
-    @collectionView.addToRelatedCollection(@model)
+    @collectionView.addTag(@model)
   setActiveClass: ->
     if @model.get('active')
       @$el.addClass 'selected'
