@@ -46,3 +46,8 @@ module.exports = class AutocompleteList extends CollectionView
       @active = false
   addToRelatedCollection: (tag) ->
     @collectionView.addTag(tag)
+
+  initItemView: (model) ->
+    new AutocompleteItem
+      model: model
+      collectionView: @collectionView
