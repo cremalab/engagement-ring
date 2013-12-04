@@ -31,5 +31,3 @@ exports.config =
     cleancss:
       keepSpecialComments: 0
       removeEmpty: true
-    jade:
-      globals: {}
