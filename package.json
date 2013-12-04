@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "brunch watch --server",
-    "postinstall": "brunch build --production --optimize"
+    "postinstall": "brunch build --production"
   },
   "dependencies": {
     "javascript-brunch": ">= 1.0 < 1.8",
@@ -25,7 +25,8 @@
     "clean-css-brunch": ">= 1.0 < 1.8",
     "express": ">=  3.4.0",
     "brunch": ">= 1.7.6",
-    "stylus-brunch": ">= 1.7.0"
+    "stylus-brunch": ">= 1.7.0",
+    "jade-brunch": ">= 1.7.3"
   },
   "devDependencies": {}
 }

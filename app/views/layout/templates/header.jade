@@ -1,0 +1,15 @@
+ul
+  li
+    a.header-link(href='/ideas') Ideas
+  if logged_in
+    li
+      a(href='/groups') My Groups
+    li
+      a(href='/ideas/archives') Archives
+    li
+      a(href='/logout') Logout
+  else
+    li
+      a(href='/login') Login
+    li
+      a(href='/register') Register

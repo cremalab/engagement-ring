@@ -1,0 +1,40 @@
+if jade.helpers.hasPermission(user_id)
+  unless id
+    button.flyout.cancel
+      .flyoutIcon
+      .flyoutTray
+        .flyoutText
+
+  h1
+    input(name='title', placeholder='Topic')
+  input.text-expiration(placeholder='expires on...')
+  input(type='hidden', name='expiration')
+else
+  h1(data-bind='title')= title
+
+small.date-helper
+br
+
+if jade.helpers.hasPermission(user_id)
+  textarea(name='description', placeholder='description')
+else
+  p(data-bind='description')= description
+br
+
+if id
+  a.permalink(href="/ideas/#{id}") Permalink
+
+br
+br
+
+if jade.helpers.hasPermission(user_id)
+  if id
+    if jade.helpers.isArchivable(status)
+      a.archive(href='#') ARCHIVE
+    a.destroy(href='#') DESTROY
+
+.voters
+if id
+  .ideas
+else
+  button.submit Submit

@@ -1,0 +1,28 @@
+.header
+  .headerTitle
+    h3 New Idea
+  .headerAction
+    button.flyout.cancel
+      .flyoutIcon
+      .flyoutTray
+        .flyoutText
+.errors
+if edited
+  p
+    strong Warning:
+    | if you edit this idea, all votes on it will be lost.
+.formRow
+  .formColumn
+    .labelField
+      .labelFieldLabel
+        label Idea:
+      .labelFieldInput
+        input.mousetrap(name='title', type='text')
+.formRow
+  .formColumn
+    .labelField
+      .labelFieldLabel
+        label Describe:
+      .labelFieldInput
+        input.mousetrap(type='text', name='description')
+button.submit Submit
