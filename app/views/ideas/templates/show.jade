@@ -1,0 +1,19 @@
+.ideaGrid
+  .ideaAuthor
+    img.avatar(src="#{jade.helpers.gravatar(user.email)}", alt="#{jade.helpers.displayName(user)}", title="#{jade.helpers.displayName(user)}")
+  .ideaInfo
+    h2.ideaTitle
+      span(data-bind='title')= title
+    if description
+      p.ideaDescription(data-bind='description')= description
+  .ideaAction
+    button.vote(data-bind='total_votes')= total_votes
+    button.comments
+      span(data-bind='comment_count')= comment_count
+      | Comments
+.ideaVoters
+if jade.helpers.hasPermission(user.id)
+  .ideaControl
+    button.plain.edit
+    button.plain.destroy
+.activities

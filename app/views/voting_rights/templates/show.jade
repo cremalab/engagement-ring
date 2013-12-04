@@ -1,0 +1,7 @@
+= autocomplete_search + ' '
+if jade.helpers.hasPermission(thread_user_id)
+  unless jade.helpers.hasPermission(user_id)
+    a.remove(href='#') remove
+else
+  if jade.helpers.hasPermission(user_id)
+    a.remove(href='#') remove myself
