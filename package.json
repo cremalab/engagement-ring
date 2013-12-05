@@ -24,7 +24,7 @@
     "uglify-js-brunch": ">= 1.0 < 1.8",
     "clean-css-brunch": ">= 1.0 < 1.8",
     "express": ">=  3.4.0",
-    "brunch": ">= 1.7.6",
+    "brunch": ">= 1.7.12",
     "stylus-brunch": ">= 1.7.0",
     "jade-brunch": ">= 1.7.3"
   },

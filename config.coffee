@@ -31,3 +31,8 @@ exports.config =
     cleancss:
       keepSpecialComments: 0
       removeEmpty: true
+    uglify:
+      mangle: false
+      compress:
+        global_defs:
+          DEBUG: false
