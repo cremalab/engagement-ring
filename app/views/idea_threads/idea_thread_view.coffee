@@ -31,7 +31,7 @@ module.exports = class IdeaThreadView extends View
     @ideas           = @model.get('ideas')
     @ideas.thread_id = @model.get('id')
     @listenTo @model, 'change:expiration', @displayExpiration
-    @listenTo @model, 'change:id', @render
+    @listenTo @model, 'change:id', @dispose
 
   handleUpdate: (model) ->
     @displayExpiration() if model.changed.expiration
@@ -93,6 +93,7 @@ module.exports = class IdeaThreadView extends View
       collection: @voting_rights
       region: 'voters'
       idea_thread: @model
+    @subview('voters', @voters_view)
 
     profile_input = new TagListInput
       destination_model: @model
@@ -110,11 +111,12 @@ module.exports = class IdeaThreadView extends View
 
   save: (e) ->
     e.preventDefault() if e
+    model = @model
     @model.save @model.attributes,
       success: =>
-        title = @model.get('title')
+        title = model.get('title')
         @collection_view.cleanup()
-        if @model.get('status') is 'archived'
+        if model.get('status') is 'archived'
           @publishEvent 'flash_message', "#{title} was archived"
         else
           @publishEvent 'flash_message', "#{title} was saved"
