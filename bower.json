@@ -27,8 +27,8 @@
       },
       "main": "Backbone.ModelBinder.js"
     },
-    "sherlock": {
-      "main": "lib/sherlock.js"
+    "mousetrap": {
+      "main": "mousetrap.js"
     }
   }
 }

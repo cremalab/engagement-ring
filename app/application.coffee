@@ -11,7 +11,7 @@ module.exports = class Application extends Chaplin.Application
     Chaplin.mediator.user = new User()
     Chaplin.mediator.apiURL = (path) ->
       if window.location.host.indexOf('localhost') == -1
-        "ec2-54-237-101-117.compute-1.amazonaws.com#{path}"
+        "http://ec2-54-237-101-117.compute-1.amazonaws.com#{path}"
       else
         "http://localhost:3000#{path}"
     Chaplin.mediator.streamURL = (path) ->
