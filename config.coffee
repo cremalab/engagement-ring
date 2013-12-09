@@ -26,13 +26,6 @@ exports.config =
   plugins:
     sass:
       debug: 'comments'
-    compass:
-      gem_home: './gems'
     cleancss:
       keepSpecialComments: 0
       removeEmpty: true
-    uglify:
-      mangle: false
-      compress:
-        global_defs:
-          DEBUG: false
