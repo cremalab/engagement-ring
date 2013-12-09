@@ -18,6 +18,7 @@
     "postinstall": "brunch build --production"
   },
   "dependencies": {
+    "bower": ">= 1.2.8",
     "javascript-brunch": ">= 1.0 < 1.8",
     "coffee-script-brunch": ">= 1.0 < 1.8",
     "css-brunch": ">= 1.0 < 1.8",
