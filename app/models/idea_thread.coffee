@@ -17,12 +17,13 @@ module.exports = class IdeaThread extends Model
     @subscribeEvent 'notifier:update_voting_right', @updateVotingRights
 
     if @isNew()
-      current_user_id = Chaplin.mediator.user.get('id')
+      current_user = Chaplin.mediator.user
       ideas = new IdeasCollection()
       voting_rights = new VotingRightsCollection()
       voting_rights.add
-        user_id: current_user_id
-        autocomplete_value: current_user_id
+        autocomplete_value: current_user.get('id')
+        autocomplete_search: current_user.display_name()
+        user_id: current_user.get('id')
       @set 'ideas', ideas
       @set 'voting_rights', voting_rights
     else
